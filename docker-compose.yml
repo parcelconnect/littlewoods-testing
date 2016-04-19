@@ -9,6 +9,7 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=idv.settings
+      - DATABASE_URL=postgres://postgres@db:51234/postgres
       - DEBUG=True
     depends_on:
       - db
