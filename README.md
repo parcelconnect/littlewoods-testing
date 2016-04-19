@@ -8,4 +8,5 @@ credits. Whoever, this project is not responsible for that functionality.
 
 ## Instalation
 
-[`docker/README.md`](docker/README.md) describes how to run a Docker-based setup.
+    $ docker-compose build
+    $ docker-compose up
