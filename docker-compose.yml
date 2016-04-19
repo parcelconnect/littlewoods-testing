@@ -7,6 +7,9 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=idv.settings
+      - DEBUG=True
     depends_on:
       - db
     env_file: .env
