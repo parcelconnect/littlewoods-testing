@@ -5,20 +5,18 @@ import dj_database_url
 from .utils import env_as_bool
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# -----------------------------------------------------------------------------
+# Base settings
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$$fu%@j#c2_vl0xc0c=_it)zxd=h=(+@p2a_i3d63*rk3vk+b&'
 
 ALLOWED_HOSTS = []
 
 DEBUG = env_as_bool('DEBUG')
 
+# -----------------------------------------------------------------------------
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,49 +59,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'idv.wsgi.application'
 
-
+# -----------------------------------------------------------------------------
 # Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.config()
 }
 
-
+# -----------------------------------------------------------------------------
 # Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+
+VALIDATOR_PATH = 'django.contrib.auth.password_validation.{}'
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',     # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',   # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',  # noqa
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',     # noqa
-    },
+    {'NAME': VALIDATOR_PATH.format('UserAttributeSimilarityValidator')},
+    {'NAME': VALIDATOR_PATH.format('MinimumLengthValidator')},
+    {'NAME': VALIDATOR_PATH.format('CommonPasswordValidator')},
+    {'NAME': VALIDATOR_PATH.format('NumericPasswordValidator')},
 ]
 
-
+# -----------------------------------------------------------------------------
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# -----------------------------------------------------------------------------
+# Static files
 
 STATIC_URL = '/static/'
