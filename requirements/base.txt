@@ -6,3 +6,4 @@ psycopg2==2.6.1
 
 # Django
 django==1.9.5
+dj-database-url==0.4.1
