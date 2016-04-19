@@ -1,0 +1,10 @@
+-r base.txt
+
+# Testing
+django-extensions
+pytest==2.9.1
+pytest-django==2.9.1
+
+# Development
+ipython
+ipdb
