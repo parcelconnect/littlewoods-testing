@@ -18,7 +18,7 @@ _envinronments = [ENV_DEV, ENV_STAGING, ENV_PROD]
 # -----------------------------------------------------------------------------
 # Load environment settings
 
-IDV_ENVIRONMENT = os.environ.get['IDV_ENVIRONMENT'].lower()
+IDV_ENVIRONMENT = os.environ['IDV_ENVIRONMENT'].lower()
 
 if IDV_ENVIRONMENT not in _envinronments:
     raise ImproperlyConfigured(
