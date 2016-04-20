@@ -1,0 +1,61 @@
+# Ensure our editors are consistent.
+#
+# vim
+# ---
+# * If you use pathogen:
+# 	- cd ~/.vim/bundle
+# 	- git clone https://github.com/editorconfig/editorconfig-vim
+# * If you don't, see other options here:
+# 	- https://github.com/editorconfig/editorconfig-vim
+#
+# emacs
+# -----
+# * If you use marmalde:
+# 	- M-x package-install [RET] editorconfig [RET]
+# * If you don't, see other options here:
+#	- https://github.com/editorconfig/editorconfig-emacs
+#
+# pycharm
+# -------
+# Install the plugin found in the following page:
+# https://plugins.jetbrains.com/plugin/7294
+#
+# ideavim
+# -------
+# Install the plugin found in the following link:
+# https://github.com/JetBrains/intellij-community/tree/master/plugins/editorconfig
+#
+# Sublime
+# -------
+# Install EditorConfig with Package Control and restart Sublime.
+#
+# See http://editorconfig.org for more information.
+
+# Breaks isort
+# root = true
+
+[*]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.py]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.js]
+charset = utf-8
+indent_style = space
+indent_size = 2
+
+[*.html]
+indent_style = space
+indent_size = 2
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+[*.css]
+indent_style = space
+indent_size = 2
