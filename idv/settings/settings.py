@@ -28,11 +28,15 @@ if IDV_ENVIRONMENT not in _envinronments:
 # -----------------------------------------------------------------------------
 # Base settings
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_PATH = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
+
+BASE_DIR = os.path.dirname(os.path.join(PROJECT_PATH, '..'))
 
 SECRET_KEY = '$$fu%@j#c2_vl0xc0c=_it)zxd=h=(+@p2a_i3d63*rk3vk+b&'
 
 ALLOWED_HOSTS = []
+
+STATIC_ROOT = os.environ.get('STATIC_ROOT', 'staticfiles')
 
 DEBUG = env_as_bool('DEBUG', default=False)
 
@@ -64,7 +68,9 @@ ROOT_URLCONF = 'idv.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(PROJECT_PATH, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,6 +117,10 @@ USE_TZ = True
 # Static files
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH, 'static'),
+)
 
 # -----------------------------------------------------------------------------
 # Email
