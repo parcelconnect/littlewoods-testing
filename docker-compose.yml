@@ -2,14 +2,14 @@ version: '2'
 services:
   web:
     build: .
-    command: python3 manage.py runserver 8000
+    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=idv.settings
-      - DATABASE_URL=postgres://postgres@db:51234/postgres
+      - DATABASE_URL=postgres://postgres@db:5432/postgres
       - DEBUG=True
     depends_on:
       - db
