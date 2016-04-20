@@ -8,5 +8,6 @@ credits. Whoever, this project is not responsible for that functionality.
 
 ## Instalation
 
+    $ touch .env
     $ docker-compose build
     $ docker-compose up
