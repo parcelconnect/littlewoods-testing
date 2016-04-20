@@ -111,3 +111,12 @@ USE_TZ = True
 # Static files
 
 STATIC_URL = '/static/'
+
+# -----------------------------------------------------------------------------
+# Email
+
+EMAIL_HOST = os.getenv('EMAIL_HOSt', 'localhost')
+EMAIL_PORT = os.getenv('EMAIL_PORT', 25)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
