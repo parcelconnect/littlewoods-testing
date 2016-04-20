@@ -1,9 +1,29 @@
 import os
 
+from django.core.exceptions import ImproperlyConfigured
+
 import dj_database_url
 
 from .utils import env_as_bool
 
+
+# -----------------------------------------------------------------------------
+# Environment constants
+
+ENV_DEV = 'dev'
+ENV_STAGING = 'staging'
+ENV_PROD = 'prod'
+_envinronments = [ENV_DEV, ENV_STAGING, ENV_PROD]
+
+# -----------------------------------------------------------------------------
+# Load environment settings
+
+IDV_ENVIRONMENT = os.environ.get['IDV_ENVIRONMENT'].lower()
+
+if IDV_ENVIRONMENT not in _envinronments:
+    raise ImproperlyConfigured(
+        'Unsupported environment: {}'.format(IDV_ENVIRONMENT)
+    )
 
 # -----------------------------------------------------------------------------
 # Base settings
