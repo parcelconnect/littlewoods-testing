@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static "js/upload.js" %}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col-md-8 col-centered">
@@ -23,16 +30,15 @@
 
     Proof of Address
     2. Upload a photo of a utility bill: gass, electricity or telephone.
+
+    <form action="{% url 'collector:collect' %}" method="POST" id="id-docs">
+      {% csrf_token %}
+      <input type="text" name="email" value="themhs@gmail.com">
+      <input type="text" name="account" value="1234123">
+      <input type="file" name="files" multiple="multiple" required>
+      <input type="submit" value="Upload">
+    </form>
+
   </div>
-  <form method="POST">
-    <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload file" name="submit">
-  </form>
 </div>
-{% endblock %}
-
-{% block js %}
-<script type="text/javascript">
-
-</script>
 {% endblock %}
