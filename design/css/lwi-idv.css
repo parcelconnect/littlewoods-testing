@@ -1,0 +1,44 @@
+body {
+  padding: 50px 0 40px 0;
+}
+
+.starter-template {
+  padding: 20px 15px;
+  text-align: left;
+  max-width: 730px;
+}
+
+img {
+	padding: 20px 0 20px 0;
+}
+
+.jumbotron {
+	background-color: #7b267b;
+	width: 100%;
+}
+
+.btn {
+    background-color: #7b267b;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Modal */
+.modal-content {
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+.modal-header {
+  background-color: #7b267b;
+}
+
+.modal-title {
+	color: white;
+	text-align: center;
+}
