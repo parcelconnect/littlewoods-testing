@@ -8,37 +8,56 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-8 col-centered">
-    <h1>ID verification</h1>
 
-    <p class="service-desc">
-      Welcome to Littlewoods Ireland, to submit your identification documents.<br>
-      Please follow the instructions bellow:
-    </p>
-
-    <hr>
-    <h4>Email Address</h4>
-    Please use the email address that you use on your Littlewoods Ireland account.
-
-    <h4>LWI Account Number</h4>
-    Details of your account number can be found on the ID Verification email that you received when you set up your account.
-
-    Proof of identity
-
-    1. Upload a photo of your passport or driving license.
-
-    Proof of Address
-    2. Upload a photo of a utility bill: gass, electricity or telephone.
-
-    <form action="{% url 'collector:collect' %}" method="POST" id="id-docs">
-      {% csrf_token %}
-      <input type="text" name="email" value="themhs@gmail.com">
-      <input type="text" name="account" value="1234123">
-      <input type="file" name="files" multiple="multiple" required>
-      <input type="submit" value="Upload">
-    </form>
-
+  <!-- Large modal -->
+<div style="display: none;" id="js-success-message" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="{% static "img/lwi-logo-modal.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+      </div>
+      <div class="modal-body">
+        <h3>Thanks for uploading your ID&amp;V</h3>
+        <p>Your details will be securely stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.</p>
+        <p>We hope you enjoy shopping with us.</p>
+        <p><strong>The Littlewoods Ireland Team</strong></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
+
+<div class="starter-template">
+  <img src="{% static "img/lwi-cc-2016-2.png" %}" class="img-responsive img-thumbnail" alt="Responsive image">
+  <h1><strong>ID Verification</strong></h1>
+  <p class="lead">Welcome to Littlewoods Ireland, to submit your identification documents please follow the instructions below:</p>
+  <hr>
+  <form action="{% url 'collector:collect' %}" method="POST" id="id-docs">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="lwi-email-address">Email Address</label>
+      <p>Please use the email address that you use on your Littlewoods Ireland account.</p>
+      <input type="email" class="form-control" name="email" id="lwi-email-address" placeholder="Email address">
+    </div>
+    <div class="form-group">
+      <label for="lwi-account-number">LWI Account Number</label>
+      <p>Details of your account number can be found on the ID Verification email that you recieved when you set up your account.</p>
+      <input type="text" class="form-control" name="account" id="lwi-account-number" placeholder="Account number">
+    </div>
+    <hr>
+    <div class="form-group">
+      <label for="exampleInputFile">Proof of Identity</label>
+        <p>Upload your photo(s)</p>
+        <input type="file" name="files" id="files" multiple="multiple" required>
+        <p class="help-block">Maximum file size 4mb</p></li>
+      <br>
+    </div>
+    <input type="submit" class="btn btn-default btn-lg" value="Submit">
+  </form>
+
+</div>
+
 {% endblock %}

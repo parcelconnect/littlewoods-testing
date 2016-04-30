@@ -3,13 +3,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="author" content="{% block author %}{% endblock %}">
+
+    <title>{% block title %}Littlewoods Ireland ID Verification{% endblock %}</title>
 
     {% block css %}
       <link rel="stylesheet" href="{% static "css/bootstrap.3.3.6.min.css" %}">
       <link rel="stylesheet" href="{% static "css/main.css" %}">
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
     {% endblock %}
 
     {% block js %}
@@ -29,7 +36,11 @@
 
   <body>
     <script id="js-context" type="application/json">{{ json_context|safe }}</script>
-    <div class="jumbotron lw-logo">
+
+    <div class="jumbotron">
+      <div class="container">
+        <img src="{% static "img/lwi-logo.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+      </div>
     </div>
 
     <div id="container">

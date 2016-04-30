@@ -7,6 +7,7 @@ IDV.UploadForm = (function() {
   var my = {};
   var formID = 'id-docs';
   var $form = null;
+  var filenamesToBeUploaded = [];
 
   var uploadFile = function(file, signed_url) {
     $.ajax({
@@ -15,7 +16,42 @@ IDV.UploadForm = (function() {
       data: file,
       contentType: file.type,
       processData: false,
+    })
+    .done(function() {
+      uploadFileDoneHandler(file);
+    })
+    .fail(function() {
+      uploadFileFailHandler(file);
     });
+  };
+
+  var addFileToUploadList = function(file) {
+    filenamesToBeUploaded.push(file.name);
+  };
+
+  var removeFileFromUploadList = function(file) {
+    var idx = filenamesToBeUploaded.indexOf(file.name);
+    filenamesToBeUploaded.splice(idx, 1);
+  };
+
+  var isUploadListEmpty = function() {
+    return filenamesToBeUploaded.length == 0;
+  };
+
+  var showUploadSuccessMessage = function() {
+    $('#js-success-message').modal('show');
+    console.log("All files have been uploaded");
+  };
+
+  var uploadFileDoneHandler = function(file) {
+    removeFileFromUploadList(file);
+    if (isUploadListEmpty()) {
+      showUploadSuccessMessage();
+    };
+  };
+
+  var uploadFileFailHandler = function(file) {
+    console.log("Could not upload " + file.name);
   };
 
   var getSignedRequests = function(files, doneHandler, failHandler) {
@@ -42,11 +78,13 @@ IDV.UploadForm = (function() {
   var getSignedRequestsDoneHandler = function(response, filenameToFile) {
     $.each(response, function(filename, signed_url) {
       var file = filenameToFile[filename];
+      addFileToUploadList(file);
       uploadFile(file, signed_url);
     });
   };
 
   var getSignedRequestsFailHandler = function() {
+    console.log("Could not sign request.");
   };
 
   var getFormFiles = function() {

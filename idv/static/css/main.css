@@ -1,21 +1,44 @@
-h1 {
-  font-weight: bold;
+body {
+  padding: 0 0 40px 0;
 }
 
-.lw-logo {
-  background-image: url(../img/lwi-logo-stacked.svg);
-  background-size: 50%;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: #6f2b7e;
-  height: 250px;
+.starter-template {
+  padding: 20px 15px;
+  text-align: left;
+  max-width: 730px;
 }
 
-.col-centered {
-  float: none;
-  margin: 0 auto;
+img {
+	padding: 20px 0 20px 0;
 }
 
-.service-desc {
-  font-size: 18px;
+.jumbotron {
+	background-color: #7b267b;
+	width: 100%;
+}
+
+.btn {
+    background-color: #7b267b;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+/* Modal */
+.modal-content {
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+.modal-header {
+  background-color: #7b267b;
+}
+
+.modal-title {
+	color: white;
+	text-align: center;
 }
