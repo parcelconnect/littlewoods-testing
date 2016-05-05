@@ -3,11 +3,50 @@
 var IDV = window.IDV || {};
 var Django = window.Django || {};
 
+IDV.FileHolder = (function() {
+  var my = {};
+  /* filename -> file object */
+  var _files = {};
+
+  my.reset = function() {
+    _files = {};
+  };
+
+  my.addFiles = function(files) {
+    $.each(files, function(idx, file) {
+      _files[file.name] = file;
+    });
+  }
+
+  my.removeFile = function(file) {
+    delete _files[file.name];
+  };
+
+  my.isEmpty = function() {
+    return $.isEmptyObject(_files);
+  };
+
+  my.get = function(filename) {
+    return _files[filename];
+  };
+
+  my.stringifyForSigning = function() {
+    var filenameToFiletype = {};
+    $.each(_files, function(filename, file) {
+      filenameToFiletype[filename] = file.type;
+    });
+    var stringified = JSON.stringify(filenameToFiletype);
+    return encodeURIComponent(stringified);
+  };
+
+  return my;
+})();
+
 IDV.UploadForm = (function() {
   var my = {};
   var formID = 'id-docs';
   var $form = null;
-  var filenamesToBeUploaded = [];
+  var fileHolder = null;
 
   var uploadFile = function(file, signed_url) {
     $.ajax({
@@ -25,27 +64,14 @@ IDV.UploadForm = (function() {
     });
   };
 
-  var addFileToUploadList = function(file) {
-    filenamesToBeUploaded.push(file.name);
-  };
-
-  var removeFileFromUploadList = function(file) {
-    var idx = filenamesToBeUploaded.indexOf(file.name);
-    filenamesToBeUploaded.splice(idx, 1);
-  };
-
-  var isUploadListEmpty = function() {
-    return filenamesToBeUploaded.length == 0;
-  };
-
   var showUploadSuccessMessage = function() {
     $('#js-success-message').modal('show');
     console.log("All files have been uploaded");
   };
 
   var uploadFileDoneHandler = function(file) {
-    removeFileFromUploadList(file);
-    if (isUploadListEmpty()) {
+    fileHolder.removeFile(file);
+    if (fileHolder.isEmpty()) {
       showUploadSuccessMessage();
     };
   };
@@ -54,36 +80,25 @@ IDV.UploadForm = (function() {
     console.log("Could not upload " + file.name);
   };
 
-  var getSignedRequests = function(files, doneHandler, failHandler) {
-    var filenameToFiletype = {};
-    var filenameToFile = {};
-    $.each(files, function(idx, file) {
-      filenameToFiletype[file.name] = file.type;
-      filenameToFile[file.name] = file;
-    });
-    var fileData = encodeURIComponent(JSON.stringify(filenameToFiletype));
-
+  var getSignedRequests = function(data, handlers) {
     $.ajax({
       url: Django.Data.get('sign_s3_request_url'),
       method: 'GET',
-      data: {fileData: fileData},
+      data: data,
       dataType: 'json'
     })
-    .done(function(response) {
-      doneHandler(response, filenameToFile);
-    })
-    .fail(failHandler);
+    .done(handlers.done)
+    .fail(handlers.fail);
   };
 
-  var getSignedRequestsDoneHandler = function(response, filenameToFile) {
+  var uploadFiles = function(response) {
     $.each(response, function(filename, signed_url) {
-      var file = filenameToFile[filename];
-      addFileToUploadList(file);
+      var file = fileHolder.get(filename);
       uploadFile(file, signed_url);
     });
   };
 
-  var getSignedRequestsFailHandler = function() {
+  var failedSignHandler = function() {
     console.log("Could not sign request.");
   };
 
@@ -96,14 +111,24 @@ IDV.UploadForm = (function() {
   var submitHandler = function(event) {
     event.preventDefault();
     var files = getFormFiles();
-    getSignedRequests(
-      files,
-      getSignedRequestsDoneHandler,
-      getSignedRequestsFailHandler
-    );
+    fileHolder.reset();
+    fileHolder.addFiles(files);
+
+    var data = {
+      email: $('#lwi-email-address').val(),
+      account: $('#lwi-account-number').val(),
+      fileData: fileHolder.stringifyForSigning()
+    };
+    var handlers = {
+      done: uploadFiles,
+      fail: failedSignHandler,
+    };
+    getSignedRequests(data, handlers);
   };
 
   my.init = function() {
+    fileHolder = IDV.FileHolder;
+    fileHolder.removeFile("asdf");
     $form = $('#'+formID);
     $form.submit(submitHandler)
   };
