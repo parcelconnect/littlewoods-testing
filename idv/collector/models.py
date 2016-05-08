@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Account(models.Model):
@@ -19,6 +20,10 @@ class Credential(models.Model):
     account = models.ForeignKey(Account)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
+
+    def mark_as_deleted(self):
+        self.deleted_at = timezone.now()
+        self.save()
 
 
 class AccountCredentialIndex(models.Model):
