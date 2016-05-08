@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 
-from .models import Account, Credential
+from . import domain
 
 
 class Collect(View):
@@ -26,19 +26,17 @@ class Collect(View):
         return HttpResponseRedirect(reverse('collector:collect'))
 
 
-@transaction.atomci
+@transaction.atomic
 def sign_s3_request(request):
     email = request.GET['email']
-    account_number = request.GET['account_number']
+    account_number = request.GET['account']
     file_data = extract_json_from_GET(request, 'fileData')
 
-    account = Account.objects.get_or_create(
-        email=email, account_number=account_number)
+    account = domain.get_or_create_account(email, account_number)
 
     data = {}
     for filename, filetype in file_data.items():
-        credential = Credential.objects.create(
-            account=account, original_filename=filename)
+        credential = domain.create_credential(account, filename)
         signed_url = aws.generate_presigned_s3_url(
             'put_object', credential.s3_key, ContentType=filetype)
         data[filename] = signed_url
