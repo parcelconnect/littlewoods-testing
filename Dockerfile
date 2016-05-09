@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install -y python3.4 python3.4-dev
 RUN apt-get install -y build-essential python3-pip
 RUN apt-get install -y libpq-dev python3-psycopg2
+RUN apt-get install -y libssl-dev libffi-dev
 
 ENV PYTHONUNBUFFERED 1
 
