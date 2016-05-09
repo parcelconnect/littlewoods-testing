@@ -8,7 +8,7 @@ CHARFIELD_SAFE_LIMIT = 1024
 SFTP_DEFAULT_PORT = 22
 
 
-class SFTPAccount(models.Model):
+class SftpAccount(models.Model):
 
     host = models.CharField(max_length=CHARFIELD_SAFE_LIMIT)
     port = models.IntegerField(default=SFTP_DEFAULT_PORT)
