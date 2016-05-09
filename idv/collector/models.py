@@ -25,6 +25,9 @@ class Credential(models.Model):
         self.deleted_at = timezone.now()
         self.save()
 
+    def __str__(self):
+        return 'Credential(pk: {}, s3_key: {})'.format(self.pk, self.s3_key)
+
 
 class AccountCredentialIndex(models.Model):
 
