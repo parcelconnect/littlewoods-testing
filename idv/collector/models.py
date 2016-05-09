@@ -12,6 +12,12 @@ class Account(models.Model):
         unique_together = ('email', 'account_number')
 
 
+class CredentialQuerySet(models.query.QuerySet):
+
+    def need_moving(self):
+        return self.filter(deleted_at__isnull=True)
+
+
 class Credential(models.Model):
 
     original_filename = models.CharField(max_length=256, null=False)
@@ -20,6 +26,8 @@ class Credential(models.Model):
     account = models.ForeignKey(Account)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
+
+    objects = CredentialQuerySet.as_manager()
 
     def mark_as_deleted(self):
         self.deleted_at = timezone.now()
