@@ -1,6 +1,5 @@
 import json
 
-from idv.common import aws
 from idv.common.http import extract_json_from_GET
 
 from django.core.urlresolvers import reverse
@@ -37,7 +36,7 @@ def sign_s3_request(request):
     data = {}
     for filename, filetype in file_data.items():
         credential = domain.create_credential(account, filename)
-        signed_url = aws.generate_presigned_s3_url(
-            'put_object', credential.s3_key, ContentType=filetype)
+        signed_url = domain.generate_presigned_s3_url(credential.s3_key,
+                                                      filetype)
         data[filename] = signed_url
     return JsonResponse(data)

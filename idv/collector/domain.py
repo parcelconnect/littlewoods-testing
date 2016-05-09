@@ -1,6 +1,9 @@
 import os.path
 
+from django.conf import settings
 from django.db import transaction
+
+from idv.common import aws
 
 from .models import Account, AccountCredentialIndex, Credential
 
@@ -35,3 +38,12 @@ def _generate_s3_key(account, filename):
         extension=extension
     )
     return s3_key
+
+
+def generate_presigned_s3_url(s3_key, filetype):
+    return aws.generate_presigned_s3_url(
+        'put_object',
+        settings.S3_BUCKET,
+        s3_key,
+        ContentType=filetype
+    )
