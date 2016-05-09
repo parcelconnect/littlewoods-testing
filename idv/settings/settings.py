@@ -138,3 +138,11 @@ EMAIL_USE_TLS = True
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 S3_BUCKET = os.getenv('S3_BUCKET')
+
+# -----------------------------------------------------------------------------
+# Customization for development
+
+if IDV_ENVIRONMENT == ENV_DEV:
+    INSTALLED_APPS += (
+        'django_extensions',
+    )
