@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'idv.collector',
+    'idv.mover',
 ]
 
 MIDDLEWARE_CLASSES = [
