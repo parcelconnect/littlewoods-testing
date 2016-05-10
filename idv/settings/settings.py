@@ -34,7 +34,7 @@ BASE_DIR = os.path.dirname(os.path.join(PROJECT_PATH, '..'))
 
 SECRET_KEY = '$$fu%@j#c2_vl0xc0c=_it)zxd=h=(+@p2a_i3d63*rk3vk+b&'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', 'staticfiles')
 
