@@ -1,1 +1,1 @@
-web: gunicorn idv.wsgi --log-file -
+web: gunicorn idv.heroku_wsgi --log-file -

@@ -124,6 +124,9 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
+if IDV_ENVIRONMENT == ENV_PROD:
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 # -----------------------------------------------------------------------------
 # Email
 
