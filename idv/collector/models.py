@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.db import models
 from django.utils import timezone
 
@@ -16,6 +18,21 @@ class CredentialQuerySet(models.query.QuerySet):
 
     def need_moving(self):
         return self.filter(deleted_at__isnull=True)
+
+    def moved_on(self, date):
+        since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
+        since = timezone.make_aware(since)
+        until = since + timedelta(days=1)
+        return self.filter(deleted_at__range=(since, until))
+
+    def created_on(self, date):
+        since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
+        since = timezone.make_aware(since)
+        until = since + timedelta(days=1)
+        return self.filter(created_at__range=(since, until))
+
+    def not_found(self):
+        return self.filter(missing_from_s3=True)
 
 
 class Credential(models.Model):
