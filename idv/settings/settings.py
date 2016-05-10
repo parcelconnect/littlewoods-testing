@@ -4,7 +4,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 import dj_database_url
 
-from .utils import env_as_bool
+from .utils import env_as_bool, env_as_list
 
 
 # -----------------------------------------------------------------------------
@@ -133,6 +133,8 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
+DEFAULT_FROM_EMAIL = ''
+REPORT_RECIPIENTS = env_as_list('REPORT_RECIPIENTS')
 # -----------------------------------------------------------------------------
 # S3
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
