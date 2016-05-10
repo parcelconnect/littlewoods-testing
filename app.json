@@ -1,0 +1,8 @@
+{
+  "name": "Littlewodos ID&V",
+  "description": "Collect LW customers credentials to give them credits",
+  "image": "heroku/python",
+  "repository": "https://github.com/parcelconnect/littlewoods-idv",
+  "keywords": ["fastway", "littlewoods"],
+  "addons": ["heroku-postgresql"]
+}
