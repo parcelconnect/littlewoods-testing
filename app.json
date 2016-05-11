@@ -6,6 +6,9 @@
   "keywords": ["fastway", "littlewoods"],
   "addons": ["heroku-postgresql"]
   "env": {
+    "IDV_ENVIRONMENT": {
+      "value": "prod"
+    },
     "DJANGO_SETTINGS_MODULE": {
       "value": "idv.settings"
     }
