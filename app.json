@@ -5,4 +5,9 @@
   "repository": "https://github.com/parcelconnect/littlewoods-idv",
   "keywords": ["fastway", "littlewoods"],
   "addons": ["heroku-postgresql"]
+  "env": {
+    "DJANGO_SETTINGS_MODULE": {
+      "value": "idv.settings"
+    }
+  }
 }
