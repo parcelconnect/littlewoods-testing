@@ -60,7 +60,7 @@ def _get_sftp_client_from_model(cfg, create_host_key=True):
 
             raise SftpClientException(
                 'WARNING: Remote host identification has changed! Host {host} '
-                'provided {new_key_type} key: {new_key_fingerprint} '
+                'provided {new_key_type} key: {new_key_fingerprint}, '
                 'expected {old_key_type} key: {old_key_fingerprint}'
                 .format(host=cfg.host,
                         new_key_type=key_type,
