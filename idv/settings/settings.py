@@ -139,11 +139,24 @@ EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = ''
 REPORT_RECIPIENTS = env_as_list('REPORT_RECIPIENTS')
+
 # -----------------------------------------------------------------------------
 # S3
+
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 S3_BUCKET = os.getenv('S3_BUCKET')
+
+# -----------------------------------------------------------------------------
+# S3
+
+HTTP_PROXY = {
+    'host': os.getenv('HTTP_PROXY_HOST'),
+    'port': os.getenv('HTTP_PROXY_PORT'),
+    'username': os.getenv('HTTP_PROXY_USERNAME'),
+    'password': os.getenv('HTTP_PROXY_PASSWORD'),
+}
+
 
 # -----------------------------------------------------------------------------
 # Customization for development

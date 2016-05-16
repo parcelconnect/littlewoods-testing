@@ -10,13 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 @contextlib.contextmanager
-def get_sftp_client_from_model(sftp_account, http_proxy):
-    client = _get_sftp_client_from_model(sftp_account, http_proxy)
+def sftp_client_from_model(sftp_account, http_proxy):
+    client = get_sftp_client_from_model(sftp_account, http_proxy)
     yield client
     client.sock.transport.close()
 
 
-def _get_sftp_client_from_model(sftp_account, http_proxy=None):
+def get_sftp_client_from_model(sftp_account, http_proxy=None):
     """
     Instantiate SFTP client from a SftpAccount model.
 
