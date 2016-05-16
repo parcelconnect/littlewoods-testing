@@ -4,9 +4,8 @@ import os
 from django.conf import settings
 
 from idv.common import aws
-from idv.common.sftp import get_sftp_client_from_model
-
-from .models import SftpAccount
+from idv.sftp.domain import get_sftp_client_from_model
+from idv.sftp.models import SftpAccount
 
 logger = logging.getLogger(__name__)
 
