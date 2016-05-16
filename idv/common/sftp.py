@@ -1,7 +1,3 @@
-"""
-Copied from scurri.core.remote.sftp2
-"""
-
 import base64
 import contextlib
 import logging
@@ -63,8 +59,8 @@ def _get_sftp_client_from_model(cfg, create_host_key=True):
                 cfg.host_key_data_binary != key_data):
 
             raise SftpClientException(
-                'WARNING: Remote host identification has changed! '
-                'Host {host} provided {new_key_type} key: {new_key_fingerprint} '  # noqa
+                'WARNING: Remote host identification has changed! Host {host} '
+                'provided {new_key_type} key: {new_key_fingerprint} '
                 'expected {old_key_type} key: {old_key_fingerprint}'
                 .format(host=cfg.host,
                         new_key_type=key_type,
