@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'idv.collector',
     'idv.mover',
+    'idv.sftp',
 ]
 
 MIDDLEWARE_CLASSES = [
