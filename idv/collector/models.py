@@ -53,7 +53,6 @@ class Credential(models.Model):
         choices=enum_to_choices(CredentialStatus),
         default=CredentialStatus.Unchecked.value
     )
-    missing_from_s3 = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
 
