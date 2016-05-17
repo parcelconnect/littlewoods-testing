@@ -3,6 +3,9 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.utils import timezone
 
+from .const import CredentialStatus
+from .util import enum_to_choices
+
 
 class Account(models.Model):
 
@@ -46,6 +49,10 @@ class Credential(models.Model):
     account = models.ForeignKey(Account)
     original_filename = models.CharField(max_length=256, null=False)
     s3_key = models.CharField(max_length=30, null=False)
+    status = models.IntegerField(
+        choices=enum_to_choices(CredentialStatus),
+        default=CredentialStatus.Unchecked.value
+    )
     missing_from_s3 = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
