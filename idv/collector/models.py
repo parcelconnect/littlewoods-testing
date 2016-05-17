@@ -67,6 +67,15 @@ class Credential(models.Model):
         self.deleted_at = timezone.now()
         self.save()
 
+    def mark_as_found(self):
+        self.status = CredentialStatus.Found.value
+        self.save()
+
+    def mark_as_copied(self):
+        self.status = CredentialStatus.Copied.value
+        self.copied_at = timezone.now()
+        self.save()
+
     def __str__(self):
         return 'Credential(pk: {}, s3_key: {})'.format(self.pk, self.s3_key)
 

@@ -23,13 +23,10 @@ def move_credential_files(credentials):
     http_proxy = get_http_proxy_from_settings()
 
     with sftp_client_from_model(sftp_account, http_proxy) as sftp_client:
-        for credential in credentials:
-            logger.info("Start moving {}".format(credential))
-            move_credential_file(credential, aws_client, sftp_client,
-                                 sftp_account)
-            credential.mark_as_deleted()
-            logger.info("{} marked as deleted".format(credential))
-            logger.info("{} moved".format(credential))
+        for cred in credentials:
+            logger.info("Start moving {}".format(cred))
+            move_credential_file(cred, aws_client, sftp_client, sftp_account)
+            logger.info("{} moved".format(cred))
 
 
 def move_credential_file(credential, aws_client, sftp_client, sftp_account,
@@ -37,10 +34,13 @@ def move_credential_file(credential, aws_client, sftp_client, sftp_account,
     local_path = os.path.join(local_tmp_dir, credential.s3_key)
     aws_client.download_file(settings.S3_BUCKET, credential.s3_key, local_path)
     logger.info("Downloaded {} to {}".format(credential, local_path))
+    credential.mark_as_found()
 
     remote_path = os.path.join(sftp_account.base_path, credential.s3_key)
     sftp_client.put(local_path, remote_path)
     logger.info("Uploaded {} to {}".format(local_path, remote_path))
+    credential.mark_as_copied()
 
     aws_client.delete_object(Bucket=settings.S3_BUCKET, Key=credential.s3_key)
     logger.info("Deleted {} from S3".format(credential.s3_key))
+    credential.mark_as_deleted()
