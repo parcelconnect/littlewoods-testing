@@ -58,6 +58,7 @@ class Credential(models.Model):
         default=CredentialStatus.Unchecked.value
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    copied_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)
 
     objects = CredentialQuerySet.as_manager()
