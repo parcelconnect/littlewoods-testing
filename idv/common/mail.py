@@ -6,6 +6,20 @@ from django.template.loader import get_template
 
 
 def create_mail(subject, template_prefix, emails, context={}, app_name=None):
+    """
+    Create an email ready to be sent (or attach files etc. before sent).
+    If `app_name` is set, the template will be loaded from
+    templates/mail/[app_name]/, else templates/mail/ will be used.
+
+    Args:
+        subject (str): The subject of the email to be sent
+        template_prefix (str): The template filename without its extension
+        emails (list of str): The email recipients
+        context (dict): Context to populate the email template with
+        app_name (str):
+    Returns:
+        django.core.mail.EmailMultiAlternatives obj
+    """
     if app_name:
         path_parts = ['mail', app_name, template_prefix]
     else:

@@ -9,7 +9,10 @@ from .util import enum_to_choices
 
 
 class Account(models.Model):
-
+    """
+    Represents a Littlewoods account, identified by `email` and
+    `account_number` used in the Littlewoods service.
+    """
     email = models.EmailField()
     account_number = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,7 +55,9 @@ class CredentialQuerySet(models.query.QuerySet):
 
 
 class Credential(models.Model):
-
+    """
+    Represents a file that a littlewoods user uploads to prove his identity.
+    """
     account = models.ForeignKey(Account)
     original_filename = models.CharField(max_length=256, null=False)
     s3_key = models.CharField(max_length=30, null=False)
@@ -61,7 +66,10 @@ class Credential(models.Model):
         default=CredentialStatus.Unchecked.value
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    copied_at = models.DateTimeField(null=True)
+    copied_at = models.DateTimeField(
+        null=True,
+        help_text='When it was copied from Fastway S3 to LW SFTP'
+    )
     deleted_at = models.DateTimeField(null=True)
 
     objects = CredentialQuerySet.as_manager()
@@ -85,7 +93,12 @@ class Credential(models.Model):
 
 
 class AccountCredentialIndex(models.Model):
-
+    """
+    Used internally to generate an s3 key. For example, a user with a LW
+    account number 1234 may want to upload 2 jpeg files. Those files will end
+    up being named [prefix]_1.jpg [prefix_2]. Those two numbers just before
+    the extension are generated from this model.
+    """
     account = models.OneToOneField(Account)
     index = models.IntegerField(null=False, default=0)
 

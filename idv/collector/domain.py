@@ -10,6 +10,18 @@ from .models import Account, AccountCredentialIndex, Credential
 
 @transaction.atomic
 def get_or_create_account(email, account_number):
+    """
+    Get or create a new `idv.collector.models.Account` object.
+    When a new one is created, it also creates an `idv.collector.models.
+    AccountCredentialIndex` object responsible for generating unique credential
+    indices for each account.
+
+    Args:
+        email (str): User email used in Littlewoods
+        account_number (str): Account number in Littlewoods
+    Returns:
+        idv.collector.models.Account obj
+    """
     try:
         account = Account.objects.get(account_number=account_number)
     except Account.DoesNotExist:
@@ -21,6 +33,19 @@ def get_or_create_account(email, account_number):
 
 @transaction.atomic
 def create_credential(account, filename):
+    """
+    Create an `idv.collector.models.Credential` object by using
+    `idv.collector.models.AccountCredentialIndex` to generate a unique s3 key.
+
+    Args:
+        account (idv.collector.models.Account): Account to create
+                                                credential for
+        filename (str): The filename of the original file the user wants to
+                        upload. Not used anywhere, just stored for debugging
+                        purposes in the future, if any.
+    Returns:
+        idv.collector.models.Credential obj
+    """
     s3_key = _generate_s3_key(account, filename)
     return Credential.objects.create(
         account=account,
@@ -41,9 +66,13 @@ def _generate_s3_key(account, filename):
 
 
 def generate_presigned_s3_url(s3_key, filetype):
+    """
+    Args:
+        s3_key (str): The s3 key we want to generate the signed url for
+        filetype (str): The type of the file we want to generate the
+                        signed url for
+    Returns:
+        str: A presigned s3 url
+    """
     return aws.generate_presigned_s3_url(
-        'put_object',
-        settings.S3_BUCKET,
-        s3_key,
-        ContentType=filetype
-    )
+        'put_object', settings.S3_BUCKET, s3_key, ContentType=filetype)

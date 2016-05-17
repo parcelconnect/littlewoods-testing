@@ -3,7 +3,10 @@ from enum import Enum, unique
 
 @unique
 class CredentialStatus(Enum):
-
+    """
+    Its members represent all possible statuses an
+    `idv.collector.models.Credential` object can have.
+    """
     # The user requested permission for uploding the file to S3
     # but we don't know yet if it was uploaded successfully.
     Unchecked = 0
