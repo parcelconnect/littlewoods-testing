@@ -8,7 +8,7 @@ class CredentialStatus(Enum):
     # but we don't know yet if it was uploaded successfully.
     Unchecked = 0
     # We confirm that the file was found in S3.
-    Uploaded = 1
+    Found = 1
     # We tried to fetch the file from S3 but it wasn't there.
     # This may happen for example if the user disconnects while uploading
     # the file.

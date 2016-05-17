@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 from .const import CredentialStatus
@@ -26,7 +27,10 @@ class Account(models.Model):
 class CredentialQuerySet(models.query.QuerySet):
 
     def need_moving(self):
-        return self.filter(deleted_at__isnull=True)
+        return self.filter(
+            Q(status=CredentialStatus.Unchecked.value) |
+            Q(status=CredentialStatus.Found.value)
+        )
 
     def moved_on(self, date):
         since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
