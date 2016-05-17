@@ -63,10 +63,6 @@ class Credential(models.Model):
 
     objects = CredentialQuerySet.as_manager()
 
-    def mark_as_deleted(self):
-        self.deleted_at = timezone.now()
-        self.save()
-
     def mark_as_found(self):
         self.status = CredentialStatus.Found.value
         self.save()
@@ -74,6 +70,11 @@ class Credential(models.Model):
     def mark_as_copied(self):
         self.status = CredentialStatus.Copied.value
         self.copied_at = timezone.now()
+        self.save()
+
+    def mark_as_moved(self):
+        self.status = CredentialStatus.Moved.value
+        self.deleted_at = timezone.now()
         self.save()
 
     def __str__(self):

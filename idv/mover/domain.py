@@ -43,4 +43,4 @@ def move_credential_file(credential, aws_client, sftp_client, sftp_account,
 
     aws_client.delete_object(Bucket=settings.S3_BUCKET, Key=credential.s3_key)
     logger.info("Deleted {} from S3".format(credential.s3_key))
-    credential.mark_as_deleted()
+    credential.mark_as_moved()
