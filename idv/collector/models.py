@@ -46,7 +46,6 @@ class Credential(models.Model):
     account = models.ForeignKey(Account)
     original_filename = models.CharField(max_length=256, null=False)
     s3_key = models.CharField(max_length=30, null=False)
-    upload_confirmed = models.BooleanField(default=False)
     missing_from_s3 = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True)
