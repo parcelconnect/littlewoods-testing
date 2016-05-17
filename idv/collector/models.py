@@ -45,7 +45,7 @@ class CredentialQuerySet(models.query.QuerySet):
         return self.filter(created_at__range=(since, until))
 
     def not_found(self):
-        return self.filter(missing_from_s3=True)
+        return self.filter(status=CredentialStatus.NotFound.value)
 
 
 class Credential(models.Model):
