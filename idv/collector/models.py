@@ -13,6 +13,12 @@ class Account(models.Model):
     class Meta:
         unique_together = ('email', 'account_number')
 
+    def __str__(self):
+        return 'Account(email: {}, account_number: {})'.format(
+            self.email,
+            self.account_number
+        )
+
 
 class CredentialQuerySet(models.query.QuerySet):
 
