@@ -3,6 +3,9 @@
 var IDV = window.IDV || {};
 var Django = window.Django || {};
 
+/*
+ * Responsible for keeping track of the files to be uploaded.
+ */
 IDV.FileHolder = (function() {
   var my = {};
   /* filename -> file object */
@@ -42,6 +45,9 @@ IDV.FileHolder = (function() {
   return my;
 })();
 
+/*
+ * Adds and updates upload progress bars.
+ */
 IDV.ProgressBars = (function() {
   var my = {};
   var containerID = 'progress-bars';
@@ -89,6 +95,9 @@ IDV.ProgressBars = (function() {
   return my;
 })();
 
+/*
+ * Your entry module.
+ */
 IDV.UploadForm = (function() {
   var my = {};
   var formID = 'id-docs';
@@ -194,6 +203,9 @@ IDV.UploadForm = (function() {
   return my;
 })();
 
+/*
+ * Entry point.
+ */
 $(function() {
   IDV.UploadForm.init();
 });
