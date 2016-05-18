@@ -1,6 +1,11 @@
+import botocore
 import boto3
 
 from django.conf import settings
+
+
+class S3KeyNotFoundError(Exception):
+    pass
 
 
 def get_boto_credentials_from_settings():
@@ -30,3 +35,18 @@ def generate_presigned_s3_url(client_method, bucket, key,
         ExpiresIn=expires_in,
         Params=params
     )
+
+
+def get_exception_status_code(exception):
+    return exception.response['Error']['Code']
+
+
+def download_file(bucket, s3_key, local_path, client=None):
+    if client is None:
+        client = get_s3_client()
+
+    try:
+        return client.download_file(bucket, s3_key, local_path)
+    except botocore.exceptions.ClientError as exc:
+        if get_exception_status_code(exc) == '404':
+            raise S3KeyNotFoundError

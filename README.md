@@ -53,6 +53,16 @@ applied:
                 "Resource": [
                     "arn:aws:s3:::lw-customer-verification-docs/*"
                 ]
+            },
+            {
+                "Sid": "Stmt1461353410001",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:ListBucket"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::lw-customer-verification-docs"
+                ]
             }
         ]
     }

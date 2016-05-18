@@ -19,20 +19,28 @@ def get_http_proxy_from_settings():
 
 def move_credential_files(credentials):
     aws_client = aws.get_s3_client()
-    sftp_account = SftpAccount.objects.get()
+    sftp = SftpAccount.objects.get()
     http_proxy = get_http_proxy_from_settings()
 
-    with sftp_client_from_model(sftp_account, http_proxy) as sftp_client:
+    with sftp_client_from_model(sftp, http_proxy) as sftp_client:
         for cred in credentials:
             logger.info("Start moving {}".format(cred))
-            move_credential_file(cred, aws_client, sftp_client, sftp_account)
+            try:
+                move_credential_file(cred, aws_client, sftp_client, sftp)
+            except aws.S3KeyNotFoundError:
+                continue
             logger.info("{} moved".format(cred))
 
 
 def move_credential_file(credential, aws_client, sftp_client, sftp_account,
                          local_tmp_dir='/tmp'):
     local_path = os.path.join(local_tmp_dir, credential.s3_key)
-    aws_client.download_file(settings.S3_BUCKET, credential.s3_key, local_path)
+    try:
+        aws.download_file(settings.S3_BUCKET, credential.s3_key, local_path)
+    except aws.S3KeyNotFoundError:
+        credential.mark_as_not_found()
+        logger.info("{} not found in S3".format(credential))
+        raise
     logger.info("Downloaded {} to {}".format(credential, local_path))
     credential.mark_as_found()
 

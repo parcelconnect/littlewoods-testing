@@ -78,6 +78,10 @@ class Credential(models.Model):
         self.status = CredentialStatus.Found.value
         self.save()
 
+    def mark_as_not_found(self):
+        self.status = CredentialStatus.NotFound.value
+        self.save()
+
     def mark_as_copied(self):
         self.status = CredentialStatus.Copied.value
         self.copied_at = timezone.now()
