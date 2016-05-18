@@ -42,11 +42,59 @@ IDV.FileHolder = (function() {
   return my;
 })();
 
+IDV.ProgressBars = (function() {
+  var my = {};
+  var containerID = 'progress-bars';
+  var progressBarTemplateContainerID = 'progress-bar-template-container';
+  var $container = null;
+
+  my.reset = function() {
+    $container.html('');
+  };
+
+  var add = function(file) {
+    var $templateContainer = $('#'+progressBarTemplateContainerID).clone();
+    $templateContainer.find('.filename').html(file.name);
+    $templateContainer.find('.progress-bar').attr('data-filename', file.name)
+    var $bar = $templateContainer.children();
+    $container.append($bar);
+  };
+
+  my.addMany = function(files) {
+    var bar = null;
+    $.each(files, function(idx, file) {
+      add(file);
+    });
+  };
+
+  my.update = function(xhr, file) {
+    xhr.upload.addEventListener("progress", function(evt) {
+      if (evt.lengthComputable) {
+        var percentComplete = evt.loaded / evt.total;
+        percentComplete = parseInt(percentComplete * 100);
+        $container.find('[data-filename="'+file.name+'"]')
+          .css('width', percentComplete+'%')
+          .attr('aria-valuenow', percentComplete);
+        if (percentComplete == 100) {
+          $('.progress-bar').addClass('progress-bar-success');
+        };
+      }
+    }, false);
+  };
+
+  my.init = function() {
+    $container = $('#'+containerID);
+  };
+
+  return my;
+})();
+
 IDV.UploadForm = (function() {
   var my = {};
   var formID = 'id-docs';
   var $form = null;
   var fileHolder = null;
+  var progressBars = null;
 
   var uploadFile = function(file, signed_url) {
     $.ajax({
@@ -55,6 +103,11 @@ IDV.UploadForm = (function() {
       data: file,
       contentType: file.type,
       processData: false,
+      xhr: function() {
+        var xhr = new window.XMLHttpRequest();
+        progressBars.update(xhr, file);
+        return xhr;
+      }
     })
     .done(function() {
       uploadFileDoneHandler(file);
@@ -66,7 +119,6 @@ IDV.UploadForm = (function() {
 
   var showUploadSuccessMessage = function() {
     $('#js-success-message').modal('show');
-    console.log("All files have been uploaded");
   };
 
   var uploadFileDoneHandler = function(file) {
@@ -110,9 +162,12 @@ IDV.UploadForm = (function() {
 
   var submitHandler = function(event) {
     event.preventDefault();
-    var files = getFormFiles();
     fileHolder.reset();
+    progressBars.reset();
+
+    var files = getFormFiles();
     fileHolder.addFiles(files);
+    progressBars.addMany(files);
 
     var data = {
       email: $('#lwi-email-address').val(),
@@ -127,8 +182,12 @@ IDV.UploadForm = (function() {
   };
 
   my.init = function() {
+    progressBars = IDV.ProgressBars;
+    progressBars.init();
+
     fileHolder = IDV.FileHolder;
     fileHolder.removeFile("asdf");
+
     $form = $('#'+formID);
     $form.submit(submitHandler)
   };
