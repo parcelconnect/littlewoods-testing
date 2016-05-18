@@ -165,3 +165,26 @@ if IDV_ENVIRONMENT == ENV_DEV:
     INSTALLED_APPS += (
         'django_extensions',
     )
+
+# -----------------------------------------------------------------------------
+# Customization for development
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.environ.get('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+        'idv': {
+            'handlers': ['console'],
+            'level': os.environ.get('IDV_LOG_LEVEL', 'INFO'),
+        }
+    }
+}
