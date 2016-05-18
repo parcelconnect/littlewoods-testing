@@ -127,7 +127,9 @@ IDV.UploadForm = (function() {
   };
 
   var showUploadSuccessMessage = function() {
-    $('#js-success-message').modal('show');
+    var content = $('#successful-upload-template').html();
+    $('#js-modal .modal-content').html(content)
+    $('#js-modal').modal('show');
   };
 
   var uploadFileDoneHandler = function(file) {
@@ -138,7 +140,9 @@ IDV.UploadForm = (function() {
   };
 
   var uploadFileFailHandler = function(file) {
-    console.log("Could not upload " + file.name);
+    var content = $('#failed-upload-template').html();
+    $('#js-modal .modal-content').html(content);
+    $('#js-modal').modal('show');
   };
 
   var getSignedRequests = function(data, handlers) {

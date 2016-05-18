@@ -9,23 +9,10 @@
 
 {% block content %}
 
-  <!-- Large modal -->
-<div style="display: none;" id="js-success-message" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<!-- Large modal -->
+<div style="display: none;" id="js-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
-    <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
-        <img src="{% static "img/lwi-logo-modal.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
-      </div>
-      <div class="modal-body">
-        <h3>Thanks for uploading your ID&amp;V</h3>
-        <p>Your details will be securely stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.</p>
-        <p>We hope you enjoy shopping with us.</p>
-        <p><strong>The Littlewoods Ireland Team</strong></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
     </div>
   </div>
 </div>
@@ -62,11 +49,38 @@
 
 </div>
 
+<!-- Templates. They are minimal/straightforward so underscore was not used -->
+
 <div id="progress-bar-template-container" style="display: none;">
   <div class="filename">__filename__</div>
   <div class="progress">
     <div data-filename="__filename__" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
     </div>
+  </div>
+</div>
+
+<div id="successful-upload-template" style="display: none;">
+  <div class="modal-header">
+    <img src="{% static "img/lwi-logo-modal.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+  </div>
+  <div class="modal-body">
+    <h3>Thanks for uploading your ID&amp;V</h3>
+    <p>Your details will be securely stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.</p>
+    <p>We hope you enjoy shopping with us.</p>
+    <p><strong>The Littlewoods Ireland Team</strong></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  </div>
+</div>
+
+<div id="failed-upload-template" style="display: none;">
+  <div class="modal-body">
+    <h3>Something went wrong.</h3>
+    <p>If the problem persists, please contact us at support@fastway.ie</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
   </div>
 </div>
 
