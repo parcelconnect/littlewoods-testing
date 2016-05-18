@@ -131,13 +131,19 @@ if IDV_ENVIRONMENT == ENV_PROD:
 # -----------------------------------------------------------------------------
 # Email
 
-EMAIL_HOST = os.getenv('EMAIL_HOSt', 'localhost')
+if IDV_ENVIRONMENT == ENV_DEV:
+    EMAIL_BACKEND = os.environ.get(
+        'EMAIL_BACKEND',
+        'django.core.mail.backends.console.EmailBackend'
+    )
+
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'localhost')
 EMAIL_PORT = os.getenv('EMAIL_PORT', 25)
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = ''
+DEFAULT_FROM_EMAIL = 'support@fastway.ie'
 REPORT_RECIPIENTS = env_as_list('REPORT_RECIPIENTS')
 
 # -----------------------------------------------------------------------------
