@@ -3,6 +3,31 @@
 var IDV = window.IDV || {};
 var Django = window.Django || {};
 
+IDV.FormUtils = (function() {
+  var my = {};
+  var errorClass = 'has-error'
+
+  my.fieldHasError = function(element) {
+    $(element).closest('.form-group').hasClass(errorClass);
+  }
+
+  my.markErrorField = function(element) {
+    $(element).closest('.form-group').addClass(errorClass);
+  }
+
+  my.unmarkErrorField = function(element) {
+    $(element).closest('.form-group').removeClass(errorClass);
+  }
+
+  my.focusOnFirstErrorInput = function() {
+    var firstErrorContainer = $('.form-group.' + errorClass)[0];
+    var firstErrorInput = $(firstErrorContainer).find('input')[0];
+    $(firstErrorInput).focus();
+  }
+
+  return my;
+})();
+
 /*
  * Responsible for keeping track of the files to be uploaded.
  */
@@ -163,8 +188,13 @@ IDV.UploadForm = (function() {
     });
   };
 
-  var failedSignHandler = function() {
-    console.log("Could not sign request.");
+  var failedSignHandler = function(response) {
+    var errors = response.responseJSON.errors;
+    for (var fieldName in errors) {
+      var $field = $('input[name="' + fieldName + '"]');
+      IDV.FormUtils.markErrorField($field);
+    }
+    IDV.FormUtils.focusOnFirstErrorInput();
   };
 
   var getFormFiles = function() {
@@ -212,4 +242,9 @@ IDV.UploadForm = (function() {
  */
 $(function() {
   IDV.UploadForm.init();
+
+  var $requiredFields = $(':input[required=""],:input[required]');
+  $requiredFields.keydown(function() {
+    IDV.FormUtils.unmarkErrorField(this);
+  });
 });
