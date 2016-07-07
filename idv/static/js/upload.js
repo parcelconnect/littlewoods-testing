@@ -184,8 +184,8 @@ IDV.UploadForm = (function() {
 
     var data = {
       email: $('#lwi-email-address').val(),
-      account: $('#lwi-account-number').val(),
-      fileData: fileHolder.stringifyForSigning()
+      account_number: $('#lwi-account-number').val(),
+      file_data: fileHolder.stringifyForSigning()
     };
     var handlers = {
       done: uploadFiles,

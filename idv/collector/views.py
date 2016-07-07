@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from . import domain
+from .forms import AccountForm
 
 
 def collect(request):
@@ -20,16 +21,20 @@ def collect(request):
 
 @transaction.atomic
 def sign_s3_request(request):
-    email = request.GET['email']
-    account_number = request.GET['account']
-    file_data = extract_json_from_GET(request, 'fileData')
+    file_data = extract_json_from_GET(request, 'file_data')
 
-    account = domain.get_or_create_account(email, account_number)
+    account_form = AccountForm(request.GET)
+    if not account_form.is_valid():
+        return JsonResponse({'errors': account_form.errors}, status=400)
 
+    account = domain.get_or_create_account(
+        account_form.cleaned_data['email'],
+        account_form.cleaned_data['account_number']
+    )
     data = {}
     for filename, filetype in file_data.items():
         credential = domain.create_credential(account, filename)
-        signed_url = domain.generate_presigned_s3_url(credential.s3_key,
-                                                      filetype)
+        signed_url = domain.generate_presigned_s3_url(
+            credential.s3_key, filetype)
         data[filename] = signed_url
     return JsonResponse(data)
