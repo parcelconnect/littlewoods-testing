@@ -76,3 +76,22 @@ Make sure you use the appropriate "Resource" value.
     $ docker-compose up
 
 Make sure you properly initialize the vars in `.env`.
+
+## EC2 proxy for copying files from Fastway S3 to LW SFTP
+
+To allow us upload files to their SFTP server, Littlewoods wanted to whitelist
+our IP, that is the IP of the Django App Server:
+
+Fastway S3 --->--- Django App Server -->--- LW SFTP
+
+However, our app runs on heroku and we could not provide such an IP.
+To solve the issue, we use an EC2 proxy associated with an Elastic IP:
+
+Fastway S3 -->--> Django App Server -->-- EC2 HTTP PROXY -->-- LW SFTP
+
+The EC2 proxy instance runs an HTTP proxy called Tinyproxy (tinyproxy.github.io).
+The App, using an HTTP Connect request, asks the HTTP proxy to forward the
+original SFTP request to LW SFTP.
+
+That EC2 instance is under the `parcelconnect` AWS account and it's named
+`fastwaybox`.
