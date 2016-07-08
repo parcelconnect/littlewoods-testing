@@ -1,10 +1,7 @@
 from django import forms
 
-from .models import Account
 
+class AccountForm(forms.Form):
 
-class AccountForm(forms.ModelForm):
-
-    class Meta:
-        model = Account
-        fields = ['email', 'account_number']
+    email = forms.EmailField(required=True)
+    account_number = forms.CharField(max_length=30, required=True)
