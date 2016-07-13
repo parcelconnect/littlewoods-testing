@@ -22,7 +22,7 @@ def get_s3_client(credentials=None):
 
 
 def generate_presigned_s3_url(client_method, bucket, key,
-                              client=None, expires_in=30, **params):
+                              client=None, expires_in=5*60, **params):
     if client is None:
         client = get_s3_client()
 
