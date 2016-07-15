@@ -44,14 +44,36 @@ class CredentialQuerySet(models.query.QuerySet):
             copied_at__range=(since, until)
         )
 
+    def moved_between(self, date_range):
+        since, until = date_range
+        since = datetime(since.year, since.month, since.day, 0, 0, 0, 0)
+        since = timezone.make_aware(since)
+        until = datetime(until.year, until.month, until.day, 0, 0, 0, 0)
+        until = timezone.make_aware(until)
+        return self.filter(
+            status=CredentialStatus.Moved.value,
+            copied_at__range=(since, until)
+        )
+
     def created_on(self, date):
         since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
         since = timezone.make_aware(since)
         until = since + timedelta(days=1)
         return self.filter(created_at__range=(since, until))
 
+    def created_between(self, date_range):
+        since, until = date_range
+        since = datetime(since.year, since.month, since.day, 0, 0, 0, 0)
+        since = timezone.make_aware(since)
+        until = datetime(until.year, until.month, until.day, 0, 0, 0, 0)
+        until = timezone.make_aware(until)
+        return self.filter(created_at__range=(since, until))
+
     def not_found(self):
         return self.filter(status=CredentialStatus.NotFound.value)
+
+    def moved(self):
+        return self.filter(status=CredentialStatus.Moved.value)
 
 
 class Credential(models.Model):

@@ -6,7 +6,7 @@ from idv.common.mail import create_mail
 from .reporting import report_csv
 
 
-def send_daily_report(date, recipients=None):
+def send_daily_report(date_range, recipients=None):
     """
     Sends report regarding the credentials that have been uploaded/moved on
     `date`.
@@ -15,10 +15,10 @@ def send_daily_report(date, recipients=None):
         date (datetime.date): Date to generate report for
         recipients (list of strings): Who to send the report to
     """
-    date_str = date.strftime("%Y-%m-%d")
+    date_str = date_range[0].strftime("%Y-%m-%d")
 
     subject = "Daily Littlewoods ID&V Report for {}".format(date_str)
-    context = _get_daily_report_context(date)
+    context = _get_daily_report_context(date_range)
     recipients = recipients or settings.REPORT_RECIPIENTS
 
     msg = create_mail(
@@ -29,7 +29,7 @@ def send_daily_report(date, recipients=None):
         app_name='mover'
     )
 
-    with report_csv(date) as report:
+    with report_csv(date_range) as report:
         report_content = report.getvalue()
     report_filename = 'idv_report_{}.csv'.format(date_str)
 
@@ -37,10 +37,11 @@ def send_daily_report(date, recipients=None):
     msg.send()
 
 
-def _get_daily_report_context(date):
-    n_moved = Credential.objects.moved_on(date).count()
-    n_not_found = Credential.objects.created_on(date).not_found()
+def _get_daily_report_context(date_range):
+    creds_qs = Credential.objects.created_between(date_range)
+    moved = creds_qs.moved()
+    not_found = creds_qs.not_found()
     return {
-        'n_moved': n_moved,
-        'n_not_found': n_not_found
+        'n_moved': moved.count(),
+        'n_not_found': not_found.count(),
     }
