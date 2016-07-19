@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.db import models
 from django.db.models import Q
@@ -34,32 +34,6 @@ class CredentialQuerySet(models.query.QuerySet):
             Q(status=CredentialStatus.Unchecked.value) |
             Q(status=CredentialStatus.Found.value)
         )
-
-    def moved_on(self, date):
-        since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
-        since = timezone.make_aware(since)
-        until = since + timedelta(days=1)
-        return self.filter(
-            status=CredentialStatus.Moved.value,
-            copied_at__range=(since, until)
-        )
-
-    def moved_between(self, date_range):
-        since, until = date_range
-        since = datetime(since.year, since.month, since.day, 0, 0, 0, 0)
-        since = timezone.make_aware(since)
-        until = datetime(until.year, until.month, until.day, 0, 0, 0, 0)
-        until = timezone.make_aware(until)
-        return self.filter(
-            status=CredentialStatus.Moved.value,
-            copied_at__range=(since, until)
-        )
-
-    def created_on(self, date):
-        since = datetime(date.year, date.month, date.day, 0, 0, 0, 0)
-        since = timezone.make_aware(since)
-        until = since + timedelta(days=1)
-        return self.filter(created_at__range=(since, until))
 
     def created_between(self, date_range):
         since, until = date_range
