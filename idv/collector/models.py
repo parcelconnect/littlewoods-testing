@@ -14,7 +14,7 @@ class Account(models.Model):
     `account_number` used in the Littlewoods service.
     """
     email = models.EmailField()
-    account_number = models.CharField(max_length=30)
+    account_number = models.CharField(max_length=8)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
