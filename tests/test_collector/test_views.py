@@ -33,11 +33,12 @@ class TestSignS3Request:
         url = reverse('collector:sign-s3-request')
         response = client.get(url, data={
             'email': 'oops',
-            'account_number': '12345678',
+            'account_number': '1234567812',
             'file_data': json.dumps({'filename': 'filetype'})
         })
         content = json.loads(response.content.decode())
         assert 'email' in content['errors']
+        assert 'account_number' in content['errors']
 
     def test_creates_account_if_not_found(self, client):
         url = reverse('collector:sign-s3-request')
