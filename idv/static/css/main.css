@@ -49,3 +49,8 @@ img {
   margin-top: 25px;
   margin-bottom: 10px;
 }
+
+.error-list {
+  margin-top: 10px;
+  color: #A94442;
+}

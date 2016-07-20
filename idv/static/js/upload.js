@@ -5,18 +5,35 @@ var Django = window.Django || {};
 
 IDV.FormUtils = (function() {
   var my = {};
-  var errorClass = 'has-error'
+  var errorClass = 'has-error';
+  var errorListClass = 'error-list';
+
+  var createErrorList = function(errors) {
+    var $errorList = $('<ul class="' + errorListClass + '"></ul>');
+    $.each(errors, function(idx, error) {
+      $errorList.append('<li>' + error + '</li>');
+    });
+    return $errorList;
+  }
 
   my.fieldHasError = function(element) {
     $(element).closest('.form-group').hasClass(errorClass);
   }
 
-  my.markErrorField = function(element) {
+  my.addFieldErrors = function(element, errors) {
     $(element).closest('.form-group').addClass(errorClass);
+    var $errorList = createErrorList(errors);
+    $(element).after($errorList);
   }
 
-  my.unmarkErrorField = function(element) {
+  my.clearFieldErrors = function(element) {
     $(element).closest('.form-group').removeClass(errorClass);
+    $(element).siblings('.' + errorListClass).remove();
+  }
+
+  my.clearErrors = function() {
+    $('.form-group').removeClass(errorClass);
+    $('.'+errorListClass).remove();
   }
 
   my.focusOnFirstErrorInput = function() {
@@ -192,7 +209,8 @@ IDV.UploadForm = (function() {
     var errors = response.responseJSON.errors;
     for (var fieldName in errors) {
       var $field = $('input[name="' + fieldName + '"]');
-      IDV.FormUtils.markErrorField($field);
+      var fieldErrors = errors[fieldName];
+      IDV.FormUtils.addFieldErrors($field, fieldErrors);
     }
     IDV.FormUtils.focusOnFirstErrorInput();
   };
@@ -205,6 +223,7 @@ IDV.UploadForm = (function() {
 
   var submitHandler = function(event) {
     event.preventDefault();
+    IDV.FormUtils.clearErrors();
     fileHolder.reset();
     progressBars.reset();
 
@@ -229,7 +248,6 @@ IDV.UploadForm = (function() {
     progressBars.init();
 
     fileHolder = IDV.FileHolder;
-    fileHolder.removeFile("asdf");
 
     $form = $('#'+formID);
     $form.submit(submitHandler)
@@ -245,6 +263,6 @@ $(function() {
 
   var $requiredFields = $(':input[required=""],:input[required]');
   $requiredFields.keydown(function() {
-    IDV.FormUtils.unmarkErrorField(this);
+    IDV.FormUtils.clearFieldErrors(this);
   });
 });
