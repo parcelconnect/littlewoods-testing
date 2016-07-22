@@ -1,43 +1,51 @@
 import contextlib
 import csv
 import io
-import itertools
 
 from django.contrib.postgres.aggregates import ArrayAgg
 
 from idv.collector.models import Account, Credential
 
 
-def generate_report_csv_content(date_range):
-    credentials_qs = Credential.objects.values('account__pk')
-    credentials_qs = credentials_qs.created_between(date_range)
+def get_report_data(date_range):
+    cred_qs = Credential.objects.created_between(date_range)
+    cred_qs = cred_qs.values_list('account__pk')
 
-    moved = credentials_qs.moved()
-    moved = moved.annotate(moved=ArrayAgg('s3_key'))
+    moved = cred_qs.moved().annotate(s3_keys=ArrayAgg('s3_key'))
+    # {account pk: ['moved1.jpg', 'move2.png'], ...}
+    moved = dict(moved)
 
-    not_found = credentials_qs.not_found()
-    not_found = not_found.annotate(not_found=ArrayAgg('s3_key'))
+    not_found = cred_qs.not_found().annotate(s3_keys=ArrayAgg('s3_key'))
+    # {account pk: ['not_found1.jpg', 'not_found.png'], ...}
+    not_found = dict(not_found)
 
-    account_pks = [
-        group['account__pk'] for group in itertools.chain(moved, not_found)
-    ]
+    account_pks = set(list(moved.keys()) + list(not_found.keys()))
     accounts = Account.objects.filter(pk__in=account_pks)
-    accounts = {account.pk: account for account in accounts}
+
+    data = [
+        {
+            'account_number': account.account_number,
+            'email': account.email,
+            'files_moved': moved.get(account.pk, []),
+            'files_not_found': not_found.get(account.pk, []),
+        }
+        for account in accounts
+    ]
+    return data
+
+
+def generate_report_csv_content(date_range):
+    data = get_report_data(date_range)
 
     csv_headers = ['account_number', 'email', 'files_moved', 'files_not_found']
     csv_rows = [csv_headers]
 
-    for group in itertools.chain(moved, not_found):
-        account_pk = group['account__pk']
-        account = accounts[account_pk]
-        files_moved = group.get('moved', [])
-        files_not_found = group.get('not_found', [])
-
+    for account_data in data:
         csv_rows.append([
-            account.account_number,
-            account.email,
-            ','.join(files_moved),
-            ','.join(files_not_found)
+            account_data['account_number'],
+            account_data['email'],
+            ','.join(account_data['files_moved']),
+            ','.join(account_data['files_not_found']),
         ])
     return csv_rows
 
