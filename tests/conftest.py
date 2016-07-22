@@ -15,6 +15,15 @@ def account():
 
 
 @pytest.fixture
+@freeze_time('2016-01-01 00:00')
+def other_account():
+    return collector_domain.get_or_create_account(
+        email='other.account@littlewoods.ie',
+        account_number='12341234'
+    )
+
+
+@pytest.fixture
 @freeze_time('2016-01-02 12:00')
 def unchecked_credential(account):
     cred = collector_domain.create_credential(account, 'unchecked.jpg')
