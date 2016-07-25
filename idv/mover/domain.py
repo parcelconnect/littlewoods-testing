@@ -8,6 +8,8 @@ from idv.sftp.domain import sftp_client_from_model
 from idv.sftp.models import SftpAccount
 from idv.sftp.proxy.http import HttpProxy
 
+from .models import MoveCommandStatus
+
 
 logger = logging.getLogger(__name__)
 
@@ -53,3 +55,11 @@ def move_credential_file(credential, aws_client, sftp_client, sftp_account,
     aws_client.delete_object(Bucket=settings.S3_BUCKET, Key=credential.s3_key)
     logger.info("Deleted {} from S3".format(credential.s3_key))
     credential.mark_as_moved()
+
+
+def get_last_move_checkpoint():
+    try:
+        status = MoveCommandStatus.objects.get()
+    except MoveCommandStatus.DoesNotExist:
+        return None
+    return status.checkpoint
