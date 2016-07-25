@@ -35,6 +35,9 @@ class CredentialQuerySet(models.query.QuerySet):
             Q(status=CredentialStatus.Found.value)
         )
 
+    def created_before(self, dt):
+        return self.filter(created_at__lt=dt)
+
     def created_between(self, date_range):
         since, until = date_range
         since = datetime(since.year, since.month, since.day, 0, 0, 0, 0)
