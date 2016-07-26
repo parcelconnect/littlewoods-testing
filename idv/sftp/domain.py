@@ -1,5 +1,6 @@
 import base64
 import contextlib
+import errno
 import logging
 
 import paramiko
@@ -80,3 +81,13 @@ class SftpClientException(Exception):
 def get_key_fingerprint(key):
     data = key.get_fingerprint()
     return ':'.join(format(x, '02x') for x in bytearray(data))
+
+
+def path_exists(sftp_client, path):
+    try:
+        sftp_client.stat(path)
+    except IOError as e:
+        if e.errno == errno.ENOENT:
+            return False
+        raise
+    return True
