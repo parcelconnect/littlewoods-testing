@@ -91,6 +91,10 @@ class Credential(models.Model):
         self.deleted_at = timezone.now()
         self.save()
 
+    def mark_as_blocked(self):
+        self.status = CredentialStatus.Blocked.value
+        self.save()
+
     def __str__(self):
         return 'Credential(pk: {}, s3_key: {})'.format(self.pk, self.s3_key)
 

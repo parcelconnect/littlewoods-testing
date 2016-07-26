@@ -1,8 +1,8 @@
 import os
 
-from django.core.exceptions import ImproperlyConfigured
-
 import dj_database_url
+
+from django.core.exceptions import ImproperlyConfigured
 
 from .utils import env_as_bool, env_as_list
 
@@ -154,7 +154,7 @@ AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 S3_BUCKET = os.getenv('S3_BUCKET')
 
 # -----------------------------------------------------------------------------
-# S3
+# Whitelisted proxy to use when uploading files to the LW SFTP.
 
 HTTP_PROXY = {
     'host': os.getenv('HTTP_PROXY_HOST'),
@@ -162,7 +162,6 @@ HTTP_PROXY = {
     'username': os.getenv('HTTP_PROXY_USERNAME'),
     'password': os.getenv('HTTP_PROXY_PASSWORD'),
 }
-
 
 # -----------------------------------------------------------------------------
 # Customization for development
@@ -194,3 +193,8 @@ LOGGING = {
         }
     }
 }
+
+# -----------------------------------------------------------------------------
+# Mover settings
+
+WHITELISTED_EXTENSIONS = set(['jpg', 'jpeg', 'gif', 'pdf', 'png'])

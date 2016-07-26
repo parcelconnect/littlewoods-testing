@@ -27,6 +27,9 @@ def move_credential_files(credentials):
 
     with sftp_domain.sftp_client_from_model(sftp, http_proxy) as sftp_client:
         for cred in credentials:
+            if not has_whitelisted_extension(cred):
+                cred.mark_as_blocked()
+                continue
             logger.info("Start moving {}".format(cred))
             try:
                 move_credential_file(cred, aws_client, sftp_client, sftp)
@@ -73,3 +76,8 @@ def get_last_move_checkpoint():
     except MoveCommandStatus.DoesNotExist:
         return None
     return status.checkpoint
+
+
+def has_whitelisted_extension(credential):
+    filename, extension = os.path.splitext(credential.original_filename)
+    return extension.lower() in settings.WHITELISTED_EXTENSIONS
