@@ -80,4 +80,6 @@ def get_last_move_checkpoint():
 
 def has_whitelisted_extension(credential):
     filename, extension = os.path.splitext(credential.original_filename)
+    # remove dot from extension
+    extension = extension[1:]
     return extension.lower() in settings.WHITELISTED_EXTENSIONS

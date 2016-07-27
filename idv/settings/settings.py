@@ -197,4 +197,7 @@ LOGGING = {
 # -----------------------------------------------------------------------------
 # Mover settings
 
-WHITELISTED_EXTENSIONS = set(['jpg', 'jpeg', 'gif', 'pdf', 'png'])
+WHITELISTED_EXTENSIONS = set([
+    'jpg', 'jpeg', 'gif', 'pdf',
+    'png', 'bmp', 'tiff'
+])
