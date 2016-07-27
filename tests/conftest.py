@@ -51,7 +51,7 @@ def not_found_credential(account):
 
 
 @pytest.fixture
-@freeze_time('2016-01-03 12:00')
+@freeze_time('2016-01-02 12:00')
 def blocked_credential(account):
     cred = collector_domain.create_credential(account, 'blocked.jpg')
     cred.status = CredentialStatus.Blocked.value
@@ -79,7 +79,7 @@ def moved_credential(account):
 
 @pytest.fixture
 def credentials(unchecked_credential, found_credential, not_found_credential,
-                copied_credential, moved_credential):
+                copied_credential, moved_credential, blocked_credential):
     return [
         unchecked_credential,
         found_credential,

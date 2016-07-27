@@ -47,6 +47,16 @@ class TestCredentialQuerysets:
         assert moved[0].status == CredentialStatus.Moved.value
         assert moved[1].status == CredentialStatus.Moved.value
 
+    def test_blocked_query(self, account, credentials):
+        cred = create_credential(account, 'asdf.jpg')
+        cred.status = CredentialStatus.Blocked.value
+        cred.save()
+
+        blocked = Credential.objects.blocked()
+        assert blocked.count() == 2
+        assert blocked[0].status == CredentialStatus.Blocked.value
+        assert blocked[1].status == CredentialStatus.Blocked.value
+
 
 @pytest.mark.django_db
 class TestCredentials:
@@ -80,3 +90,9 @@ class TestCredentials:
         assert copied_credential.deleted_at.month == 2
         assert copied_credential.deleted_at.day == 1
         assert copied_credential.deleted_at.hour == 2
+
+    @freeze_time('2016-02-01 02:00:00')
+    def test_marks_as_blocked(self, found_credential):
+        found_credential.mark_as_blocked()
+        found_credential.refresh_from_db()
+        assert found_credential.status == CredentialStatus.Blocked.value
