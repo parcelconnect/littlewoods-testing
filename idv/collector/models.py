@@ -52,6 +52,9 @@ class CredentialQuerySet(models.query.QuerySet):
     def moved(self):
         return self.filter(status=CredentialStatus.Moved.value)
 
+    def blocked(self):
+        return self.filter(status=CredentialStatus.Blocked.value)
+
 
 class Credential(models.Model):
     """
