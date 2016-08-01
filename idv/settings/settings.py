@@ -199,5 +199,5 @@ LOGGING = {
 
 WHITELISTED_EXTENSIONS = set([
     'jpg', 'jpeg', 'gif', 'pdf',
-    'png', 'bmp', 'tiff'
+    'png', 'bmp', 'tiff', 'tif'
 ])
