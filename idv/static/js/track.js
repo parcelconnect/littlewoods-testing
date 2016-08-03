@@ -5,9 +5,6 @@ var IDV = window.IDV || {};
 IDV.Track = (function() {
   var my = {},
       trackingForm = null,
-      target = null,
-      spinner = null,
-      opts = null,
       errorMsg = null;
 
   var getTrackingEvents = function($form, successHandler, failHandler) {
@@ -54,6 +51,30 @@ IDV.Track = (function() {
   my.init = function() {
     trackingForm = $('#js-get-tracking-events');
     errorMsg = $('#tracking-error');
+  
+    trackingForm.submit(function() {
+      event.preventDefault();
+      hideErrors(errorMsg);
+      getTrackingEvents($(this), successHandler, failHandler);
+    });
+
+     $('#track-parcel').click(function() {
+      event.preventDefault();
+      hideErrors(errorMsg);
+      getTrackingEvents(trackingForm, successHandler, failHandler);
+    });
+  }
+
+  return my;
+})();
+
+IDV.Spinner = (function() {
+  var my = {},
+      target = null,
+      spinner = null,
+      opts = null;
+
+  my.init = function() {
     // Spinner options
     target = $('#spinner-container');
     opts = {
@@ -74,18 +95,6 @@ IDV.Track = (function() {
       top: '50%', // Top position relative to parent in px
       left: '50%' // Left position relative to parent in px
     };
-
-    trackingForm.submit(function() {
-      event.preventDefault();
-      hideErrors(errorMsg);
-      getTrackingEvents($(this), successHandler, failHandler);
-    });
-
-     $('#track-parcel').click(function() {
-      event.preventDefault();
-      hideErrors(errorMsg);
-      getTrackingEvents(trackingForm, successHandler, failHandler);
-    });
     
     $(document).ajaxStart(function () {
       spinner = new Spinner(opts).spin();
@@ -94,8 +103,7 @@ IDV.Track = (function() {
 
     $(document).ajaxStop(function () {
         spinner.stop();
-    });
-    
+    }); 
   }
 
   return my;
@@ -106,4 +114,5 @@ IDV.Track = (function() {
  */
 $(function() {
   IDV.Track.init();
+  IDV.Spinner.init();
 });
