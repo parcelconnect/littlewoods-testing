@@ -2,11 +2,6 @@ body {
   background-color: #F3F6F9;
   background-image: url("../img/lwi-tracking-bg-desktop.png");
   background-position: top -50px center;
-/*  font-family: Arial,Helvetica,sans-serif;*/
-}
-
-.tracking-container {
-
 }
 
 .container .panel-wrapper {
@@ -24,11 +19,15 @@ body {
 }
 
 .form-control + .glyphicon {
-    position: absolute;
-    right: 1px;
-    padding: 9px 25px 9px 15px;
-    border: 0;
-    cursor: pointer;
+  position: absolute;
+  right: 1px;
+  padding: 9px 25px 9px 15px;
+  border: 0;
+  cursor: pointer;
+}
+
+.form-group.track-input .form-control + .glyphicon {
+   border-radius: 0px 4px 4px 0px;
 }
 
 .panel.tracking-panel {
@@ -37,7 +36,7 @@ body {
 
 .tracking-panel .panel-heading,
 .tracking-panel .panel-body {
-    padding: 0;
+  padding: 0;
 }
 
 .tracking-panel .panel-heading {
