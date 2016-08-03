@@ -28,7 +28,6 @@ IDV.Track = (function() {
     });
     eventsPanel.html(eventsHTML);
     eventsPanel.removeClass('hidden');
-    
     errorMsg.parent().removeClass('has-error');
     errorMsg.addClass('hidden');
   };
@@ -39,10 +38,7 @@ IDV.Track = (function() {
     errorMsg.html(errorObj.message);
     errorMsg.parent().addClass('has-error');
     errorMsg.removeClass('hidden');
-    
     $('#js-events').addClass('hidden');
-    
-    //console.log("fail");
   };
 
   my.init = function() {

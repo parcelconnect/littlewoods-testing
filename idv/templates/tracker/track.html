@@ -19,10 +19,7 @@
       <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
       <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
     {% endblock %}
-
-
   </head>
-
   <body>
     <script id="js-context" type="application/json">{{ json_context|safe }}</script>
     <div id="container" class="tracking-container">
@@ -38,7 +35,6 @@
                 <div class="error-msg hidden" id="tracking-error"></div>
               </div>
             </form>
-            
           </div>
         </div>
       </div>
@@ -46,7 +42,6 @@
       </div>
       {% endblock %}
     </div>
-
   {% block js %}
     <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
