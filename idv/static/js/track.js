@@ -7,7 +7,8 @@ IDV.Track = (function() {
       trackingForm = null,
       target = null,
       spinner = null,
-      opts = null;
+      opts = null,
+      errorMsg = null;
 
   var getTrackingEvents = function($form, successHandler, failHandler) {
     return $.ajax({
@@ -19,7 +20,6 @@ IDV.Track = (function() {
   }
 
   var successHandler = function(response) {
-    var errorMsg = $('#tracking-error');
     var eventsPanel = $('#js-events');
     var templateHTML = $('#js-events-template').html();
     var template = _.template(templateHTML)
@@ -31,22 +31,29 @@ IDV.Track = (function() {
     });
     eventsPanel.html(eventsHTML);
     eventsPanel.removeClass('hidden');
-    errorMsg.parent().removeClass('has-error');
-    errorMsg.addClass('hidden');
   };
 
   var failHandler = function(response) {
     var errorMsg = $('#tracking-error');
     var errorObj = jQuery.parseJSON(response.responseText);
     errorMsg.html(errorObj.message);
-    errorMsg.parent().addClass('has-error');
-    errorMsg.removeClass('hidden');
+    showErrors(errorMsg);
+  };
+  
+  var showErrors = function(errorContainer) {
+    errorContainer.parent().addClass('has-error');
+    errorContainer.removeClass('hidden');
     $('#js-events').addClass('hidden');
   };
+  
+  var hideErrors = function(errorContainer) {
+    errorContainer.parent().removeClass('has-error');
+    errorContainer.addClass('hidden');
+  };  
 
   my.init = function() {
     trackingForm = $('#js-get-tracking-events');
-    
+    errorMsg = $('#tracking-error');
     // Spinner options
     target = $('#spinner-container');
     opts = {
@@ -70,11 +77,13 @@ IDV.Track = (function() {
 
     trackingForm.submit(function() {
       event.preventDefault();
+      hideErrors(errorMsg);
       getTrackingEvents($(this), successHandler, failHandler);
     });
 
      $('#track-parcel').click(function() {
       event.preventDefault();
+      hideErrors(errorMsg);
       getTrackingEvents(trackingForm, successHandler, failHandler);
     });
     
