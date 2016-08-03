@@ -15,29 +15,97 @@
     {% block css %}
       <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="{% static "css/main.css" %}">
+      <link rel="stylesheet" href="{% static "css/track.css" %}">
       <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
       <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
     {% endblock %}
 
-    {% block js %}
-      <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
-      <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
-      <!-- The following section is copied from the bootstrap documentation -->
-      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-      <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
-    {% endblock %}
+
   </head>
 
   <body>
     <script id="js-context" type="application/json">{{ json_context|safe }}</script>
-    <div id="container">
+    <div id="container" class="tracking-container">
       {% block content %}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="col-sm-12">
+            <img src="{% static "img/lwi-logo-black.svg" %}" class="img-responsive center-block lwi-logo" alt="Littlewoods Ireland logo">
+            <form id="js-get-tracking-events" method="GET" action="{% url 'tracker:get-events' %}">
+              <div class="form-group track-input center-block">
+                <input type="text" id="tracking-number" class="form-control" name="label_id"/>
+                <i class="glyphicon glyphicon-search input-group-addon" id="track-parcel" type="submit"></i>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="js-events">
+      </div>
       {% endblock %}
     </div>
+
+  {% block js %}
+    <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="{% static "js/underscore.1.8.3.min.js" %}"></script>
+    <!-- The following section is copied from the bootstrap documentation -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="{% static "js/track.js" %}"></script>
+  {% endblock %}
   </body>
 
 </html>
+
+<script id="js-events-template" type="text/underscore-template">
+<div class="col-sm-12 panel-wrapper">
+  <div class="panel panel-default tracking-panel center-block">
+    <div class="col-sm-12 col-xs-12 panel-heading">
+      <div class="col-sm-4 col-xs-6 date">
+        <p>CURRENT DATE <span class="show-mobile dash"> - </span> </p>
+        <p class="description"><%= event.current_date %></p>
+      </div>
+      <div class="col-sm-8 col-xs-6 status">
+        <p>CURRENT STATUS <span class="show-mobile dash"> - </span></p>
+        <p  class="descriptioin"><%= event.status_description %></p>
+      </div>
+    </div>
+    <div class="panel-body">
+
+    <% _.each(events, function(event, index) { %>
+      <div class="col-sm-4 col-xs-6 date hide-mobile">
+        <p class="description"><%= event.date %></p>
+        <p class="time small-txt"> <%= event.time %></p>
+      </div>
+      <div class="col-sm-8 col-xs-6 status">
+        <div class="img-container">
+        <% if(index === 0) { %>
+          <img src="{% static "img/circle-purple.png" %}" class="breakpoint" alt="timeline-breakpoint">
+        <% } else { %>
+          <img src="{% static "img/circle-grey.png" %}" class="breakpoint" alt="timeline-breakpoint">
+        <% } %>
+
+        </div>
+        <div class="status-container">
+          <div class="show-mobile date-time">
+            <p class="description"><%= event.date %></p>
+            <p class="time small-txt"><%= event.time %></p>
+          </div>
+          <div class="status-description">
+            <p class="description"><%= event.status_description %></p>
+            <p class="small-txt"><%= event.description %></p>
+            <p class="small-txt"><%= event.name %> <%= event.franchisee %></p>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+
+    </div>
+  </div>
+</div>
+</script>
