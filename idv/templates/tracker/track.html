@@ -40,12 +40,15 @@
       </div>
       <div class="row" id="js-events">
       </div>
+      
       {% endblock %}
+      <div id="spinner-container" class="spinner-container"></div>
     </div>
   {% block js %}
     <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="{% static "js/underscore.1.8.3.min.js" %}"></script>
+    <script src="{% static "js/spin.2.3.2.min.js" %}"></script>
     <!-- The following section is copied from the bootstrap documentation -->
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -106,3 +109,4 @@
   </div>
 </div>
 </script>
+

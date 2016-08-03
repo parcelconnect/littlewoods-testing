@@ -54,3 +54,11 @@ img {
   margin-top: 10px;
   color: #A94442;
 }
+
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  z-index: 1; 
+  color: #00A7D4;
+}
