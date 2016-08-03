@@ -202,3 +202,10 @@ WHITELISTED_EXTENSIONS = set([
     'jpg', 'jpeg', 'gif', 'pdf',
     'png', 'bmp', 'tiff', 'tif'
 ])
+
+
+# -----------------------------------------------------------------------------
+# Fastway settings
+
+FASTWAY_API_ENDPOINT = os.environ.get('FASTWAY_API_ENDPOINT')
+FASTWAY_API_KEY = os.environ.get('FASTWAY_API_KEY')
