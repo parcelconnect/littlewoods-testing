@@ -107,6 +107,11 @@ p.small-txt {
   display: none;
 }
 
+.error-msg {
+  text-align: center;
+  color: #A94440;
+}
+
 /* Media queries */
 
 @media (max-width: 516px) {

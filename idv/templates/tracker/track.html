@@ -35,8 +35,10 @@
               <div class="form-group track-input center-block">
                 <input type="text" id="tracking-number" class="form-control" name="label_id"/>
                 <i class="glyphicon glyphicon-search input-group-addon" id="track-parcel" type="submit"></i>
+                <div class="error-msg hidden" id="tracking-error"></div>
               </div>
             </form>
+            
           </div>
         </div>
       </div>
@@ -68,11 +70,11 @@
     <div class="col-sm-12 col-xs-12 panel-heading">
       <div class="col-sm-4 col-xs-6 date">
         <p>CURRENT DATE <span class="show-mobile dash"> - </span> </p>
-        <p class="description"><%= event.current_date %></p>
+        <p class="description"><%= today %></p>
       </div>
       <div class="col-sm-8 col-xs-6 status">
         <p>CURRENT STATUS <span class="show-mobile dash"> - </span></p>
-        <p  class="descriptioin"><%= event.status_description %></p>
+        <p  class="descriptioin"><%= latestEvent.type %></p>
       </div>
     </div>
     <div class="panel-body">
@@ -97,9 +99,9 @@
             <p class="time small-txt"><%= event.time %></p>
           </div>
           <div class="status-description">
-            <p class="description"><%= event.status_description %></p>
-            <p class="small-txt"><%= event.description %></p>
-            <p class="small-txt"><%= event.name %> <%= event.franchisee %></p>
+            <p class="description"><%= event.type %></p>
+            <p class="small-txt"><%= event.status_description %></p>
+            <p class="small-txt"><%= event.name %></p>
           </div>
         </div>
       </div>

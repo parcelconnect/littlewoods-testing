@@ -16,6 +16,8 @@ IDV.Track = (function() {
   }
 
   var successHandler = function(response) {
+    var errorMsg = $('#tracking-error');
+    var eventsPanel = $('#js-events');
     var templateHTML = $('#js-events-template').html();
     var template = _.template(templateHTML)
     var eventsHTML = template({
@@ -24,11 +26,23 @@ IDV.Track = (function() {
       today: response.today,
       labelID: response.label_id
     });
-    $('#js-events').html(eventsHTML);
+    eventsPanel.html(eventsHTML);
+    eventsPanel.removeClass('hidden');
+    
+    errorMsg.parent().removeClass('has-error');
+    errorMsg.addClass('hidden');
   };
 
   var failHandler = function(response) {
-    console.log("fail");
+    var errorMsg = $('#tracking-error');
+    var errorObj = jQuery.parseJSON(response.responseText);
+    errorMsg.html(errorObj.message);
+    errorMsg.parent().addClass('has-error');
+    errorMsg.removeClass('hidden');
+    
+    $('#js-events').addClass('hidden');
+    
+    //console.log("fail");
   };
 
   my.init = function() {
