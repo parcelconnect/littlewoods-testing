@@ -14,7 +14,7 @@ img {
 }
 
 .jumbotron {
-	background-color: #7b267b;
+	background-color: #6F2B7E;
 	width: 100%;
 }
 
@@ -36,7 +36,7 @@ img {
 }
 
 .modal-header {
-  background-color: #7b267b;
+  background-color: #6F2B7E;
 }
 
 .modal-title {
@@ -53,4 +53,12 @@ img {
 .error-list {
   margin-top: 10px;
   color: #A94442;
+}
+
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  z-index: 1; 
+  color: #00A7D4;
 }
