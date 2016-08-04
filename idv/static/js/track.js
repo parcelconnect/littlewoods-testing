@@ -8,9 +8,9 @@ IDV.Track = (function() {
       errorMsg = null;
 
   var getTrackingEvents = function($form, successHandler, failHandler) {
-    return $.ajax({
+    $.ajax({
       url: $form.attr('action'),
-      data: $form.serialize(),
+      data: $form.serialize()
     })
     .done(successHandler)
     .fail(failHandler);
