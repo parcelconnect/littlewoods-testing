@@ -36,22 +36,22 @@ IDV.Track = (function() {
     errorMsg.html(errorObj.message);
     showErrors(errorMsg);
   };
-  
+
   var showErrors = function(errorContainer) {
     errorContainer.parent().addClass('has-error');
     errorContainer.removeClass('hidden');
     $('#js-events').addClass('hidden');
   };
-  
+
   var hideErrors = function(errorContainer) {
     errorContainer.parent().removeClass('has-error');
     errorContainer.addClass('hidden');
-  };  
+  };
 
   my.init = function() {
     trackingForm = $('#js-get-tracking-events');
     errorMsg = $('#tracking-error');
-  
+
     trackingForm.submit(function() {
       event.preventDefault();
       hideErrors(errorMsg);
@@ -95,15 +95,15 @@ IDV.Spinner = (function() {
       top: '50%', // Top position relative to parent in px
       left: '50%' // Left position relative to parent in px
     };
-    
+
     $(document).ajaxStart(function () {
       spinner = new Spinner(opts).spin();
       target.append(spinner.el);
     });
 
     $(document).ajaxStop(function () {
-        spinner.stop();
-    }); 
+      spinner.stop();
+    });
   }
 
   return my;
