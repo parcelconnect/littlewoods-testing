@@ -52,13 +52,13 @@ IDV.Track = (function() {
     trackingForm = $('#js-get-tracking-events');
     errorMsg = $('#tracking-error');
 
-    trackingForm.submit(function() {
+    trackingForm.submit(function(event) {
       event.preventDefault();
       hideErrors(errorMsg);
       getTrackingEvents($(this), successHandler, failHandler);
     });
 
-     $('#track-parcel').click(function() {
+     $('#track-parcel').click(function(event) {
       event.preventDefault();
       hideErrors(errorMsg);
       getTrackingEvents(trackingForm, successHandler, failHandler);
