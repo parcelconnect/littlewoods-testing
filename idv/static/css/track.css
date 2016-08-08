@@ -6,6 +6,7 @@ body {
 
 .container .panel-wrapper {
   padding-right: 0px;
+  padding-left: 0px;
 }
 
 .form-group.track-input {
@@ -51,7 +52,7 @@ body {
 
 .date,
 .status {
-  padding: 15px 35px 5px 35px;
+  padding: 30px 35px 0px 35px;
   position: relative;
 }
 
@@ -61,6 +62,10 @@ body {
 
 .panel-body .status {
   border-left: 1px solid #DDDDDD;
+}
+
+.panel-body .status:last-child {
+  padding-bottom: 30px;
 }
 
 .date p {
@@ -99,7 +104,7 @@ p.small-txt {
   width: 35px;
   position: absolute;
   left: -17px;
-  top: -5px;
+  top: 10px;
 }
 
 .show-mobile {
@@ -113,15 +118,8 @@ p.small-txt {
 
 /* Media queries */
 
-@media (max-width: 516px) {
-  
-  .form-group.track-input {
-    width: 100%;
-  }
-  
-}
-
 @media (max-width: 540px) {
+  
   .show-mobile {
     display: block;
   }
@@ -136,14 +134,15 @@ p.small-txt {
   
   .panel-body .status {
     margin-left: 35px;
-    width: 100%;
+    padding-right: 15px;
+    width: auto;
   }
   
   .panel-heading .status,
   .panel-heading .date {
     width: 100%;
   }
-  
+
   .panel-heading .status p,
   .panel-heading .date p, 
   .show-mobile.date-time p {
@@ -158,6 +157,10 @@ p.small-txt {
   .panel-heading .status {
     border-top: 1px solid #AC6ABB;
     border-left: none;
+  }
+  
+  .form-group.track-input {
+    width: 100%;
   }
   
 }
