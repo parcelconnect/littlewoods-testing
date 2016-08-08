@@ -48,20 +48,27 @@ IDV.Track = (function() {
     errorContainer.addClass('hidden');
   };
 
-  my.init = function() {
-    trackingForm = $('#js-get-tracking-events');
-    errorMsg = $('#tracking-error');
+  my.labelExists = function() {
+    return $('#tracking-number').val().length !== 0;
+  }
 
-    trackingForm.submit(function(event) {
+  my.submit = function() {
+    var $trackingForm = $('#js-get-tracking-events');
+    var $errorMsg = $('#tracking-error');
+
+    hideErrors($errorMsg);
+    getTrackingEvents($trackingForm, successHandler, failHandler);
+  };
+
+  my.init = function() {
+    $('#js-get-tracking-events').submit(function(event) {
       event.preventDefault();
-      hideErrors(errorMsg);
-      getTrackingEvents($(this), successHandler, failHandler);
+      my.submit();
     });
 
      $('#track-parcel').click(function(event) {
       event.preventDefault();
-      hideErrors(errorMsg);
-      getTrackingEvents(trackingForm, successHandler, failHandler);
+      my.submit();
     });
   }
 
@@ -115,4 +122,8 @@ IDV.Spinner = (function() {
 $(function() {
   IDV.Track.init();
   IDV.Spinner.init();
+
+  if (IDV.Track.labelExists()) {
+    IDV.Track.submit();
+  }
 });

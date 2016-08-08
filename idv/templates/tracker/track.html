@@ -30,7 +30,7 @@
             <img src="{% static "img/lwi-logo-black.svg" %}" class="img-responsive center-block lwi-logo" alt="Littlewoods Ireland logo">
             <form id="js-get-tracking-events" method="GET" action="{% url 'tracker:get-events' %}">
               <div class="form-group track-input center-block">
-                <input type="text" id="tracking-number" class="form-control" name="label_id"/>
+                <input type="text" id="tracking-number" class="form-control" value="{{ tracking_number }}" name="label_id"/>
                 <i class="glyphicon glyphicon-search input-group-addon" id="track-parcel" type="submit"></i>
                 <div class="error-msg hidden" id="tracking-error"></div>
               </div>
