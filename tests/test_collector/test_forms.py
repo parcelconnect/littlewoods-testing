@@ -22,7 +22,7 @@ class TestAccountForm:
     def test_invalid_account_number_characters(self):
         form = AccountForm({
             'email': 'oops.I.did@it.again',
-            'account_number': '1234123a'
+            'account_number': '123$123a'
         })
         assert form.is_valid() is False
         assert 'account_number' in form.errors
@@ -30,6 +30,6 @@ class TestAccountForm:
     def test_validates_correct_data(self):
         form = AccountForm({
             'email': 'oops.I.did@it.again',
-            'account_number': '12341234'
+            'account_number': '12ca1234'
         })
         assert form.is_valid() is True

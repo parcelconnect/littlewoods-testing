@@ -8,12 +8,10 @@ ACCOUNT_NUMBER_LENGTH = 8
 
 
 def validate_digits_only(value):
-    regex = r'^\d{%s}$' % ACCOUNT_NUMBER_LENGTH
+    regex = r'^[a-zA-Z\d]{%s}$' % ACCOUNT_NUMBER_LENGTH
     if re.match(regex, value) is None:
-        error_msg = 'The account number is made of {} digits.'.format(
-            ACCOUNT_NUMBER_LENGTH
-        )
-        raise ValidationError(error_msg)
+        error_msg = 'The account number is made of {} characters/digits.'
+        raise ValidationError(error_msg.format(ACCOUNT_NUMBER_LENGTH))
 
 
 class AccountForm(forms.Form):

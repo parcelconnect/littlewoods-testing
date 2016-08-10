@@ -44,12 +44,12 @@ class TestSignS3Request:
         url = reverse('collector:sign-s3-request')
         client.get(url, data={
             'email': 'the@black.dog',
-            'account_number': '12345678',
+            'account_number': 'aa345678',
             'file_data': json.dumps({'filename': 'filetype'})
         })
         account = Account.objects.get()
         assert account.email == 'the@black.dog'
-        assert account.account_number == '12345678'
+        assert account.account_number == 'aa345678'
 
     def test_retrieves_account_if_exists(self, client, account):
         url = reverse('collector:sign-s3-request')
@@ -61,17 +61,18 @@ class TestSignS3Request:
         assert Account.objects.count() == 1
         assert response.status_code == 200
 
-    def test_creates_credentials(self, client, account):
+    def test_creates_credentials(self, client, account_with_chars):
         url = reverse('collector:sign-s3-request')
         client.get(url, data={
             'email': 'account@littlewoods.ie',
-            'account_number': '12345678',
+            'account_number': '12ab5678',
             'file_data': json.dumps({
                 'image.jpg': 'JPEG',
                 'photo.png': 'PNG',
             })
         })
-        assert Credential.objects.filter(account=account).count() == 2
+        creds = Credential.objects.filter(account=account_with_chars)
+        assert creds.count() == 2
 
     def test_returns_signed_urls(self, client, account):
         url = reverse('collector:sign-s3-request')
