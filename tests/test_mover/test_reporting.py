@@ -87,9 +87,7 @@ class TestReportCsv:
 
     def test_lists_blocked(self, blocked_credential, account):
         with freeze_time('2016-01-04'):
-            cred = create_credential(account, 'blocked2.jpg')
-            cred.status = CredentialStatus.Blocked.value
-            cred.save()
+            create_credential(account, 'blocked2.exe')
 
         date_range = (
             datetime(2016, 1, 1),

@@ -62,10 +62,11 @@ class TestMove:
         move()
 
         args, kwargs = move_creds_mock.call_args
-        assert len(args[0]) == 3
+        assert len(args[0]) == 4
         assert need_moving[0] in args[0]
         assert need_moving[1] in args[0]
         assert need_moving[2] in args[0]
+        assert need_moving[3] in args[0]
 
 
 @pytest.mark.django_db

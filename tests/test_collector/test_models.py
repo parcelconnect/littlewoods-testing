@@ -13,9 +13,10 @@ class TestCredentialQuerysets:
 
     def test_need_moving_query(self, moved_credential, credentials):
         credentials = Credential.objects.need_moving().order_by('status')
-        assert len(credentials) == 2
+        assert len(credentials) == 3
         assert credentials[0].status == CredentialStatus.Unchecked.value
-        assert credentials[1].status == CredentialStatus.Found.value
+        assert credentials[1].status == CredentialStatus.Unchecked.value
+        assert credentials[2].status == CredentialStatus.Found.value
 
     def test_created_betwen_query(self, moved_credential, credentials):
         since = datetime.datetime(2016, 1, 3)
@@ -49,13 +50,12 @@ class TestCredentialQuerysets:
 
     def test_blocked_query(self, account, credentials):
         cred = create_credential(account, 'asdf.jpg')
-        cred.status = CredentialStatus.Blocked.value
-        cred.save()
+        cred.mark_as_blocked()
 
         blocked = Credential.objects.blocked()
         assert blocked.count() == 2
-        assert blocked[0].status == CredentialStatus.Blocked.value
-        assert blocked[1].status == CredentialStatus.Blocked.value
+        assert blocked[0].is_blocked is True
+        assert blocked[1].is_blocked is True
 
 
 @pytest.mark.django_db
@@ -95,4 +95,4 @@ class TestCredentials:
     def test_marks_as_blocked(self, found_credential):
         found_credential.mark_as_blocked()
         found_credential.refresh_from_db()
-        assert found_credential.status == CredentialStatus.Blocked.value
+        assert found_credential.is_blocked is True
