@@ -47,11 +47,14 @@ def create_credential(account, filename):
         idv.collector.models.Credential obj
     """
     s3_key = _generate_s3_key(account, filename)
-    return Credential.objects.create(
+    credential = Credential.objects.create(
         account=account,
         original_filename=filename,
         s3_key=s3_key
     )
+    if not has_whitelisted_extension(credential):
+        credential.mark_as_blocked()
+    return credential
 
 
 def _generate_s3_key(account, filename):
@@ -76,3 +79,10 @@ def generate_presigned_s3_url(s3_key, filetype):
     """
     return aws.generate_presigned_s3_url(
         'put_object', settings.S3_BUCKET, s3_key, ContentType=filetype)
+
+
+def has_whitelisted_extension(credential):
+    filename, extension = os.path.splitext(credential.original_filename)
+    # remove dot from extension
+    extension = extension[1:]
+    return extension.lower() in settings.WHITELISTED_EXTENSIONS

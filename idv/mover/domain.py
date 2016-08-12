@@ -67,6 +67,8 @@ def move_credential_file(credential, aws_client, sftp_client, sftp_account,
 
 def _get_sftp_credential_dir(sftp_account, credential):
     container_dir = credential.created_at.strftime("%Y%m%d")
+    if credential.is_blocked:
+        container_dir = '{}-blocked'.format(container_dir)
     return os.path.join(sftp_account.base_path, container_dir)
 
 
