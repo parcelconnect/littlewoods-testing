@@ -9,7 +9,9 @@ from idv.collector.const import CredentialStatus
 
 def convert_blocked_status_to_flag(apps, schema_editor):
     Credential = apps.get_model('collector', 'Credential')
-    Credential.objects.blocked().update(
+    Credential.objects.filter(
+        status=CredentialStatus.Blocked.value
+    ).update(
         has_blocked_extension=True,
         status=CredentialStatus.Found.value
     )
