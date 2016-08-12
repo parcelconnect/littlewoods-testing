@@ -4,7 +4,8 @@ from mock import patch
 from django.conf import settings
 
 from idv.collector.domain import (
-    create_credential, generate_presigned_s3_url, get_or_create_account)
+    create_credential, generate_presigned_s3_url, get_or_create_account,
+    has_whitelisted_extension)
 
 
 @pytest.mark.django_db
@@ -30,6 +31,10 @@ class TestCredentialCreation:
         assert cred1.s3_key.endswith('12345678_1.jpg')
         assert cred2.s3_key.endswith('12345678_2.jpg')
 
+    def test_marked_as_blocked_if_blocked_extension(self, account):
+        cred = create_credential(account, 'awesome.exe')
+        assert cred.is_blocked is True
+
 
 class TestPreseignedS3UrlGeneration:
 
@@ -39,3 +44,23 @@ class TestPreseignedS3UrlGeneration:
         generate_presigned_s3_url('cooking', 'json')
         generation_func_mock.assert_called_once_with(
             'put_object', 'BUCK', 'cooking', ContentType='json')
+
+
+@pytest.mark.django_db
+class TestWhitelistedExtensions:
+
+    def test_whitelisted_lowercase_extension(self, account):
+        cred = create_credential(account, 'file.jpg')
+        assert has_whitelisted_extension(cred) is True
+
+    def test_whitelisted_mixedcase_extension(self, account):
+        cred = create_credential(account, 'fILe.pNg')
+        assert has_whitelisted_extension(cred) is True
+
+    def test_non_whitelisted_mixedcase_extension(self, account):
+        cred = create_credential(account, 'file.exE')
+        assert has_whitelisted_extension(cred) is False
+
+    def test_missing_extension(self, account):
+        cred = create_credential(account, 'file')
+        assert has_whitelisted_extension(cred) is False
