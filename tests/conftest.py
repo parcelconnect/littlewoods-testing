@@ -62,10 +62,7 @@ def not_found_credential(account):
 @pytest.fixture
 @freeze_time('2016-01-02 12:00')
 def blocked_credential(account):
-    cred = collector_domain.create_credential(account, 'blocked.jpg')
-    cred.status = CredentialStatus.Blocked.value
-    cred.save()
-    return cred
+    return collector_domain.create_credential(account, 'blocked.exe')
 
 
 @pytest.fixture

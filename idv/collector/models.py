@@ -53,7 +53,7 @@ class CredentialQuerySet(models.query.QuerySet):
         return self.filter(status=CredentialStatus.Moved.value)
 
     def blocked(self):
-        return self.filter(status=CredentialStatus.Blocked.value)
+        return self.filter(has_blocked_extension=True)
 
 
 class Credential(models.Model):
@@ -67,6 +67,7 @@ class Credential(models.Model):
         choices=enum_to_choices(CredentialStatus),
         default=CredentialStatus.Unchecked.value
     )
+    has_blocked_extension = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     copied_at = models.DateTimeField(
         null=True,
@@ -95,8 +96,12 @@ class Credential(models.Model):
         self.save()
 
     def mark_as_blocked(self):
-        self.status = CredentialStatus.Blocked.value
+        self.has_blocked_extension = True
         self.save()
+
+    @property
+    def is_blocked(self):
+        return self.has_blocked_extension
 
     def __str__(self):
         return 'Credential(pk: {}, s3_key: {})'.format(self.pk, self.s3_key)

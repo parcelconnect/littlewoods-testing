@@ -3,26 +3,8 @@ import mock
 import pytest
 from freezegun import freeze_time
 
-from idv.collector import domain as collector_domain
 from idv.mover.commands import move
-from idv.mover.domain import (
-    get_last_move_checkpoint, has_whitelisted_extension)
-
-
-@pytest.mark.django_db
-class TestWhitelistedExceptions:
-
-    def test_whitelisted_weirdcase_extension(self, account):
-        cred = collector_domain.create_credential(account, 'photo.jPeG')
-        assert has_whitelisted_extension(cred) is True
-
-    def test_fails_on_unknown_extension(self, account):
-        cred = collector_domain.create_credential(account, 'photo.xcv.exE')
-        assert has_whitelisted_extension(cred) is False
-
-    def test_fails_if_no_extension(self, account):
-        cred = collector_domain.create_credential(account, 'photasdf')
-        assert has_whitelisted_extension(cred) is False
+from idv.mover.domain import get_last_move_checkpoint
 
 
 @pytest.mark.django_db
