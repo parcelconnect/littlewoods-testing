@@ -1,8 +1,9 @@
 body {
   background-color: #F6F8F7;
-  background-image: url("../img/lwi-tracking-bg-desktop-new.jpg");
+  background-image: url("../img/lwi-tracking-bg-desktop-new.png");
   background-repeat: no-repeat;
-  background-position: top -50px center;
+  background-position: top 0px center;
+  background-size: cover;
 }
 
 .container .panel-wrapper {
