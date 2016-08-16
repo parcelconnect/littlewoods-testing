@@ -1,6 +1,7 @@
 body {
-  background-color: #F3F6F9;
-  background-image: url("../img/lwi-tracking-bg-desktop.png");
+  background-color: #F6F8F7;
+  background-image: url("../img/lwi-tracking-bg-desktop-new.jpg");
+  background-repeat: no-repeat;
   background-position: top -50px center;
 }
 
@@ -54,6 +55,11 @@ body {
 .status {
   padding: 30px 35px 0px 35px;
   position: relative;
+}
+
+.panel-heading .date,
+.panel-heading .status {
+  padding: 20px 35px 10px 35px;
 }
 
 .panel-heading .status {
