@@ -43,7 +43,7 @@ body {
 }
 
 .tracking-panel .panel-heading {
-  background-color: #6F2B7E;
+  background-color: #000000;
   color: #FFFFFF;
 }
 
@@ -64,7 +64,7 @@ body {
 }
 
 .panel-heading .status {
-  border-left: 1px solid #AC6ABB;
+  border-left: 1px solid #DDDDDD;
 }
 
 .panel-body .status {
@@ -99,7 +99,7 @@ p.small-txt {
 
 .panel-body .date:first-child .description,
 .panel-body .status:nth-child(2) .description {
-  color: #6F2B7E;
+  color: #000000;
 }
 
 .panel-heading .date p:first-child, 
@@ -162,7 +162,7 @@ p.small-txt {
   }
   
   .panel-heading .status {
-    border-top: 1px solid #AC6ABB;
+    border-top: 1px solid #DDDDDD;
     border-left: none;
   }
   
