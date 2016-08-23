@@ -14,8 +14,12 @@ img {
 }
 
 .jumbotron {
-	background-color: #6F2B7E;
+	background-color: #000000;
 	width: 100%;
+}
+
+.container .lwi-logo-header {
+  margin: auto;
 }
 
 .btn {
