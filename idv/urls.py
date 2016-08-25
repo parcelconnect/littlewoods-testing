@@ -4,6 +4,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url('^', include('idv.collector.urls', namespace='collector')),
+    url('^IDV/', include('idv.collector.urls', namespace='collector')),
     url('^track/', include('idv.tracker.urls', namespace='tracker'))
 ]
