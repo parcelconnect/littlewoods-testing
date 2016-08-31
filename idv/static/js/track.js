@@ -19,10 +19,11 @@ IDV.Track = (function() {
   var successHandler = function(response) {
     var eventsPanel = $('#js-events');
     var templateHTML = $('#js-events-template').html();
-    var template = _.template(templateHTML)
+    var template = _.template(templateHTML);
+    var events_reverse_order = response.events.reverse();
     var eventsHTML = template({
-      events: response.events,
-      latestEvent: response.events[0],
+      events: events_reverse_order,
+      latestEvent: events_reverse_order[0],
       today: response.today,
       labelID: response.label_id
     });
