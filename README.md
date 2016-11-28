@@ -1,10 +1,23 @@
-# Littlewoods ID Verification
+# Repo description
+
+Every now and then, Littlewoods asks for a new small, stand-alone app. Instead of having
+multiple repositories for these, we keep them all together under this repo.
+
+- - -
+
+# App: Littlewoods ID Verification
 
 Django-based app that allows Littlewoods customers to upload documents proving
 their identity. These documents are then sent to Littlewoods.
 
 Then they get reviewed and customers whose identity was verified get Littlewoods
 credits. Whoever, this project is not responsible for that functionality.
+
+## Django apps used
+
+- collector
+- mover
+- sftp
 
 ## Configuring AWS S3 bucket
 
@@ -95,3 +108,23 @@ original SFTP request to LW SFTP.
 
 That EC2 instance is under the `parcelconnect` AWS account and it's named
 `fastwaybox`.
+
+- - -
+
+# App: Tracking
+
+A Littlewoods-whitelabeled page for tracking fastway consignments. Tracking info is fetched by hitting the Global API.
+
+## Django apps used
+
+- tracker
+
+- - -
+
+# App: Gift wrapping
+
+As Littlewoods could not invest man power to add a 'wrap as a gift' checkbox on their webpage, this app does exactly that. After an order is made on Littlewoods, the customer can click on a link, be transferred in here, provide his order details and get his parcel wrapped.
+
+## Django apps used
+
+- giftwrap
