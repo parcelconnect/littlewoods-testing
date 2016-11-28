@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'idv.mover',
     'idv.sftp',
     'idv.tracker',
+    'idv.giftwrap',
 ]
 
 MIDDLEWARE_CLASSES = [
