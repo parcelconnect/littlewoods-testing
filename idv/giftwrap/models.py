@@ -1,3 +1,65 @@
 from django.db import models
 
-# Create your models here.
+from idv.common.utils import enum_to_choices
+
+from .types import GiftWrapRequestStatus
+
+
+class GiftWrapRequestQuerySet(models.query.QuerySet):
+
+    def new(self):
+        return self.filter(status=GiftWrapRequestStatus.New.value)
+
+    def success(self):
+        return self.filter(status=GiftWrapRequestStatus.Success.value)
+
+    def failed(self):
+        return self.filter(status=GiftWrapRequestStatus.Failed.value)
+
+    def error(self):
+        return self.filter(status=GiftWrapRequestStatus.Failed.value)
+
+
+class GiftWrapRequest(models.Model):
+
+    account_number = models.CharField(max_length=8)
+    email = models.EmailField()
+
+    product_description = models.CharField(max_length=500)
+    upi = models.CharField(max_length=30, null=True)
+
+    divert_address = models.CharField(max_length=80, null=True)
+    divert_contact_name = models.CharField(max_length=80, null=True)
+    divert_contact_number = models.CharField(max_length=80, null=True)
+
+    card_message = models.CharField(max_length=600)
+
+    status = models.CharField(
+        max_length=8,
+        choices=enum_to_choices(GiftWrapRequestStatus),
+        default=GiftWrapRequestStatus.New.value,
+        db_index=True
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = GiftWrapRequestQuerySet.as_manager()
+
+    def __str__(self):
+        return (
+            'Account: {account}, Status: {status}'
+            .format(account=self.account_number, status=self.status)
+        )
+
+    def mark_as_success(self):
+        self.status = GiftWrapRequestStatus.Success.value
+        self.save()
+
+    def mark_as_failed(self):
+        self.status = GiftWrapRequestStatus.Failed.value
+        self.save()
+
+    def mark_as_error(self):
+        self.status = GiftWrapRequestStatus.Error.value
+        self.save()
