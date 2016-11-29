@@ -21,4 +21,6 @@ class CredentialStatus(Enum):
     # The file has been copied to LW Sftp and deleted from FW S3.
     Moved = 4
     # Deprecated but used in a migration that deprecated its usage.
-    Blocked = 5
+    # Leaving this comment in here so as not to use 5 in case another status
+    # needs to be added.
+    # Blocked = 5
