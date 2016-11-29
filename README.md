@@ -84,11 +84,10 @@ Make sure you use the appropriate "Resource" value.
 
 ## Local setup
 
-    $ cp .env.sample .env
+Create an empty `.env` file.
+
     $ docker-compose build
     $ docker-compose up
-
-Make sure you properly initialize the vars in `.env`.
 
 ## EC2 proxy for copying files from Fastway S3 to LW SFTP
 
