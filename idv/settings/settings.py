@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'idv.sftp',
     'idv.tracker',
     'idv.giftwrap',
+    'idv.internal',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -210,3 +211,10 @@ WHITELISTED_EXTENSIONS = set([
 
 FASTWAY_API_ENDPOINT = os.environ.get('FASTWAY_API_ENDPOINT')
 FASTWAY_API_KEY = os.environ.get('FASTWAY_API_KEY')
+
+# -----------------------------------------------------------------------------
+# Gift Wrapping settings
+
+GIFT_WRAPPING_REQUEST_NOTIFICATION_EMAILS = env_as_list(
+    'GIFT_WRAPPING_REQUEST_NOTIFICATION_EMAIL'
+)

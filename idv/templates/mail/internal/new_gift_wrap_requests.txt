@@ -1,0 +1,8 @@
+Hello!
+
+You have {{ n_new_requests }} new requests for gift wrapping.
+Click on the link below to take care of them!
+
+http://littlewoods-prod.herokuapp.com/{% url 'internal:request-gift-wrap' %}
+
+- The ParcelConnect Team
