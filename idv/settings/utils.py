@@ -19,3 +19,7 @@ def env_as_list(var, default=[]):
     if not value:
         return default
     return value.split()
+
+
+def env_as_str(var, default=''):
+    return str(os.getenv(var, default))
