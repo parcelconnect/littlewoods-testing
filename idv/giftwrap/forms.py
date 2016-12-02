@@ -9,7 +9,7 @@ from .models import GiftWrapRequest
 ACCOUNT_NUMBER_LENGTH = 8
 
 
-def validate_digits_only(value):
+def valid_account_number(value):
     regex = r'^[a-zA-Z\d]{%s}$' % ACCOUNT_NUMBER_LENGTH
     if re.match(regex, value) is None:
         error_msg = 'The account number is made of {} characters/digits.'
@@ -21,13 +21,12 @@ class GiftWrapRequestForm(forms.ModelForm):
     class Meta:
         model = GiftWrapRequest
         fields = [
-            'account_number', 'email', 'order_number', 'product_description',
+            'account_number', 'email', 'product_description',
             'divert_address', 'divert_contact_name', 'divert_contact_number',
             'card_message'
         ]
 
-    email = forms.EmailField(required=True)
     account_number = forms.CharField(
         required=True,
-        validators=[validate_digits_only]
+        validators=[valid_account_number]
     )
