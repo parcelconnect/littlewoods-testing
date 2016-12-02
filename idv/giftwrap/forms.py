@@ -26,12 +26,7 @@ class GiftWrapRequestForm(forms.ModelForm):
             'card_message'
         ]
 
-    email = forms.EmailField(required=True)
     account_number = forms.CharField(
         required=True,
         validators=[valid_account_number]
     )
-
-    def save(self):
-        print("HI Im overwriting")
-        return super(GiftWrapRequestForm, self).save()
