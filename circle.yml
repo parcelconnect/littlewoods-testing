@@ -1,0 +1,16 @@
+dependencies:
+  pre:
+    - pip install -r requirements/dev.txt
+
+machine:
+  python:
+    version: 3.5.2
+  environment:
+    DJANGO_SETTINGS_MODULE: idv.settings
+    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/lw_test
+    IDV_ENVIRONMENT: dev
+    AWS_ACCESS_KEY: ""
+    AWS_SECRET_KEY: ""
+test:
+  override:
+    - py.test tests/ --junit-xml=$CIRCLE_TEST_REPORTS/django/metadata.xml
