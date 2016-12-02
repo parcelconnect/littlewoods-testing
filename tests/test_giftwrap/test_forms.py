@@ -3,6 +3,20 @@ from idv.giftwrap.forms import GiftWrapRequestForm
 
 class TestGiftWrapRequestForm:
 
+    def test_is_valid_returns_true_when_all_required_fields_given(self):
+        form = GiftWrapRequestForm(
+            data={
+                'account_number': '12345678',
+                'email': 'john@fastway.ie',
+                'divert_contact_name': 'John Doe',
+                'divert_contact_number': '123',
+                'divert_address': 'Stree 18, Sometown',
+                'product_description': 'Awesome present',
+                'card_message': 'Best wishes'
+            }
+        )
+        assert form.is_valid(), form.errors
+
     def test_invalid_account_number_with_symbols(self):
         form = GiftWrapRequestForm(data={'account_number': '1234567$'})
         form.is_valid()

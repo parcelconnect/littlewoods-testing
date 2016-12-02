@@ -9,7 +9,7 @@ from .models import GiftWrapRequest
 ACCOUNT_NUMBER_LENGTH = 8
 
 
-def validate_eight_chars_and_nums(value):
+def valid_account_number(value):
     regex = r'^[a-zA-Z\d]{%s}$' % ACCOUNT_NUMBER_LENGTH
     if re.match(regex, value) is None:
         error_msg = 'The account number is made of {} characters/digits.'
@@ -29,5 +29,9 @@ class GiftWrapRequestForm(forms.ModelForm):
     email = forms.EmailField(required=True)
     account_number = forms.CharField(
         required=True,
-        validators=[validate_eight_chars_and_nums]
+        validators=[valid_account_number]
     )
+
+    def save(self):
+        print("HI Im overwriting")
+        return super(GiftWrapRequestForm, self).save()
