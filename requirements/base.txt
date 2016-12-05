@@ -5,10 +5,10 @@ pbr==1.3.0
 boto3==1.3.1
 
 # General
-psycopg2==2.6.1
-paramiko==2.0.0
-cffi>=1.4.1
-requests==2.7.0
+psycopg2==2.6.2
+paramiko==2.0.2
+cffi>=1.4.1  # needed by cryptography, needed by paramiko2
+requests==2.9.2
 
 # Django
 django==1.9.11

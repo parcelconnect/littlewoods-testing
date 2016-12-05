@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 from freezegun import freeze_time
-from mock import patch
+from unittest.mock import patch
 
 from django.utils import timezone
 
@@ -34,7 +34,7 @@ class TestMove:
             move()
         assert get_last_move_checkpoint() is None
 
-    @patch('idv.mover.commands.move_credential_files')
+    @patch('idv.mover.commands.move_credential_files', autospec=True)
     def test_filters_credentials_by_creation_date(self, move_creds_mock,
                                                   account):
         with freeze_time('2016-01-01'):
@@ -47,7 +47,7 @@ class TestMove:
             move()
 
         args, kwargs = move_creds_mock.call_args
-        move_creds_mock.assert_called_once()
+        assert move_creds_mock.call_count == 1
         assert len(args) == 1
         assert len(args[0]) == 1
         assert args[0][0] == cred1
