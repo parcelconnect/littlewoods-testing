@@ -222,3 +222,4 @@ GIFT_WRAPPING_REQUEST_NOTIFICATION_EMAILS = env_as_list(
 IFS_API_ENDPOINT = "https://sombrero.ifsconnect.net"
 IFS_API_USERNAME = os.environ.get('IFS_API_USERNAME')
 IFS_API_PASSWORD = os.environ.get('IFS_API_PASSWORD')
+IFS_API_TEST_MODE = env_as_bool('IFS_API_TEST_MODE', default=False)

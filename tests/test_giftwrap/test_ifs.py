@@ -13,6 +13,7 @@ def client_config():
         'base_url': 'https://fastway.ie',
         'username': 'foo',
         'password': 'bar',
+        'test_mode': True
     }
 
 

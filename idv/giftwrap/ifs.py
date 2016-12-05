@@ -22,7 +22,7 @@ class Client:
     REFERER = "Littlewoods"
     USER_AGENT = "Littlewoods Gift Wrapping"
 
-    def __init__(self, base_url, username, password):
+    def __init__(self, base_url, username, password, test_mode=False):
         self.base_url = base_url
         self.username = username
         self.password = password
@@ -84,5 +84,6 @@ def get_client_from_settings():
     return Client(
         base_url=settings.IFS_API_ENDPOINT,
         username=settings.IFS_API_USERNAME,
-        password=settings.IFS_API_PASSWORD
+        password=settings.IFS_API_PASSWORD,
+        test_mode=settings.IFS_API_TEST_MODE
     )
