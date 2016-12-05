@@ -13,4 +13,5 @@ machine:
     AWS_SECRET_KEY: ""
 test:
   override:
+    - ./bin/runlintchecks.sh
     - py.test tests/ --junit-xml=$CIRCLE_TEST_REPORTS/django/metadata.xml
