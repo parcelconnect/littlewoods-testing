@@ -1,11 +1,11 @@
 import json
 
-from idv.common.http import extract_json_from_GET
-
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from idv.common.http import extract_json_from_GET
 
 from . import domain
 from .forms import AccountForm

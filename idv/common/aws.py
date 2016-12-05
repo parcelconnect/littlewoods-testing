@@ -1,6 +1,5 @@
-import botocore
 import boto3
-
+import botocore
 from django.conf import settings
 
 

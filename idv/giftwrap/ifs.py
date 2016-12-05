@@ -1,9 +1,8 @@
 import logging
 from urllib.parse import urljoin
 
-from django.conf import settings
-
 import requests
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
