@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
-
-import pytest
-from freezegun import freeze_time
 from unittest.mock import patch
 
+import pytest
 from django.utils import timezone
+from freezegun import freeze_time
 
 from idv.collector import domain as collector_domain
 from idv.collector.models import Credential

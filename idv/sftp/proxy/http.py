@@ -2,7 +2,6 @@ import base64
 from collections import namedtuple
 from http.client import HTTPConnection
 
-
 HttpProxy = namedtuple('HttpProxy', ['host', 'port', 'username', 'password'])
 
 

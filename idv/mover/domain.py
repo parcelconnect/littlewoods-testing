@@ -10,7 +10,6 @@ from idv.sftp.proxy.http import HttpProxy
 
 from .models import MoveCommandStatus
 
-
 logger = logging.getLogger(__name__)
 
 

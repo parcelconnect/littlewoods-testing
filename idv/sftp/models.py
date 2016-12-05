@@ -3,7 +3,6 @@ import hashlib
 
 from django.db import models
 
-
 CHARFIELD_SAFE_LIMIT = 1024
 SFTP_DEFAULT_PORT = 22
 

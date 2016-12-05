@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 
 from .models import GiftWrapRequest
 
-
 ACCOUNT_NUMBER_LENGTH = 8
 
 

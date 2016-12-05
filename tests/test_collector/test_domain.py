@@ -1,6 +1,6 @@
-import pytest
 from unittest.mock import patch
 
+import pytest
 from django.conf import settings
 
 from idv.collector.domain import (

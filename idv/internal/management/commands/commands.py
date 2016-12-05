@@ -5,7 +5,6 @@ from django.conf import settings
 from idv.common.mail import create_mail
 from idv.giftwrap.models import GiftWrapRequest
 
-
 logger = logging.getLogger(__name__)
 
 

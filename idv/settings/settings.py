@@ -1,11 +1,9 @@
 import os
 
 import dj_database_url
-
 from django.core.exceptions import ImproperlyConfigured
 
 from .utils import env_as_bool, env_as_list
-
 
 # -----------------------------------------------------------------------------
 # Environment constants
