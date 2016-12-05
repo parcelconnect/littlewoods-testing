@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 from freezegun import freeze_time
-from mock import patch
+from unittest.mock import patch
 
 from django.utils import timezone
 

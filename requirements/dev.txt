@@ -2,10 +2,9 @@
 
 # Testing
 django-extensions
-pytest==2.9.1
+pytest==2.9.2
 pytest-django==2.9.1
-freezegun==0.3.5
-mock==1.0.1
+freezegun==0.3.8
 
 # Development
 ipython
