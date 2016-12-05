@@ -1,12 +1,15 @@
 {% extends 'gw_base.html' %}
 
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block js %}
   {{ block.super }}
 {% endblock %}
 
 {% block content %}
+
+
 
       <div class="jumbotron">
          <div class="container">
@@ -19,43 +22,53 @@
          <div class="wrapper white-bg">
          <h4>Order Details</h4>
             <form>
+
                <div class="form-group">
                   <label for="lwi-account-number">LWI Account Number</label><br>
-                  <input type="text" class="form-control" id="lwi-account-number" placeholder="Account number">
+                  {{form.account_number.errors}}
+                  {{ form.account_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-account-number"}}
                   <small id="emailHelp" class="form-text text-muted">Your account number can be found under 'My Account' (next to your name).</small>
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">Email Address</label>
-                  <input type="email" class="form-control" id="lwi-email-address" placeholder="Email address">
+                   {{form.email.errors}}
+                  {{ form.email|attr:"type:email"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder:Email address" }}
                   <small id="emailHelp" class="form-text text-muted">Please use the email address that you use on your Littlewoods Ireland account.</small>
                </div>
                <div class="form-group">
                   <label for="exampleTextarea">Product Description</label>
-                  <textarea class="form-control" id="lwi-product-desc" rows="3"></textarea>
+                  {{form.product_description.errors}}
+                  {{form.product_description|add_class:"form-control"|attr:"id:lwi-product-desc"|attr:"rows:3" }}
                </div>
                <div class="clear"></div>
                <h4>Details for Gift Wrapping</h4>
                <div class="form-group">
                   <label for="lwi-email-address">New address</label>
                   <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
-                  <input type="email" class="form-control" id="lwi-contact-name" placeholder="Email address">
+                  {{form.divert_address.errors}}
+                  {{ form.divert_address|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:New Address" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">New contact name</label>
                   <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
-                  <input type="email" class="form-control" id="lwi-contact-name" placeholder="Email address">
+                   {{form.divert_contact_name.errors}}
+                   {{ form.divert_contact_name|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder: Name" }}
+
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">New contact number</label>
                   <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
-                  <input type="email" class="form-control" id="lwi-contact-number" placeholder="Email address">
+                  {{form.divert_contact_number.errors}}
+                  {{ form.divert_contact_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-number"|attr:"placeholder: Contact Number" }}
                </div>
                <div class="form-group">
                   <label for="exampleTextarea">Message for card</label>
-                  <textarea class="form-control" id="lwi-product-desc" rows="3"></textarea>
+                  {{form.card_message.errors}}
+                  {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
                </div>
                <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
             </form>
+            {% endblock %}
             <div class="panel panel-default">
                <div class="panel-body">
                   Terms and Conditions Apply<br><br>
@@ -76,4 +89,3 @@
       </div>
 
 
-{% endblock %}

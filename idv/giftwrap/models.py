@@ -25,14 +25,14 @@ class GiftWrapRequest(models.Model):
     account_number = models.CharField(max_length=8)
     email = models.EmailField()
 
-    product_description = models.CharField(max_length=500)
+    product_description = models.TextField(max_length=500)
     upi = models.CharField(max_length=30, null=True)
 
     divert_address = models.CharField(max_length=80, null=True)
     divert_contact_name = models.CharField(max_length=80, null=True)
     divert_contact_number = models.CharField(max_length=80, null=True)
 
-    card_message = models.CharField(max_length=600)
+    card_message = models.TextField(max_length=600)
 
     status = models.CharField(
         max_length=8,
