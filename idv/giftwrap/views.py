@@ -5,7 +5,7 @@ from .forms import GiftWrapRequestForm
 
 
 class RequestWrap(CreateView):
-    template_name = 'giftwrap/request_wrap.html'
+    template_name = 'giftwrap/customer_request.html'
     success_url = 'success'
     form_class = GiftWrapRequestForm
 

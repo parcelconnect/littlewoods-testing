@@ -1,0 +1,79 @@
+{% extends 'gw_base.html' %}
+
+{% load staticfiles %}
+
+{% block js %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+      <div class="jumbotron">
+         <div class="container">
+            <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+            <h2>Christmas Gift Wrapping</h2>
+         </div>
+      </div>
+      <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
+      <div class="container">
+         <div class="wrapper white-bg">
+         <h4>Order Details</h4>
+            <form>
+               <div class="form-group">
+                  <label for="lwi-account-number">LWI Account Number</label><br>
+                  <input type="text" class="form-control" id="lwi-account-number" placeholder="Account number">
+                  <small id="emailHelp" class="form-text text-muted">Your account number can be found under 'My Account' (next to your name).</small>
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">Email Address</label>
+                  <input type="email" class="form-control" id="lwi-email-address" placeholder="Email address">
+                  <small id="emailHelp" class="form-text text-muted">Please use the email address that you use on your Littlewoods Ireland account.</small>
+               </div>
+               <div class="form-group">
+                  <label for="exampleTextarea">Product Description</label>
+                  <textarea class="form-control" id="lwi-product-desc" rows="3"></textarea>
+               </div>
+               <div class="clear"></div>
+               <h4>Details for Gift Wrapping</h4>
+               <div class="form-group">
+                  <label for="lwi-email-address">New address</label>
+                  <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
+                  <input type="email" class="form-control" id="lwi-contact-name" placeholder="Email address">
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">New contact name</label>
+                  <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
+                  <input type="email" class="form-control" id="lwi-contact-name" placeholder="Email address">
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">New contact number</label>
+                  <small id="emailHelp" class="form-text text-muted">&nbsp;(If required)</small>
+                  <input type="email" class="form-control" id="lwi-contact-number" placeholder="Email address">
+               </div>
+               <div class="form-group">
+                  <label for="exampleTextarea">Message for card</label>
+                  <textarea class="form-control" id="lwi-product-desc" rows="3"></textarea>
+               </div>
+               <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </form>
+            <div class="panel panel-default">
+               <div class="panel-body">
+                  Terms and Conditions Apply<br><br>
+                  <small>
+                     Only small items 5kg in weight and 1 metre in length are subject to gift wrapping, if your item does not fit in the specified box, Fastway will contact you. A gift receipt will not be included in the parcel, however the invoice will be sent directly to you.
+                     Items can only be sent within the Republic of Ireland. If the item is faulty or unwanted it must be returned by the account holder. Once your gift wrapped parcel has been delivered, your Littlewoods Ireland account will be charged for this service. The cost of this service is €5.99 per gift wrapped item.
+                     <br><br>
+                     If you have any queries in relation to the gift wrapping service please contact Littlewoods Ireland on 01 8112307 or email us at
+                     <a href="mailto:clickandcollect@shopdirect.com?Subject=Gift%20Wrapping" target="_top">clickandcollect@shopdirect.com</a>
+                  </small>
+              </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
+
+
+{% endblock %}
