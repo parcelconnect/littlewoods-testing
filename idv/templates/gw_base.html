@@ -23,6 +23,7 @@
       <link href="{% static "css/ie10-viewport-bug-workaround.css" %}" rel="stylesheet">
       {% endblock %}
    </head>
+
    <body>
       <nav class="navbar navbar-inverse navbar-fixed-top">
          <div class="container">
@@ -44,8 +45,7 @@
       </nav>
       {% block content %}
       {% endblock %}
-          <!-- Bootstrap core JavaScript
-       ================================================== -->
+
       {% block js %}
       <!-- Latest compiled and minified JavaScript -->
       <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
