@@ -1,0 +1,35 @@
+{% extends 'giftwrap/admin_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+      <div class="container">
+         <div class="wrapper">
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive panel-img" alt="Littlewoods Ireland logo">
+                  <div class="panel-title">
+                     <h4>Gift Wrapping Staff Login</h4>
+                  </div>
+               </div>
+               <div class="panel-body">
+                  <form>
+                     <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                     </div>
+                     <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                     </div>
+                     <button type="button" class="btn btn-primary btn-lg btn-block">Login</button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg2">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
+{% endblock %}

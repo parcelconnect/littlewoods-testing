@@ -1,0 +1,68 @@
+{% extends 'giftwrap/admin_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+            </div>
+         </div>
+      </nav>
+      <div class="jumbotron">
+         <div class="container">
+            <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+            <h2>Christmas Gift Wrapping</h2>
+         </div>
+      </div>
+      <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
+      <div class="container">
+         <div class="wrapper">
+            <h4>Requests to be processed</h4>
+            <!-- Request Panel -->
+            <a href="#">
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <div class="panel-title">Request #1</div>
+               </div>
+            </div>
+            </a>
+            <!-- Request Panel -->
+            <a href="#">
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <div class="panel-title">Request #2</div>
+               </div>
+            </div>
+            </a>
+            <!-- Request Panel -->
+             <a href="#">
+            <div class="panel panel-default">
+               <div class="panel-heading">
+                  <div class="panel-title">Request #3</div>
+               </div>
+            </div>
+            </a>
+            <hr>
+            <h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error Requests <small >&nbsp;Please resubmit requests below</small></h4>
+            <!-- Error Panel -->
+            <a href="#">
+            <div class="panel panel-error">
+               <div class="panel-heading">
+                  <div class="panel-title">Request #2</div>
+               </div>
+            </div>
+            </a>
+         </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg2">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
+ {% endblock %}

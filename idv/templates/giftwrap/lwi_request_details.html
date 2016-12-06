@@ -1,0 +1,71 @@
+{% extends 'giftwrap/admin_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+            </div>
+         </div>
+      </nav>
+      <div class="jumbotron">
+         <div class="container">
+            <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+            <h2>Christmas Gift Wrapping</h2>
+         </div>
+      </div>
+      <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
+      <div class="container">
+         <div class="wrapper">
+            <h4>Requests to be processed</h4>
+
+                  <address>
+                     <strong>LWI Account Number</strong>
+                     232345
+                  </address>
+                  <address>
+                     <strong>Email Address</strong>
+                     carla@email.com
+                  </address>
+                  <address>
+                     <strong>Product Description</strong><br>
+                     Armani Exchange Rose Gold Dial Rose Gold IP Plated Bracelet Ladies Watch
+                  </address>
+                  <hr>
+                  <address>
+                     <strong>Customer Name</strong><br>
+                     Sarah Jane
+                  </address>
+                  <address>
+                     <strong>Delivery Address</strong><br>
+                     Address 1, Address 2, Town, County, Postcode
+                  </address>
+                  <address>
+                     <strong>Message for card</strong><br>
+                     You're a narcissist and your family is dysfunctional. Still, Merry Christmas and Happy New Year!
+                  </address>
+                  <hr>
+                  <div class="alert alert-danger" role="alert">
+                     <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
+                  </div>
+                  <div class="form-group">
+                     <label for="Textarea"><strong>Enter UPI</strong></label>
+                     <input type="text" class="form-control" placeholder="Enter UPI">
+                  </div>
+                  <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+               </div>
+            </div>
+          </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg2">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
+ {% endblock %}
