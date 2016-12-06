@@ -1,8 +1,9 @@
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
-from .forms import GiftWrapRequestForm, EpackSearchForm
+from .forms import GiftWrapRequestForm
 from .models import GiftWrapRequest
+
 
 class RequestWrap(CreateView):
     template_name = 'giftwrap/customer_request.html'

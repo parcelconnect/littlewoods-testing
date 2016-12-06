@@ -28,37 +28,39 @@
          <div class="wrapper">
             <h3>Order Search</h3>
             <form method="GET" action="">
-               <label for="lwi-email-address">Search for UPI</label>
-               <div class="input-group input-group">
-                  <input class="form-control" name="upi" placeholder="Enter Upi" type="text" maxlength=16>
-                  <span class="input-group-addon">
-                  <button type="submit">
-                  <span class="glyphicon glyphicon-search"></span>
-                  </button>
-                  </span>
-               </div>
-               {% for order in order_details %}
-               <div class="panel panel-default">
-                  <div class="panel-heading">
-                     <div class="panel-title">UPI:{{ upi }}</div>
-                     <span class="pull-right clickable"><i class="glyphicon glyphicon-remove"></i></span>
-                  </div>
-                  <div class="panel-body">
-                     <address>
-                        <strong>Customer Name</strong><br>
-                        {{ order.divert_contact_name }}
-                     </address>
-                     <address>
-                        <strong>Delivery Address</strong><br>
-                        {{ order.divert_address }}
-                     </address>
-                     <address>
-                        <strong>Message for card</strong><br>
-                        {{ order.card_message }}
-                     </address>
-                  </div>
-               </div>
-               {% endfor %}
+              <div class="input-group input-group">
+                <input class="form-control" name="upi" placeholder="Enter UPI" type="text" maxlength=16{% if upi and not order_details %} value="{{ upi }}"{% endif %}>
+                <span class="input-group-addon">
+                <button type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+                </button>
+                </span>
+              </div>
+              {% if upi and not order_details %}
+              <ul class="errorlist"><li>UPI not found.</li></ul>
+              {% endif %}
+              {% for order in order_details %}
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="panel-title">UPI:{{ upi }}</div>
+                  <span class="pull-right clickable"><i class="glyphicon glyphicon-remove"></i></span>
+                </div>
+                <div class="panel-body">
+                  <address>
+                    <strong>Customer Name</strong><br>
+                    {{ order.divert_contact_name }}
+                  </address>
+                  <address>
+                    <strong>Delivery Address</strong><br>
+                    {{ order.divert_address }}
+                  </address>
+                  <address>
+                    <strong>Message for card</strong><br>
+                    {{ order.card_message }}
+                  </address>
+                </div>
+              </div>
+              {% endfor %}
             </form>
          </div>
       </div>
