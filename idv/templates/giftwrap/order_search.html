@@ -27,39 +27,38 @@
       <div class="container">
          <div class="wrapper">
             <h3>Order Search</h3>
-            <form method="POST" action="">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
+            <form method="GET" action="">
                <label for="lwi-email-address">Search for UPI</label>
                <div class="input-group input-group">
-                  {{form.upi.errors}}
-                  {{ form.upi|attr:"type:text"|add_class:"form-control"|attr:"placeholder:Enter Upi"}}
+                  <input class="form-control" name="upi" placeholder="Enter Upi" type="text" maxlength=16>
                   <span class="input-group-addon">
                   <button type="submit">
                   <span class="glyphicon glyphicon-search"></span>
                   </button>
                   </span>
                </div>
+               {% for order in order_details %}
                <div class="panel panel-default">
                   <div class="panel-heading">
-                     <div class="panel-title">UPI:1234456</div>
+                     <div class="panel-title">UPI:{{ upi }}</div>
                      <span class="pull-right clickable"><i class="glyphicon glyphicon-remove"></i></span>
                   </div>
                   <div class="panel-body">
                      <address>
                         <strong>Customer Name</strong><br>
-                        Sarah Jane
+                        {{ order.divert_contact_name }}
                      </address>
                      <address>
                         <strong>Delivery Address</strong><br>
-                        Address 1, Address 2, Town, County, Postcode
+                        {{ order.divert_address }}
                      </address>
                      <address>
                         <strong>Message for card</strong><br>
-                        You're a narcissist and your family is dysfunctional. Still, Merry Christmas and Happy New Year!
+                        {{ order.card_message }}
                      </address>
                   </div>
                </div>
+               {% endfor %}
             </form>
          </div>
       </div>

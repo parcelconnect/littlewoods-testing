@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import GiftWrapRequestForm, EpackSearchForm
-
+from .models import GiftWrapRequest
 
 class RequestWrap(CreateView):
     template_name = 'giftwrap/customer_request.html'
@@ -19,7 +19,22 @@ class EpackLogin(TemplateView):
     success_url = 'success'
 
 
-class EpackSearch(CreateView):
+class EpackSearch(TemplateView):
     template_name = 'giftwrap/order_search.html'
-    success_url = 'success'
-    form_class = EpackSearchForm
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        upi = self.request.GET.get('upi')
+        if upi:
+            context['upi'] = upi
+            details = self._get_orders_for_upi(upi)
+            context['order_details'] = details
+
+        return context
+
+    def _get_orders_for_upi(self, upi):
+        return GiftWrapRequest.objects.filter(upi=upi).values(
+            'divert_contact_name',
+            'divert_address',
+            'card_message'
+        )
