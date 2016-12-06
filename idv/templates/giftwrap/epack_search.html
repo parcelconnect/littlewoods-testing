@@ -35,7 +35,7 @@
               </span>
             </div>
             {% if upi and not order_details %}
-            <ul class="errorlist"><li>UPI not found.</li></ul>
+            <div class="alert alert-danger" role="alert">UPI not found.</div>
             {% endif %}
             {% for order in order_details %}
             <div class="panel panel-default">
