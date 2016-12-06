@@ -29,3 +29,16 @@ class GiftWrapRequestForm(forms.ModelForm):
         required=True,
         validators=[valid_account_number]
     )
+
+
+class EpackSearchForm(forms.ModelForm):
+
+    class Meta:
+        model = GiftWrapRequest
+        fields = [
+            'upi'
+        ]
+
+    upi = forms.CharField(
+        required=True,
+    )

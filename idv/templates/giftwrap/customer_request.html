@@ -1,0 +1,89 @@
+{% extends 'gw_base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block js %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+      <div class="jumbotron">
+         <div class="container">
+            <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+            <h2>Christmas Gift Wrapping</h2>
+         </div>
+      </div>
+      <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
+      <div class="container">
+         <div class="wrapper white-bg">
+         <h4>Order Details</h4>
+            <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+               <div class="form-group">
+                  <label for="lwi-account-number">LWI Account Number</label><br>
+                  {{form.account_number.errors}}
+                  {{ form.account_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-account-number"|attr:"placeholder:Account number"}}
+                  <small class="form-text text-muted">Your account number can be found under 'My Account' (next to your name).</small>
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">Email Address</label>
+                   {{form.email.errors}}
+                  {{ form.email|attr:"type:email"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder:Email address" }}
+                  <small class="form-text text-muted">Please use the email address that you use on your Littlewoods Ireland account.</small>
+               </div>
+               <div class="form-group">
+                  <label for="exampleTextarea">Product Description</label>
+                  {{form.product_description.errors}}
+                  {{form.product_description|add_class:"form-control"|attr:"id:lwi-product-desc"|attr:"rows:3" }}
+               </div>
+               <div class="clear"></div>
+               <h4>Details for Gift Wrapping</h4>
+               <div class="form-group">
+                  <label for="lwi-email-address">New address</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  {{form.divert_address.errors}}
+                  {{ form.divert_address|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:New address" }}
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">New contact name</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                   {{form.divert_contact_name.errors}}
+                   {{ form.divert_contact_name|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder: New name" }}
+
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">New contact number</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  {{form.divert_contact_number.errors}}
+                  {{ form.divert_contact_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-number"|attr:"placeholder: New contact number" }}
+               </div>
+               <div class="form-group">
+                  <label for="exampleTextarea">Message for card</label>
+                  {{form.card_message.errors}}
+                  {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
+               </div>
+               <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+            </form>
+
+            <div class="panel panel-default">
+               <div class="panel-body">
+                  Terms and Conditions Apply<br><br>
+                  <small>
+                     Only small items 5kg in weight and 1 metre in length are subject to gift wrapping, if your item does not fit in the specified box, Fastway will contact you. A gift receipt will not be included in the parcel, however the invoice will be sent directly to you.
+                     Items can only be sent within the Republic of Ireland. If the item is faulty or unwanted it must be returned by the account holder. Once your gift wrapped parcel has been delivered, your Littlewoods Ireland account will be charged for this service. The cost of this service is €5.99 per gift wrapped item.
+                     <br><br>
+                     If you have any queries in relation to the gift wrapping service please contact Littlewoods Ireland on 01 8112307 or email us at
+                     <a href="mailto:clickandcollect@shopdirect.com?Subject=Gift%20Wrapping" target="_top">clickandcollect@shopdirect.com</a>
+                  </small>
+              </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
+{% endblock %}
+

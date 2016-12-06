@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'idv.tracker',
     'idv.giftwrap',
     'idv.internal',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [
