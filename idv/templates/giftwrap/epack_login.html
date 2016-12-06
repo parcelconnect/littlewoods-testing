@@ -7,43 +7,40 @@
 {% endblock %}
 
 {% block content %}
-   <body>
-      <div class="container">
-         <div class="wrapper">
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive panel-img" alt="Littlewoods Ireland logo">
-                  <div class="panel-title">
-                     <h4>Gift Wrapping Depot Login</h4>
-                  </div>
-               </div>
-               <div class="panel-body">
-                  <form>
-                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-                     </div>
-                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                     </div>
-                     <button type="button" class="btn btn-primary btn-lg btn-block">Login</button>
-                  </form>
-               </div>
-               <div class="panel-footer">
-                  <div class="login-help"><a href="#">Register</a> - <a href="#">Forgot Password</a></div>
-               </div>
+    <div class="container">
+      <div class="wrapper">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive panel-img" alt="Littlewoods Ireland logo">
+            <div class="panel-title">
+              <h4>Gift Wrapping Depot Login</h4>
             </div>
-         </div>
+          </div>
+          <div class="panel-body">
+            <form method="POST" action="">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class="form-control" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Password">
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+            </form>
+          </div>
+          <div class="panel-footer">
+            <div class="login-help"><a href="#">Register</a> - <a href="#">Forgot Password</a></div>
+          </div>
+        </div>
       </div>
-      <!-- /.container -->
-      <div id="bg2">
-         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
-      </div>
-      <!-- Bootstrap core JavaScript
-         ================================================== -->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-   </body>
-</html>
+    </div>
+    <!-- /.container -->
+    <div id="bg2">
+       <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 {% endblock %}

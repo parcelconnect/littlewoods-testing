@@ -1,3 +1,8 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
@@ -17,9 +22,24 @@ class RequestWrapSuccess(TemplateView):
 
 class EpackLogin(TemplateView):
     template_name = 'giftwrap/epack_login.html'
-    success_url = 'success'
+
+    def post(self, request):
+        username = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(request.GET.get('next'))
+        else:
+            return super().render_to_response({})
 
 
+epack_login_required = login_required(
+    login_url=reverse_lazy("giftwrap:epack-login")
+)
+
+
+@method_decorator(epack_login_required, name="dispatch")
 class EpackSearch(TemplateView):
     template_name = 'giftwrap/order_search.html'
 
