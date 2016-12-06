@@ -62,3 +62,13 @@ class EpackSearch(TemplateView):
             'divert_address',
             'card_message'
         )
+
+
+class LwiStaffLogin(TemplateView):
+    template_name = 'giftwrap/lwi_login.html'
+    success_url = 'success'
+
+
+class LwiRequests(TemplateView):
+    template_name = 'giftwrap/lwi_requests.html'
+    success_url = 'success'
