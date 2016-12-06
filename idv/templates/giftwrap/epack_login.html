@@ -1,10 +1,6 @@
-{% extends 'giftwrap/epack_base.html' %}
+{% extends 'giftwrap/admin_base.html' %}
 
 {% load staticfiles %}
-{% load widget_tweaks %}
-
-{% block js %}
-{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -40,7 +36,4 @@
     <div id="bg2">
        <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
     </div>
-
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
 {% endblock %}
