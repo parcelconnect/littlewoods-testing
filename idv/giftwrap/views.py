@@ -95,8 +95,21 @@ class RequestDetails(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         pk = kwargs['pk']
         context['request'] = self._get_request(pk)
-        context['error'] = False
+        context['result'] = None
         return context
 
     def _get_request(self, pk):
         return GiftWrapRequest.objects.get(pk=pk)
+
+    def _update_upi(self, upi, instance):
+        instance.upi = upi
+        instance.status = GiftWrapRequestStatus.Success.value
+        instance.save()
+
+    def post(self, request, pk):
+        context = self.get_context_data(pk=pk)
+        upi = request.POST['upi']
+        if upi:
+            self._update_upi(upi, context['request'])
+            context['result'] = "success"
+        return super().render_to_response(context)

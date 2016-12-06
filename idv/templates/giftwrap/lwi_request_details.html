@@ -51,16 +51,24 @@
                      {{request.card_message}}
                   </address>
                   <hr>
-                  {% if error %}
+                  {% if result == "error" %}
                   <div class="alert alert-danger" role="alert">
                      <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
                   </div>
                   {% else %}
-                  <div class="form-group">
-                     <label for="Textarea"><strong>Enter UPI</strong></label>
-                     <input type="text" class="form-control" placeholder="Enter UPI">
-                  </div>
-                  <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+                    {% if result == "success" %}
+                    <div class="alert alert-success" role="alert">
+                      <strong>Success!</strong>
+                    </div>
+                    {% endif %}
+                  <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                       <label for="Textarea"><strong>Enter UPI</strong></label>
+                       <input type="text" name="upi" class="form-control" placeholder="Enter UPI"{% if request.upi %} value="{{ request.upi }}"{% endif %}>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  </form>
                   {% endif %}
                </div>
             </div>
