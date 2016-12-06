@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import GiftWrapRequestForm
-from .models import GiftWrapRequest
+from .models import GiftWrapRequest, GiftWrapRequestStatus
 
 
 class RequestWrap(CreateView):
@@ -34,7 +34,10 @@ class EpackSearch(TemplateView):
         return context
 
     def _get_orders_for_upi(self, upi):
-        return GiftWrapRequest.objects.filter(upi=upi).values(
+        return GiftWrapRequest.objects.filter(
+            upi=upi,
+            status=GiftWrapRequestStatus.Success.value,
+        ).values(
             'divert_contact_name',
             'divert_address',
             'card_message'
