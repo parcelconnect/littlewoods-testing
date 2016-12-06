@@ -22,11 +22,6 @@
       <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
       <link href="{% static "css/ie10-viewport-bug-workaround.css" %}" rel="stylesheet">
       {% endblock %}
-
-      {% block js %}
-      <!-- Latest compiled and minified JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      {% endblock %}
    </head>
    <body>
       <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -49,8 +44,12 @@
       </nav>
       {% block content %}
       {% endblock %}
-            <!-- Bootstrap core JavaScript
-         ================================================== -->
+          <!-- Bootstrap core JavaScript
+       ================================================== -->
+      {% block js %}
+      <!-- Latest compiled and minified JavaScript -->
       <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      {% endblock %}
    </body>
 </html>

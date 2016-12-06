@@ -3,10 +3,6 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
-{% block js %}
-  {{ block.super }}
-{% endblock %}
-
 {% block content %}
    <body>
       <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -71,11 +67,4 @@
       <div id="bg2">
          <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
       </div>
-      <!-- Bootstrap core JavaScript
-         ================================================== -->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-      <script src="https://use.fontawesome.com/65c0cec872.js"></script>
-   </body>
-</html>
 {% endblock %}
