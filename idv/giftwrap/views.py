@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
+from . import domain, ifs
 from .forms import GiftWrapRequestForm
 from .models import GiftWrapRequest, GiftWrapRequestStatus
 
@@ -111,15 +112,21 @@ class RequestDetails(TemplateView):
     def _get_request(self, pk):
         return GiftWrapRequest.objects.get(pk=pk)
 
-    def _update_upi(self, upi, instance):
+    def _make_request(self, upi, instance):
         instance.upi = upi
-        instance.status = GiftWrapRequestStatus.Success.value
-        instance.save()
+        try:
+            domain.request_gift_wrap(instance)
+        except ifs.TooLateError:
+            instance.mark_as_failed()
+        except ifs.IFSAPIError:
+            instance.mark_as_error()
+        else:
+            instance.mark_as_success()
+        return instance.status
 
     def post(self, request, pk):
         context = self.get_context_data(pk=pk)
         upi = request.POST['upi']
         if upi:
-            self._update_upi(upi, context['request'])
-            context['result'] = "success"
+            context['result'] = self._make_request(upi, context['request'])
         return super().render_to_response(context)
