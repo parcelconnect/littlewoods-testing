@@ -41,7 +41,7 @@ epack_login_required = login_required(
 
 @method_decorator(epack_login_required, name="dispatch")
 class EpackSearch(TemplateView):
-    template_name = 'giftwrap/order_search.html'
+    template_name = 'giftwrap/epack_search.html'
 
     def get_context_data(self):
         context = super().get_context_data()

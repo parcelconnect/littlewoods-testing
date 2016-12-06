@@ -1,0 +1,70 @@
+{% extends 'giftwrap/epack_base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+       <div class="container">
+          <div class="navbar-header">
+             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             </button>
+          </div>
+       </div>
+    </nav>
+    <div class="jumbotron">
+       <div class="container">
+          <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+          <h2>Christmas Gift Wrapping</h2>
+       </div>
+    </div>
+    <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
+    <div class="container">
+       <div class="wrapper">
+          <h3>Order Search</h3>
+          <form method="GET" action="">
+            <div class="input-group input-group">
+              <input class="form-control" name="upi" placeholder="Enter UPI" type="text" maxlength=16{% if upi and not order_details %} value="{{ upi }}"{% endif %}>
+              <span class="input-group-addon">
+              <button type="submit">
+              <span class="glyphicon glyphicon-search"></span>
+              </button>
+              </span>
+            </div>
+            {% if upi and not order_details %}
+            <ul class="errorlist"><li>UPI not found.</li></ul>
+            {% endif %}
+            {% for order in order_details %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="panel-title">UPI:{{ upi }}</div>
+                <span class="pull-right clickable"><i class="glyphicon glyphicon-remove"></i></span>
+              </div>
+              <div class="panel-body">
+                <address>
+                  <strong>Customer Name</strong><br>
+                  {{ order.divert_contact_name }}
+                </address>
+                <address>
+                  <strong>Delivery Address</strong><br>
+                  {{ order.divert_address }}
+                </address>
+                <address>
+                  <strong>Message for card</strong><br>
+                  {{ order.card_message }}
+                </address>
+              </div>
+            </div>
+            {% endfor %}
+          </form>
+       </div>
+    </div>
+    <!-- /.container -->
+    <div id="bg2">
+       <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+    </div>
+{% endblock %}
