@@ -26,7 +26,7 @@ class GiftWrapRequest(models.Model):
     email = models.EmailField()
 
     product_description = models.TextField()
-    upi = models.CharField(max_length=30, null=True)
+    upi = models.CharField(max_length=30, blank=True, default='')
 
     divert_address = models.CharField(max_length=80, blank=True, default='')
     divert_contact_name = models.CharField(

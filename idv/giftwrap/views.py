@@ -20,8 +20,7 @@ class RequestWrapSuccess(TemplateView):
     template_name = 'giftwrap/success.html'
 
 
-class EpackLogin(TemplateView):
-    template_name = 'giftwrap/epack_login.html'
+class TemplateLoginView(TemplateView):
 
     def post(self, request):
         username = request.POST['email']
@@ -34,6 +33,10 @@ class EpackLogin(TemplateView):
             return super().render_to_response({})
 
 
+class EpackLogin(TemplateLoginView):
+    template_name = 'giftwrap/epack_login.html'
+
+
 epack_login_required = login_required(
     login_url=reverse_lazy("giftwrap:epack-login")
 )
@@ -43,8 +46,8 @@ epack_login_required = login_required(
 class EpackSearch(TemplateView):
     template_name = 'giftwrap/epack_search.html'
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -64,16 +67,59 @@ class EpackSearch(TemplateView):
         )
 
 
-class LwiStaffLogin(TemplateView):
+lwi_login_required = login_required(
+    login_url=reverse_lazy("giftwrap:lwi-login")
+)
+
+
+class LWILogin(TemplateLoginView):
     template_name = 'giftwrap/lwi_login.html'
-    success_url = 'success'
 
 
-class LwiRequests(TemplateView):
+@method_decorator(lwi_login_required, name="dispatch")
+class RequestList(TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
-    success_url = 'success'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['pending_requests'] = self._get_pending_requests()
+        context['error_requests'] = self._get_error_requests()
+        return context
+
+    def _get_pending_requests(self):
+        return GiftWrapRequest.objects.filter(
+            status=GiftWrapRequestStatus.New.value
+        )
+
+    def _get_error_requests(self):
+        return GiftWrapRequest.objects.filter(
+            status=GiftWrapRequestStatus.Error.value
+        )
 
 
-class LwiRequestDetails(TemplateView):
+@method_decorator(lwi_login_required, name="dispatch")
+class RequestDetails(TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'
-    success_url = 'success'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        pk = kwargs['pk']
+        context['request'] = self._get_request(pk)
+        context['result'] = None
+        return context
+
+    def _get_request(self, pk):
+        return GiftWrapRequest.objects.get(pk=pk)
+
+    def _update_upi(self, upi, instance):
+        instance.upi = upi
+        instance.status = GiftWrapRequestStatus.Success.value
+        instance.save()
+
+    def post(self, request, pk):
+        context = self.get_context_data(pk=pk)
+        upi = request.POST['upi']
+        if upi:
+            self._update_upi(upi, context['request'])
+            context['result'] = "success"
+        return super().render_to_response(context)
