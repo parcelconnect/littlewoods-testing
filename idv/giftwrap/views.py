@@ -72,3 +72,8 @@ class LwiStaffLogin(TemplateView):
 class LwiRequests(TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
     success_url = 'success'
+
+
+class LwiRequestDetails(TemplateView):
+    template_name = 'giftwrap/lwi_request_details.html'
+    success_url = 'success'
