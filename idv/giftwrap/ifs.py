@@ -45,7 +45,8 @@ class Client:
         try:
             resp = self._session.post(url, json=data)
         except requests.exceptions.RequestException as e:
-            raise IFSAPIError('Error connecting to the IFS API: %s'.format(e))
+            raise IFSAPIError(
+                'Error connecting to the IFS API: %s'.format(e)) from e
 
         logger.info('[IFS]: POST Response (%s) from %s: %s', resp.status_code,
                     url, resp.content.decode())
