@@ -43,8 +43,8 @@ epack_login_required = login_required(
 class EpackSearch(TemplateView):
     template_name = 'giftwrap/epack_search.html'
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -66,15 +66,13 @@ class EpackSearch(TemplateView):
 
 class LwiStaffLogin(TemplateView):
     template_name = 'giftwrap/lwi_login.html'
-    success_url = 'success'
 
 
 class RequestList(TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
-    success_url = 'success'
 
-    def get_context_data(self):
-        context = super().get_context_data()
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
         context['pending_requests'] = self._get_pending_requests()
         context['error_requests'] = self._get_error_requests()
         return context
@@ -92,4 +90,13 @@ class RequestList(TemplateView):
 
 class RequestDetails(TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'
-    success_url = 'success'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        pk = kwargs['pk']
+        context['request'] = self._get_request(pk)
+        context['error'] = False
+        return context
+
+    def _get_request(self, pk):
+        return GiftWrapRequest.objects.get(pk=pk)

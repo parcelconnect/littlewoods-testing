@@ -24,42 +24,44 @@
       <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
       <div class="container">
          <div class="wrapper">
-            <h4>Requests to be processed</h4>
-
+            <h4>Request to be processed</h4>
                   <address>
                      <strong>LWI Account Number</strong>
-                     232345
+                     {{request.account_number}}
                   </address>
                   <address>
                      <strong>Email Address</strong>
-                     carla@email.com
+                     {{request.email}}
                   </address>
                   <address>
                      <strong>Product Description</strong><br>
-                     Armani Exchange Rose Gold Dial Rose Gold IP Plated Bracelet Ladies Watch
+                     {{request.product_description}}
                   </address>
                   <hr>
                   <address>
                      <strong>Customer Name</strong><br>
-                     Sarah Jane
+                     {{request.divert_contact_name}}
                   </address>
                   <address>
                      <strong>Delivery Address</strong><br>
-                     Address 1, Address 2, Town, County, Postcode
+                     {{request.divert_address}}
                   </address>
                   <address>
                      <strong>Message for card</strong><br>
-                     You're a narcissist and your family is dysfunctional. Still, Merry Christmas and Happy New Year!
+                     {{request.card_message}}
                   </address>
                   <hr>
+                  {% if error %}
                   <div class="alert alert-danger" role="alert">
                      <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
                   </div>
+                  {% else %}
                   <div class="form-group">
                      <label for="Textarea"><strong>Enter UPI</strong></label>
                      <input type="text" class="form-control" placeholder="Enter UPI">
                   </div>
                   <button type="button" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  {% endif %}
                </div>
             </div>
           </div>

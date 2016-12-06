@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^epack-search/$', views.EpackSearch.as_view(), name='epack-search'),
     url(r'^internal-login/$', views.LwiStaffLogin.as_view(), name='lwi-login'),
     url(r'^requests/$', views.RequestList.as_view(), name='lwi-requests'),
-    url(r'^requests/(\d+)$', views.RequestDetails.as_view(),
+    url(r'^requests/(?P<pk>\d+)$', views.RequestDetails.as_view(),
         name='lwi-request-details'),
 ]
