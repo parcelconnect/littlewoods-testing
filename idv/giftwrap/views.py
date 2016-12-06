@@ -20,8 +20,7 @@ class RequestWrapSuccess(TemplateView):
     template_name = 'giftwrap/success.html'
 
 
-class EpackLogin(TemplateView):
-    template_name = 'giftwrap/epack_login.html'
+class TemplateLoginView(TemplateView):
 
     def post(self, request):
         username = request.POST['email']
@@ -32,6 +31,10 @@ class EpackLogin(TemplateView):
             return redirect(request.GET.get('next'))
         else:
             return super().render_to_response({})
+
+
+class EpackLogin(TemplateLoginView):
+    template_name = 'giftwrap/epack_login.html'
 
 
 epack_login_required = login_required(
@@ -64,10 +67,16 @@ class EpackSearch(TemplateView):
         )
 
 
-class LwiStaffLogin(TemplateView):
+lwi_login_required = login_required(
+    login_url=reverse_lazy("giftwrap:lwi-login")
+)
+
+
+class LWILogin(TemplateLoginView):
     template_name = 'giftwrap/lwi_login.html'
 
 
+@method_decorator(lwi_login_required, name="dispatch")
 class RequestList(TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
 
@@ -88,6 +97,7 @@ class RequestList(TemplateView):
         )
 
 
+@method_decorator(lwi_login_required, name="dispatch")
 class RequestDetails(TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'
 

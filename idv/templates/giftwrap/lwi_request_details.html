@@ -25,51 +25,51 @@
       <div class="container">
          <div class="wrapper">
             <h4>Request to be processed</h4>
-                  <address>
-                     <strong>LWI Account Number</strong>
-                     {{request.account_number}}
-                  </address>
-                  <address>
-                     <strong>Email Address</strong>
-                     {{request.email}}
-                  </address>
-                  <address>
-                     <strong>Product Description</strong><br>
-                     {{request.product_description}}
-                  </address>
-                  <hr>
-                  <address>
-                     <strong>Customer Name</strong><br>
-                     {{request.divert_contact_name}}
-                  </address>
-                  <address>
-                     <strong>Delivery Address</strong><br>
-                     {{request.divert_address}}
-                  </address>
-                  <address>
-                     <strong>Message for card</strong><br>
-                     {{request.card_message}}
-                  </address>
-                  <hr>
-                  {% if result == "error" %}
-                  <div class="alert alert-danger" role="alert">
-                     <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
-                  </div>
-                  {% else %}
-                    {% if result == "success" %}
-                    <div class="alert alert-success" role="alert">
-                      <strong>Success!</strong>
-                    </div>
-                    {% endif %}
-                  <form method="POST" action="">
-                    {% csrf_token %}
-                    <div class="form-group">
-                       <label for="Textarea"><strong>Enter UPI</strong></label>
-                       <input type="text" name="upi" class="form-control" placeholder="Enter UPI"{% if request.upi %} value="{{ request.upi }}"{% endif %}>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
-                  </form>
-                  {% endif %}
+              <address>
+                 <strong>LWI Account Number</strong>
+                 {{request.account_number}}
+              </address>
+              <address>
+                 <strong>Email Address</strong>
+                 {{request.email}}
+              </address>
+              <address>
+                 <strong>Product Description</strong><br>
+                 {{request.product_description}}
+              </address>
+              <hr>
+              <address>
+                 <strong>Customer Name</strong><br>
+                 {{request.divert_contact_name}}
+              </address>
+              <address>
+                 <strong>Delivery Address</strong><br>
+                 {{request.divert_address}}
+              </address>
+              <address>
+                 <strong>Message for card</strong><br>
+                 {{request.card_message}}
+              </address>
+              <hr>
+              {% if result == "error" %}
+              <div class="alert alert-danger" role="alert">
+                 <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
+              </div>
+              {% else %}
+                {% if result == "success" %}
+                <div class="alert alert-success" role="alert">
+                  <strong>Success!</strong>
+                </div>
+                {% endif %}
+              <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                   <label for="Textarea"><strong>Enter UPI</strong></label>
+                   <input type="text" name="upi" class="form-control" placeholder="Enter UPI"{% if request.upi %} value="{{ request.upi }}"{% endif %}>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+              </form>
+              {% endif %}
                </div>
             </div>
           </div>
