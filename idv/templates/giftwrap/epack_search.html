@@ -35,13 +35,12 @@
               </span>
             </div>
             {% if upi and not order_details %}
-            <ul class="errorlist"><li>UPI not found.</li></ul>
+            <div class="alert alert-danger" role="alert">UPI not found.</div>
             {% endif %}
             {% for order in order_details %}
             <div class="panel panel-default">
               <div class="panel-heading">
                 <div class="panel-title">UPI:{{ upi }}</div>
-                <span class="pull-right clickable"><i class="glyphicon glyphicon-remove"></i></span>
               </div>
               <div class="panel-body">
                 <address>
