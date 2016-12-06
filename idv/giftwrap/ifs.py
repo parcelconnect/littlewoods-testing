@@ -51,13 +51,19 @@ class Client:
                     url, resp.content.decode())
         return resp
 
-    def request_gift_wrap(self, upi):
+    def request_gift_wrap(self, upi, address=None):
         data = {
             "giftwrap": {
                 "mode": "test",
                 "upi": [upi],
             }
         }
+        if address:
+            data['giftwrap']['receiver'] = {
+                "add1": address['address'],
+                "contact": address['name'],
+                "phone": address['phone_number']
+            }
         response = self._post(self.GIFTWRAP_URL_PATH, data)
 
         if response.status_code != 200:

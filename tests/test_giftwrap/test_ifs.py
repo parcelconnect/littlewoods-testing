@@ -39,6 +39,14 @@ class TestIFSClientRequestGiftWrap:
     def ifs_client(self, client_config):
         return ifs.Client(**client_config)
 
+    @pytest.fixture
+    def address(self):
+        return {
+            "address": "7 Stanley Studios, ark Walk, London",
+            "name": "Mr John Smith",
+            "phone_number": "393939393"
+        }
+
     @responses.activate
     def test_it_returns_true_when_response_ok(self, ifs_client):
         responses.add(responses.POST, self.url, json={"status": "ok"})
@@ -52,6 +60,26 @@ class TestIFSClientRequestGiftWrap:
             "giftwrap": {
                 "mode": "test",
                 "upi": ['MadeUpUPINum'],
+            }
+        }
+
+    @responses.activate
+    def test_it_sends_address_when_new_address_is_given(
+            self, ifs_client, address):
+        responses.add(responses.POST, self.url, json={"status": "ok"})
+        ifs_client.request_gift_wrap('MadeUpUPINum', address)
+
+        assert len(responses.calls) == 1
+        request_performed = responses.calls[0].request
+        assert json.loads(request_performed.body) == {
+            "giftwrap": {
+                "mode": "test",
+                "upi": ['MadeUpUPINum'],
+                "receiver": {
+                    "add1": "7 Stanley Studios, ark Walk, London",
+                    "contact": "Mr John Smith",
+                    "phone": "393939393"
+                }
             }
         }
 
