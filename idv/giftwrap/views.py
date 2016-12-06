@@ -73,6 +73,22 @@ class RequestList(TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
     success_url = 'success'
 
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['pending_requests'] = self._get_pending_requests()
+        context['error_requests'] = self._get_error_requests()
+        return context
+
+    def _get_pending_requests(self):
+        return GiftWrapRequest.objects.filter(
+            status=GiftWrapRequestStatus.New.value
+        )
+
+    def _get_error_requests(self):
+        return GiftWrapRequest.objects.filter(
+            status=GiftWrapRequestStatus.Error.value
+        )
+
 
 class RequestDetails(TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'

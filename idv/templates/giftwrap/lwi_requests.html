@@ -25,40 +25,26 @@
       <div class="container">
          <div class="wrapper">
             <h4>Requests to be processed</h4>
-            <!-- Request Panel -->
-            <a href="#">
+            {% for request in pending_requests %}
+            <a href="{% url 'giftwrap:lwi-request-details' request.id %}">
             <div class="panel panel-default">
                <div class="panel-heading">
-                  <div class="panel-title">Request #1</div>
+                  <div class="panel-title">{{request.email}} - {{request.account_number}}</div>
                </div>
             </div>
             </a>
-            <!-- Request Panel -->
-            <a href="#">
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <div class="panel-title">Request #2</div>
-               </div>
-            </div>
-            </a>
-            <!-- Request Panel -->
-             <a href="#">
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <div class="panel-title">Request #3</div>
-               </div>
-            </div>
-            </a>
+            {% endfor %}
             <hr>
             <h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error Requests <small >&nbsp;Please resubmit requests below</small></h4>
-            <!-- Error Panel -->
-            <a href="#">
+            {% for request in error_requests %}
+            <a href="{% url 'giftwrap:lwi-request-details' request.id %}">
             <div class="panel panel-error">
                <div class="panel-heading">
-                  <div class="panel-title">Request #2</div>
+                  <div class="panel-title">{{request.email}} - {{request.account_number}}</div>
                </div>
             </div>
             </a>
+            {% endfor %}
          </div>
       </div>
       <!-- /.container -->
