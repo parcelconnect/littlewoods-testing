@@ -63,7 +63,10 @@ class EpackSearch(TemplateView):
             status=GiftWrapRequestStatus.Success.value,
         ).values(
             'divert_contact_name',
-            'divert_address',
+            'divert_address1',
+            'divert_address2',
+            'divert_town',
+            'divert_county',
             'card_message'
         )
 
