@@ -36,11 +36,30 @@
                </div>
                <div class="clear"></div>
                <h4>Details for Gift Wrapping</h4>
+               <h5>New Address Details (if required)</h5>
                <div class="form-group">
-                  <label for="lwi-email-address">New address</label>
+                  <label for="lwi-email-address">Address Line 1</label>
                   <small class="form-text text-muted">&nbsp;(If required)</small>
-                  {{form.divert_address.errors}}
-                  {{ form.divert_address|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:New address" }}
+                  {{form.divert_address1.errors}}
+                  {{ form.divert_address1|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Address line 1" }}
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">Address Line 2</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  {{form.divert_address2.errors}}
+                  {{ form.divert_address2|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Address line 2" }}
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">Town</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  {{form.divert_town.errors}}
+                  {{ form.divert_town|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Town" }}
+               </div>
+               <div class="form-group">
+                  <label for="lwi-email-address">County</label>
+                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  {{form.divert_county.errors}}
+                  {{ form.divert_county|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:County" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">New contact name</label>
