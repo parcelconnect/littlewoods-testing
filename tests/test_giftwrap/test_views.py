@@ -1,7 +1,40 @@
 import pytest
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from idv.giftwrap.models import GiftWrapRequest
+from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
+
+
+@pytest.fixture
+def user():
+    return User.objects.create_user(username='lwuser', password='123456')
+
+
+@pytest.fixture
+def loggedin_user(client, user):
+    assert client.login(username=user.username, password='123456')
+    return user
+
+
+@pytest.fixture
+def request_new():
+    return GiftWrapRequest.objects.create(account_number="A01")
+
+
+@pytest.fixture
+def request_failed():
+    return GiftWrapRequest.objects.create(
+        account_number="A02",
+        status=GiftWrapRequestStatus.Failed.value
+    )
+
+
+@pytest.fixture
+def request_error():
+    return GiftWrapRequest.objects.create(
+        account_number="A02",
+        status=GiftWrapRequestStatus.Error.value
+    )
 
 
 @pytest.mark.django_db
@@ -36,3 +69,33 @@ class TestRequestWrapView:
         assert resp.status_code == 200
         assert 'This field is required.' in resp.content.decode()
         assert GiftWrapRequest.objects.count() == 0
+
+
+@pytest.mark.django_db
+class TestLWIRequestsView:
+
+    url = reverse('giftwrap:lwi-requests')
+
+    def test_it_redirects_to_login_page_when_not_authenticated(self, client):
+        resp = client.get(self.url)
+
+        assert resp.status_code == 302
+        assert resp['Location'] == (
+            '/gift-wrapping/internal-login/?next=/gift-wrapping/requests/')
+
+    def test_it_displays_requests_when_status_is_new(
+            self, loggedin_user, client, request_new, request_failed):
+        resp = client.get(self.url)
+
+        assert resp.status_code == 200
+        response = resp.content.decode()
+        assert request_new.account_number in response
+        assert request_failed.account_number not in response
+
+    def test_it_displays_requests_when_status_is_error(
+            self, loggedin_user, client, request_error):
+        resp = client.get(self.url)
+
+        assert resp.status_code == 200
+        response = resp.content.decode()
+        assert request_error.account_number in response
