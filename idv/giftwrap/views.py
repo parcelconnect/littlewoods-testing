@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
@@ -132,4 +133,6 @@ class RequestDetails(TemplateView):
         upi = request.POST['upi']
         if upi:
             context['result'] = self._make_request(upi, context['request'])
-        return super().render_to_response(context)
+            messages.info(request, 'Success')
+        url = reverse_lazy('giftwrap:lwi-requests')
+        return redirect(url)

@@ -24,6 +24,11 @@
       <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
       <div class="container">
          <div class="wrapper">
+            {% if mesages %}
+            <div class="alert alert-success" role="alert">
+              <strong>Success!</strong>
+            </div>
+            {% endif %}
             <h4>Requests to be processed</h4>
             {% for request in pending_requests %}
             <a href="{% url 'giftwrap:lwi-request-details' request.id %}">
