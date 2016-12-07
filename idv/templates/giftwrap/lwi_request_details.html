@@ -66,8 +66,11 @@
                 <form method="POST" action="">
                   {% csrf_token %}
                   <div class="form-group">
-                     <label for="Textarea"><strong>Enter UPI</strong></label>
-                     <input type="text" name="upi" class="form-control" placeholder="Enter UPI"{% if request.upi %} value="{{ request.upi }}"{% endif %}>
+                    <label for="Textarea"><strong>Enter UPI</strong></label>
+                    {% if result == "validation-error" %}
+                    <ul class="errorlist"><li>This field is required.</li></ul>
+                      {% endif %}
+                     <input type="text" name="upi" class="form-control" placeholder="Enter UPI" required{% if request.upi %} value="{{ request.upi }}"{% endif %}>
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>

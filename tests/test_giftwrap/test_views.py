@@ -1,7 +1,11 @@
+from unittest import mock
+
 import pytest
+import responses
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from idv.giftwrap import ifs
 from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
 
 
@@ -80,8 +84,9 @@ class TestLWIRequestsView:
         resp = client.get(self.url)
 
         assert resp.status_code == 302
-        assert resp['Location'] == (
-            '/gift-wrapping/internal-login/?next=/gift-wrapping/requests/')
+        login_url = reverse('giftwrap:lwi-login')
+        expected_redirect_url = "{}?next={}".format(login_url, self.url)
+        assert resp['Location'] == expected_redirect_url
 
     def test_it_displays_requests_when_status_is_new(
             self, loggedin_user, client, request_new, request_failed):
@@ -99,3 +104,80 @@ class TestLWIRequestsView:
         assert resp.status_code == 200
         response = resp.content.decode()
         assert request_error.account_number in response
+
+
+@pytest.mark.django_db
+class TestLWIRequestDetailsView:
+
+    def test_it_redirects_to_login_page_when_not_authenticated(
+            self, client, request_new):
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.get(url)
+
+        assert resp.status_code == 302
+        login_url = reverse('giftwrap:lwi-login')
+        expected_redirect_url = "{}?next={}".format(login_url, url)
+        assert resp['Location'] == expected_redirect_url
+
+    def test_it_displays_details_when_using_get(
+            self, loggedin_user, client, request_new):
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.get(url)
+
+        assert resp.status_code == 200
+        response = resp.content.decode()
+        assert request_new.account_number in response
+        assert request_new.card_message in response
+
+    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @responses.activate
+    def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
+            self, mock_request, loggedin_user, client, request_new):
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.post(url, data={})
+
+        assert resp.status_code == 400
+        response = resp.content.decode()
+        assert 'This field is required.' in response
+
+    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @responses.activate
+    def test_it_returns_201_and_displays_success_msg_when_post_succeeds(
+            self, mock_request, loggedin_user, client, request_new):
+        mock_request.return_value = True
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.post(url, data={'upi': 'foobar-upi'})
+
+        assert resp.status_code == 201
+        response = resp.content.decode()
+        assert 'Success!' in response
+
+    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @responses.activate
+    def test_it_returns_204_and_displays_failed_msg_when_post_fails(
+            self, mock_request, loggedin_user, client, request_new):
+        mock_request.side_effect = ifs.TooLateError('Late. Yes')
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.post(url, data={'upi': 'foobar-upi'})
+
+        assert resp.status_code == 202
+        response = resp.content.decode()
+        assert 'Request is too late' in response
+
+    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @responses.activate
+    def test_it_returns_204_and_displays_error_msg_when_post_fails(
+            self, mock_request, loggedin_user, client, request_new):
+        mock_request.side_effect = ifs.IFSAPIError('Catastrophe')
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.post(url, data={'upi': 'foobar-upi'})
+
+        assert resp.status_code == 202
+        response = resp.content.decode()
+        assert 'Request to IFS failed' in response
