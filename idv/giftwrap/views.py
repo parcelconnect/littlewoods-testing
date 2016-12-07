@@ -132,7 +132,9 @@ class RequestDetails(TemplateView):
         context = self.get_context_data(pk=pk)
         upi = request.POST['upi']
         if upi:
-            context['result'] = self._make_request(upi, context['request'])
-            messages.info(request, 'Success')
-        url = reverse_lazy('giftwrap:lwi-requests')
-        return redirect(url)
+            result = self._make_request(upi, context['request'])
+            context['result'] = result
+            if result == 'success':
+                messages.success(request, 'Success!')
+                url = reverse_lazy('giftwrap:lwi-requests')
+                return redirect(url)
