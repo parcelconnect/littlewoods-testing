@@ -62,7 +62,7 @@ img {
 .spinner-container {
   position: fixed;
   top: 50%;
-  left: 50%; 
-  z-index: 1; 
+  left: 50%;
+  z-index: 1;
   color: #00A7D4;
 }

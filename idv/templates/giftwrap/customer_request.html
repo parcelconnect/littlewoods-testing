@@ -36,48 +36,48 @@
                </div>
                <div class="clear"></div>
                <h4>Details for Gift Wrapping</h4>
-               <h5>New Address Details (if required)</h5>
+               <div class="form-group">
+                  <label for="exampleTextarea">Message for card</label>
+                  {{form.card_message.errors}}
+                  {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
+               </div>
+               <h5 style="font-size:1.20em;">New Address Details (if required)</h5>
                <div class="form-group">
                   <label for="lwi-email-address">Address Line 1</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                   {{form.divert_address1.errors}}
                   {{ form.divert_address1|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Address line 1" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">Address Line 2</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                   {{form.divert_address2.errors}}
                   {{ form.divert_address2|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Address line 2" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">Town</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                   {{form.divert_town.errors}}
                   {{ form.divert_town|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:Town" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">County</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                   {{form.divert_county.errors}}
                   {{ form.divert_county|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-name"|attr:"placeholder:County" }}
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">New contact name</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                    {{form.divert_contact_name.errors}}
-                   {{ form.divert_contact_name|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder: New name" }}
+                   {{ form.divert_contact_name|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-email-address"|attr:"placeholder: Name" }}
 
                </div>
                <div class="form-group">
                   <label for="lwi-email-address">New contact number</label>
-                  <small class="form-text text-muted">&nbsp;(If required)</small>
+                  <small class="form-text text-muted">&nbsp;</small>
                   {{form.divert_contact_number.errors}}
-                  {{ form.divert_contact_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-number"|attr:"placeholder: New contact number" }}
-               </div>
-               <div class="form-group">
-                  <label for="exampleTextarea">Message for card</label>
-                  {{form.card_message.errors}}
-                  {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
+                  {{ form.divert_contact_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-contact-number"|attr:"placeholder: Contact number" }}
                </div>
                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
             </form>
