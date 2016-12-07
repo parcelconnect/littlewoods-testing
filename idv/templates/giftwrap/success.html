@@ -1,1 +1,21 @@
-<p>Success buddy!</p>
+{% extends 'giftwrap/customer_base.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+  <div class="jumbotron">
+     <div class="container">
+        <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
+        <h2>Christmas Gift Wrapping</h2>
+     </div>
+  </div>
+  <div class="container">
+    <div class="wrapper white-bg">
+      <h4>Success!</h4>
+    </div>
+  </div>
+    <!-- /.container -->
+  <div id="bg">
+     <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+  </div>
+{% endblock %}

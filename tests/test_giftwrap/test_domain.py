@@ -16,7 +16,10 @@ class TestRequestGiftWrap:
         return GiftWrapRequest(
             account_number=123,
             upi="ABC123",
-            divert_address="7 Stanley Studios, ark Walk, London",
+            divert_address1="7 Stanley Studios",
+            divert_address2="Park Walk",
+            divert_town="Wexford Town",
+            divert_county="Wexford",
             divert_contact_name="Mr John Smith",
             divert_contact_number="393939393"
         )
@@ -40,7 +43,12 @@ class TestRequestGiftWrap:
 
         assert response["giftwrap"]["upi"] == ['ABC123']
         assert response["giftwrap"]["receiver"] == {
-            "add1": "7 Stanley Studios, ark Walk, London",
+            "add1": "7 Stanley Studios",
+            "add2": "Park Walk",
+            "add3": "Wexford Town",
+            "add4": "Wexford",
+            "add5": "",
+            "add6": "Republic of Ireland",
             "contact": "Mr John Smith",
             "phone": "393939393"
         }
