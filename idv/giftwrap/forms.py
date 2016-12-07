@@ -20,8 +20,15 @@ class GiftWrapRequestForm(forms.ModelForm):
     class Meta:
         model = GiftWrapRequest
         fields = [
-            'account_number', 'email', 'product_description',
-            'divert_address1', 'divert_contact_name', 'divert_contact_number',
+            'account_number',
+            'email',
+            'product_description',
+            'divert_address1',
+            'divert_address2',
+            'divert_town',
+            'divert_county',
+            'divert_contact_name',
+            'divert_contact_number',
             'card_message'
         ]
 
