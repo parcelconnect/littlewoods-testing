@@ -25,6 +25,7 @@ class Client:
         self.base_url = base_url
         self.username = username
         self.password = password
+        self.test_mode = test_mode
 
         self._session = self.create_session(username, password)
 
@@ -55,10 +56,11 @@ class Client:
     def request_gift_wrap(self, upi, address=None):
         data = {
             "giftwrap": {
-                "mode": "test",
                 "upi": [upi],
             }
         }
+        if self.test_mode is True:
+            data["giftwrap"]["mode"] = "test"
         if address:
             data['giftwrap']['receiver'] = {
                 "add1": address['address1'],

@@ -13,7 +13,6 @@ def client_config():
         'base_url': 'https://fastway.ie',
         'username': 'foo',
         'password': 'bar',
-        'test_mode': True
     }
 
 
@@ -61,6 +60,21 @@ class TestIFSClientRequestGiftWrap:
         assert request_performed.headers['referer'] == 'Littlewoods'
         assert json.loads(request_performed.body) == {
             "giftwrap": {
+                "upi": ['MadeUpUPINum'],
+            }
+        }
+
+    @responses.activate
+    def test_it_sets_test_mode_when_set(self, client_config):
+        responses.add(responses.POST, self.url, json={"status": "ok"})
+        client_config['test_mode'] = True
+        ifs_client = ifs.Client(**client_config)
+        ifs_client.request_gift_wrap('MadeUpUPINum')
+
+        assert len(responses.calls) == 1
+        request_performed = responses.calls[0].request
+        assert json.loads(request_performed.body) == {
+            "giftwrap": {
                 "mode": "test",
                 "upi": ['MadeUpUPINum'],
             }
@@ -76,7 +90,6 @@ class TestIFSClientRequestGiftWrap:
         request_performed = responses.calls[0].request
         assert json.loads(request_performed.body) == {
             "giftwrap": {
-                "mode": "test",
                 "upi": ['MadeUpUPINum'],
                 "receiver": {
                     "add1": "7 Stanley Studios",
