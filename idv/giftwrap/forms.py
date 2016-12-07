@@ -21,7 +21,7 @@ class GiftWrapRequestForm(forms.ModelForm):
         model = GiftWrapRequest
         fields = [
             'account_number', 'email', 'product_description',
-            'divert_address', 'divert_contact_name', 'divert_contact_number',
+            'divert_address1', 'divert_contact_name', 'divert_contact_number',
             'card_message'
         ]
 
