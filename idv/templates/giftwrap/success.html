@@ -3,19 +3,20 @@
 {% load staticfiles %}
 
 {% block content %}
-  <div class="jumbotron">
-     <div class="container">
-        <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
-        <h2>Christmas Gift Wrapping</h2>
-     </div>
-  </div>
-  <div class="container">
-    <div class="wrapper white-bg">
-      <h4>Success!</h4>
-    </div>
-  </div>
-    <!-- /.container -->
-  <div id="bg">
-     <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
-  </div>
+ <div class="container">
+         <div class="wrapper">
+            <div class="panel panel-default" style="text-align:center;">
+               <div class="panel-body">
+                  <h3><i class="fa fa-check-circle fa-5x"></i></h3>
+                  <h3>Success!</h3>
+                  Your Littlewoods Ireland gift wrapping order has been submitted successfully, and will be processed shortly. When order processing is complete, you will receive a confirmation email.
+                  <br><br>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- /.container -->
+      <div id="bg2">
+         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      </div>
 {% endblock %}
