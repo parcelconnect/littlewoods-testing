@@ -16,7 +16,8 @@ class TestRequestWrapView:
             'email': 'john@fastway.ie',
             'divert_contact_name': 'John Doe',
             'divert_contact_number': '123',
-            'divert_address': 'Stree 18, Sometown',
+            'divert_address1': 'Street 18',
+            'divert_town': 'Sometown',
             'product_description': 'Awesome present',
             'card_message': 'Best wishes'
         }
