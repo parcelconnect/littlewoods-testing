@@ -61,7 +61,12 @@ class Client:
         }
         if address:
             data['giftwrap']['receiver'] = {
-                "add1": address['address'],
+                "add1": address['address1'],
+                "add2": address['address2'],
+                "add3": address['town'],
+                "add4": address['county'],
+                "add5": "",
+                "add6": "Republic of Ireland",
                 "contact": address['name'],
                 "phone": address['phone_number']
             }

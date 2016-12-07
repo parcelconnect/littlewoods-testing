@@ -42,7 +42,10 @@ class TestIFSClientRequestGiftWrap:
     @pytest.fixture
     def address(self):
         return {
-            "address": "7 Stanley Studios, ark Walk, London",
+            "address1": "7 Stanley Studios",
+            "address2": "Park Walk",
+            "town": "Wexford Town",
+            "county": "Wexford",
             "name": "Mr John Smith",
             "phone_number": "393939393"
         }
@@ -76,7 +79,12 @@ class TestIFSClientRequestGiftWrap:
                 "mode": "test",
                 "upi": ['MadeUpUPINum'],
                 "receiver": {
-                    "add1": "7 Stanley Studios, ark Walk, London",
+                    "add1": "7 Stanley Studios",
+                    "add2": "Park Walk",
+                    "add3": "Wexford Town",
+                    "add4": "Wexford",
+                    "add5": "",
+                    "add6": "Republic of Ireland",
                     "contact": "Mr John Smith",
                     "phone": "393939393"
                 }
