@@ -140,8 +140,7 @@ class TestLWIRequestDetailsView:
         resp = client.post(url, data={})
 
         assert resp.status_code == 400
-        response = resp.content.decode()
-        assert 'This field is required.' in response
+        assert 'This field is required.' in resp.content.decode()
 
     @mock.patch('idv.giftwrap.domain.request_gift_wrap')
     @responses.activate
@@ -153,8 +152,7 @@ class TestLWIRequestDetailsView:
         resp = client.post(url, data={'upi': 'foobar-upi'})
 
         assert resp.status_code == 201
-        response = resp.content.decode()
-        assert 'Success!' in response
+        assert 'Success!' in resp.content.decode()
 
     @mock.patch('idv.giftwrap.domain.request_gift_wrap')
     @responses.activate
@@ -166,8 +164,7 @@ class TestLWIRequestDetailsView:
         resp = client.post(url, data={'upi': 'foobar-upi'})
 
         assert resp.status_code == 202
-        response = resp.content.decode()
-        assert 'Request is too late' in response
+        assert 'Request is too late' in resp.content.decode()
 
     @mock.patch('idv.giftwrap.domain.request_gift_wrap')
     @responses.activate
@@ -179,5 +176,55 @@ class TestLWIRequestDetailsView:
         resp = client.post(url, data={'upi': 'foobar-upi'})
 
         assert resp.status_code == 202
+        assert 'Request to IFS failed' in resp.content.decode()
+
+
+@pytest.mark.django_db
+class TestEpackSearchView:
+
+    url = reverse('giftwrap:epack-search')
+
+    def test_it_redirects_to_login_page_when_not_authenticated(self, client):
+        resp = client.get(self.url)
+
+        assert resp.status_code == 302
+        login_url = reverse('giftwrap:epack-login')
+        expected_redirect_url = "{}?next={}".format(login_url, self.url)
+        assert resp['Location'] == expected_redirect_url
+
+    def test_it_displays_text_when_using_get(self, loggedin_user, client):
+        resp = client.get(self.url)
+
+        assert resp.status_code == 200
+        assert 'Enter UPI' in resp.content.decode()
+
+    def test_it_displays_details_when_upi_found(
+            self, loggedin_user, client, request_new):
+        request_new.upi = "A001XXX"
+        request_new.card_message = "Lovely"
+        request_new.save()
+        resp = client.get(self.url, data={'upi': 'A001XXX'})
+
+        assert resp.status_code == 200
+        assert 'A001XXX' in resp.content.decode()
+
+    def test_it_displays_error_msg_when_upi_not_found(
+            self, loggedin_user, client):
+        resp = client.get(self.url, data={'upi': 'foobar-upi'})
+
+        assert resp.status_code == 200
+        assert 'UPI not found.' in resp.content.decode()
+
+    def test_it_displays_error_when_upi_present_but_status_new(
+            self, loggedin_user, client, request_new):
+        request_new.upi = "A001XXX"
+        request_new.card_message = "Lovely"
+        request_new.save()
+
+        resp = client.get(self.url, data={'upi': "A001XXX"})
+
+        assert resp.status_code == 200
         response = resp.content.decode()
-        assert 'Request to IFS failed' in response
+        assert 'UPI not found.' in response
+        assert 'value="A001XXX"' in response
+        assert 'Lovely' not in response
