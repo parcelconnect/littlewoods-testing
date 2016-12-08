@@ -63,11 +63,6 @@
                  <strong>Error!</strong> Request to IFS failed. Please try later.
               </div>
               {% else %}
-                {% if result == "success" %}
-                <div class="alert alert-success" role="alert">
-                  <strong>Success!</strong>
-                </div>
-                {% endif %}
                 <form method="POST" action="">
                   {% csrf_token %}
                   <div class="form-group">

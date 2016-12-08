@@ -24,6 +24,11 @@
       <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
       <div class="container">
          <div class="wrapper">
+            {% for message in messages %}
+							<div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}" role="alert">
+								<strong>{{ message }}</strong>
+							</div>
+            {% endfor %}
             <h4>Requests to be processed</h4>
             {% for request in pending_requests %}
             <a href="{% url 'giftwrap:lwi-request-details' request.id %}">
