@@ -151,8 +151,8 @@ class TestLWIRequestDetailsView:
                       kwargs={'pk': request_new.pk})
         resp = client.post(url, data={'upi': 'foobar-upi'})
 
-        assert resp.status_code == 201
-        assert 'Success!' in resp.content.decode()
+        assert resp.status_code == 302
+        assert resp['Location'] == reverse('giftwrap:lwi-requests')
 
     @mock.patch('idv.giftwrap.domain.request_gift_wrap')
     @responses.activate
