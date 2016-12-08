@@ -135,7 +135,8 @@ class RequestDetails(TemplateView):
             result = self._make_request(upi, context['request'])
             context['result'] = result
             if result == GiftWrapRequestStatus.Success.value:
-                messages.success(request, 'Success!')
+                msg = 'Success requesting gift wrapping for UPI {}'.format(upi)
+                messages.success(request, msg)
                 url = reverse_lazy('giftwrap:lwi-requests')
                 return redirect(url)
             else:
