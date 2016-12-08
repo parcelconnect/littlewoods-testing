@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView
 from . import domain
 from .forms import GiftWrapRequestForm
 from .models import GiftWrapRequest
+from .types import GiftWrapRequestStatus
 
 
 ##########################################################
@@ -60,7 +61,7 @@ class RequestDetails(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         pk = kwargs['pk']
-        context['request'] = self._get_gw_request(pk)
+        context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
         return context
 
@@ -73,7 +74,7 @@ class RequestDetails(TemplateView):
         upi = request.POST.get('upi')
         if upi:
             domain.update_upi(gw_request, upi)
-            result = domain.make_request(upi, context['request'])
+            result = domain.request_gift_wrap(gw_request)
             context['result'] = result
             if result == GiftWrapRequestStatus.Success.value:
                 msg = 'Success requesting gift wrapping for UPI {}'.format(upi)

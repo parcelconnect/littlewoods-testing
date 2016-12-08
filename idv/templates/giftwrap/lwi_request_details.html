@@ -27,31 +27,31 @@
             <h4>Request to be processed</h4>
               <address>
                  <strong>LWI Account Number</strong>
-                 {{request.account_number}}
+                 {{gw_request.account_number}}
               </address>
               <address>
                  <strong>Email Address</strong>
-                 {{request.email}}
+                 {{gw_request.email}}
               </address>
               <address>
                  <strong>Product Description</strong><br>
-                 {{request.product_description}}
+                 {{gw_request.product_description}}
               </address>
               <hr>
               <address>
                  <strong>Customer Name</strong><br>
-                 {{request.divert_contact_name}}
+                 {{gw_request.divert_contact_name}}
               </address>
               <address>
                  <strong>Delivery Address</strong><br>
-                 {{request.divert_address1}}<br>
+                 {{gw_request.divert_address1}}<br>
                  {{ order.divert_address2 }}<br>
                  {{ order.divert_town }}<br>
                  {{ order.divert_county }}
               </address>
               <address>
                  <strong>Message for card</strong><br>
-                 {{request.card_message}}
+                 {{gw_request.card_message}}
               </address>
               <hr>
               {% if result == "failed" %}
@@ -70,7 +70,7 @@
                     {% if result == "validation-error" %}
                     <ul class="errorlist"><li>This field is required.</li></ul>
                       {% endif %}
-                     <input type="text" name="upi" class="form-control" placeholder="Enter UPI" required{% if request.upi %} value="{{ request.upi }}"{% endif %}>
+                     <input type="text" name="upi" class="form-control" placeholder="Enter UPI" required{% if gw_request.upi %} value="{{ gw_request.upi }}"{% endif %}>
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>

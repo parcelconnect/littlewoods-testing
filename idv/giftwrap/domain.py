@@ -1,4 +1,4 @@
-from .ifs import get_client_from_settings, IFSAPIError, TooLateError
+from . import ifs
 from .models import GiftWrapRequest
 
 
@@ -19,12 +19,12 @@ def _build_divert_address(gift_wrap_request):
 
 def request_gift_wrap(instance):
     address = _build_divert_address(instance)
-    client = get_client_from_settings()
+    client = ifs.get_client_from_settings()
     try:
         client.request_gift_wrap(instance.upi, address)
-    except TooLateError:
+    except ifs.TooLateError:
         instance.mark_as_failed()
-    except IFSAPIError:
+    except ifs.IFSAPIError:
         instance.mark_as_error()
     else:
         instance.mark_as_success()

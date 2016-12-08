@@ -36,7 +36,7 @@ def request_failed():
 @pytest.fixture
 def request_error():
     return GiftWrapRequest.objects.create(
-        account_number="A02",
+        account_number="A03",
         status=GiftWrapRequestStatus.Error.value
     )
 
@@ -131,10 +131,9 @@ class TestLWIRequestDetailsView:
         assert request_new.account_number in response
         assert request_new.card_message in response
 
-    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
     @responses.activate
     def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
-            self, mock_request, loggedin_user, client, request_new):
+            self, loggedin_user, client, request_new):
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
         resp = client.post(url, data={})
@@ -142,10 +141,15 @@ class TestLWIRequestDetailsView:
         assert resp.status_code == 400
         assert 'This field is required.' in resp.content.decode()
 
-    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @mock.patch.object(
+        ifs.Client,
+        'request_gift_wrap',
+        return_value=True
+    )
     @responses.activate
     def test_it_returns_201_and_displays_success_msg_when_post_succeeds(
-            self, mock_request, loggedin_user, client, request_new):
+            self, mock_request, client_settings, loggedin_user, client,
+            request_new):
         mock_request.return_value = True
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
@@ -154,11 +158,15 @@ class TestLWIRequestDetailsView:
         assert resp.status_code == 302
         assert resp['Location'] == reverse('giftwrap:lwi-requests')
 
-    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @mock.patch.object(
+        ifs.Client,
+        'request_gift_wrap',
+        side_effect=ifs.TooLateError('Late. Yes')
+    )
     @responses.activate
     def test_it_returns_204_and_displays_failed_msg_when_post_fails(
-            self, mock_request, loggedin_user, client, request_new):
-        mock_request.side_effect = ifs.TooLateError('Late. Yes')
+            self, mock_request, client_settings, loggedin_user, client,
+            request_new):
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
         resp = client.post(url, data={'upi': 'foobar-upi'})
@@ -166,10 +174,15 @@ class TestLWIRequestDetailsView:
         assert resp.status_code == 202
         assert 'Request is too late' in resp.content.decode()
 
-    @mock.patch('idv.giftwrap.domain.request_gift_wrap')
+    @mock.patch.object(
+        ifs.Client,
+        'request_gift_wrap',
+        side_effect=ifs.IFSAPIError('Catastrophe')
+    )
     @responses.activate
     def test_it_returns_204_and_displays_error_msg_when_post_fails(
-            self, mock_request, loggedin_user, client, request_new):
+            self, mock_request, client_settings, loggedin_user, client,
+            request_new):
         mock_request.side_effect = ifs.IFSAPIError('Catastrophe')
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
