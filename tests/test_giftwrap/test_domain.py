@@ -32,6 +32,7 @@ class TestRequestGiftWrap:
         settings.IFS_API_TEST_MODE = True
 
     @responses.activate
+    @pytest.mark.django_db
     def test_it_sends_address_when_new_address_is_given(
             self, gift_wrap_request, client_settings):
         responses.add(responses.POST, self.url, json={"status": "ok"})

@@ -60,17 +60,19 @@ class RequestDetails(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         pk = kwargs['pk']
-        context['request'] = self._get_request(pk)
+        context['request'] = self._get_gw_request(pk)
         context['result'] = None
         return context
 
-    def _get_request(self, pk):
+    def _get_gw_request(self, pk):
         return GiftWrapRequest.objects.get(pk=pk)
 
     def post(self, request, pk):
         context = self.get_context_data(pk=pk)
+        gw_request = context['gw_request']
         upi = request.POST.get('upi')
         if upi:
+            domain.update_upi(gw_request, upi)
             result = domain.make_request(upi, context['request'])
             context['result'] = result
             if result == GiftWrapRequestStatus.Success.value:

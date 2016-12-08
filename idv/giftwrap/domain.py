@@ -2,8 +2,7 @@ from .ifs import get_client_from_settings, IFSAPIError, TooLateError
 from .models import GiftWrapRequest
 
 
-def request_gift_wrap(gift_wrap_request):
-    client = get_client_from_settings()
+def _get_gift_wrap_address(gift_wrap_request):
     if gift_wrap_request.divert_address1:
         address = {
             "address1": gift_wrap_request.divert_address1,
@@ -15,13 +14,14 @@ def request_gift_wrap(gift_wrap_request):
         }
     else:
         address = None
-    client.request_gift_wrap(gift_wrap_request.upi, address)
+    return address
 
 
-def make_request_to_ifs(self, upi, instance):
-    instance.upi = upi
+def request_gift_wrap(instance):
+    address = _get_gift_wrap_address(instance)
+    client = get_client_from_settings()
     try:
-        request_gift_wrap(instance)
+        client.request_gift_wrap(instance.upi, address)
     except TooLateError:
         instance.mark_as_failed()
     except IFSAPIError:
@@ -31,7 +31,12 @@ def make_request_to_ifs(self, upi, instance):
     return instance.status
 
 
-def get_orders_for_upi(self, upi):
+def update_upi(instance, upi):
+    instance.upi = upi
+    instance.save()
+
+
+def get_orders_for_upi(upi):
     return (
         GiftWrapRequest.objects
         .success()
