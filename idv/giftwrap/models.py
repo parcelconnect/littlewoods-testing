@@ -17,7 +17,7 @@ class GiftWrapRequestQuerySet(models.query.QuerySet):
         return self.filter(status=GiftWrapRequestStatus.Failed.value)
 
     def error(self):
-        return self.filter(status=GiftWrapRequestStatus.Failed.value)
+        return self.filter(status=GiftWrapRequestStatus.Error.value)
 
     def with_upi(self, upi):
         return self.filter(upi=upi)
