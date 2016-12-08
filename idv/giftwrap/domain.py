@@ -2,7 +2,7 @@ from .ifs import get_client_from_settings, IFSAPIError, TooLateError
 from .models import GiftWrapRequest
 
 
-def _get_gift_wrap_address(gift_wrap_request):
+def _build_divert_address(gift_wrap_request):
     if gift_wrap_request.divert_address1:
         address = {
             "address1": gift_wrap_request.divert_address1,
@@ -18,7 +18,7 @@ def _get_gift_wrap_address(gift_wrap_request):
 
 
 def request_gift_wrap(instance):
-    address = _get_gift_wrap_address(instance)
+    address = _build_divert_address(instance)
     client = get_client_from_settings()
     try:
         client.request_gift_wrap(instance.upi, address)
