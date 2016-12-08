@@ -130,11 +130,18 @@ class RequestDetails(TemplateView):
 
     def post(self, request, pk):
         context = self.get_context_data(pk=pk)
-        upi = request.POST['upi']
+        upi = request.POST.get('upi')
         if upi:
             result = self._make_request(upi, context['request'])
             context['result'] = result
-            if result == 'success':
-                messages.success(request, 'Success!')
+            if result == GiftWrapRequestStatus.Success.value:
+                msg = 'Success requesting gift wrapping for UPI {}'.format(upi)
+                messages.success(request, msg)
                 url = reverse_lazy('giftwrap:lwi-requests')
                 return redirect(url)
+            else:
+                status = 202
+        else:
+            status = 400
+            context['result'] = "validation-error"
+        return super().render_to_response(context, status=status)

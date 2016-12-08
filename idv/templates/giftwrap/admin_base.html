@@ -15,7 +15,6 @@
     <title>{% block title %}Littlewoods Ireland Gift Wrapping Depot Portal{% endblock %}</title>
 
     {% block css %}
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="{% static "css/style.css" %}" rel="stylesheet">
@@ -25,13 +24,13 @@
 
 
     {% block js %}
-    <!-- Latest compiled and minified JavaScript -->
+    <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {% endblock %}
   </head>
 
   <body>
-    {% block content %}
-    {% endblock %}
+  {% block content %}
+  {% endblock %}
   </body>
 </html>
