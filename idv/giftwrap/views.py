@@ -89,8 +89,6 @@ class RequestDetails(TemplateView):
         return super().render_to_response(context, status=status)
 
 
-
-
 ##########################################################
 #                       Epack views                      #
 ##########################################################
