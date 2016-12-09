@@ -46,8 +46,9 @@ class Client:
         try:
             resp = self._session.post(url, json=data)
         except requests.exceptions.RequestException as e:
-            raise IFSAPIError(
-                'Error connecting to the IFS API: %s'.format(e)) from e
+            error_msg = '[IFS]: Request error: %s'
+            logger.error(error_msg, e)
+            raise IFSAPIError(error_msg % e) from e
 
         logger.info('[IFS]: POST Response (%s) from %s: %s', resp.status_code,
                     url, resp.content.decode())
@@ -75,15 +76,17 @@ class Client:
         response = self._post(self.GIFTWRAP_URL_PATH, data)
 
         if response.status_code != 200:
-            raise IFSAPIError('Got {} status code'.
-                              format(response.status_code))
+            error_msg = '[IFS]: Unexpected status status code %s'
+            logger.error(error_msg, response.status_code)
+            raise IFSAPIError(error_msg % response.status_code)
         elif response.status_code == 200:
             status = response.json().get('status')
             if status == "fail":
                 raise TooLateError('Too late to gift wrap UPI {}'.format(upi))
             elif status != "ok":
-                raise IFSAPIError('Unkown response status. Response: {}'
-                                  .format(response.json()))
+                error_msg = '[IFS]: Unknown status value in response: %s'
+                logger.error(error_msg, status)
+                raise IFSAPIError(error_msg % status)
         return True
 
 
