@@ -68,7 +68,7 @@ class Client:
                 "add3": address['town'],
                 "add4": address['county'],
                 "add5": "",
-                "add6": "Republic of Ireland",
+                "add6": "Ireland",  # Only Ireland is supported
                 "contact": address['name'],
                 "phone": address['phone_number']
             }

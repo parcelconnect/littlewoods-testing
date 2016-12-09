@@ -97,7 +97,7 @@ class TestIFSClientRequestGiftWrap:
                     "add3": "Wexford Town",
                     "add4": "Wexford",
                     "add5": "",
-                    "add6": "Republic of Ireland",
+                    "add6": "Ireland",
                     "contact": "Mr John Smith",
                     "phone": "393939393"
                 }
