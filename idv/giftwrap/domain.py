@@ -1,5 +1,6 @@
 from . import ifs
 from .models import GiftWrapRequest
+from .types import GiftWrapRequestStatus
 
 
 def _build_divert_address(gift_wrap_request):
@@ -34,6 +35,11 @@ def request_gift_wrap(instance):
 def update_upi(instance, upi):
     instance.upi = upi
     instance.save()
+
+
+def reject_request(gw_request):
+    gw_request.status = GiftWrapRequestStatus.Rejected.value
+    gw_request.save()
 
 
 def get_orders_for_upi(upi):

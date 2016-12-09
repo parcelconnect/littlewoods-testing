@@ -88,6 +88,14 @@ class RequestDetails(TemplateView):
             context['result'] = "validation-error"
         return super().render_to_response(context, status=status)
 
+    def delete(self, request, pk):
+        context = self.get_context_data(pk=pk)
+        domain.reject_request(context['gw_request'])
+        msg = 'Request Rejected'
+        messages.success(request, msg)
+        url = reverse_lazy('giftwrap:lwi-requests')
+        return redirect(url)
+
 
 ##########################################################
 #                       Epack views                      #
