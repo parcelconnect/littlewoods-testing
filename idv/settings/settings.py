@@ -48,12 +48,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'idv.collector',
     'idv.mover',
     'idv.sftp',
     'idv.tracker',
     'idv.giftwrap',
-    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [
