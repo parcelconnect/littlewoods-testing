@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
@@ -90,11 +91,9 @@ class RequestDetails(TemplateView):
 
     def delete(self, request, pk):
         context = self.get_context_data(pk=pk)
-        domain.reject_request(context['gw_request'])
-        msg = 'Request Rejected'
-        messages.success(request, msg)
-        url = reverse_lazy('giftwrap:lwi-requests')
-        return redirect(url)
+        context['gw_request'].mark_as_rejected()
+        messages.success(request, 'Request Rejected')
+        return HttpResponse(status=200)
 
 
 ##########################################################

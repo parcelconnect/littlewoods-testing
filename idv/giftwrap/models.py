@@ -72,3 +72,7 @@ class GiftWrapRequest(models.Model):
     def mark_as_error(self):
         self.status = GiftWrapRequestStatus.Error.value
         self.save()
+
+    def mark_as_rejected(gw_request):
+        gw_request.status = GiftWrapRequestStatus.Rejected.value
+        gw_request.save()
