@@ -7,3 +7,4 @@ class GiftWrapRequestStatus(Enum):
     Success = 'success'
     Failed = 'failed'
     Error = 'error'
+    Rejected = 'rejected'

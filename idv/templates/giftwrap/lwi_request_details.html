@@ -73,6 +73,7 @@
                      <input type="text" name="upi" class="form-control" placeholder="Enter UPI" required{% if gw_request.upi %} value="{{ gw_request.upi }}"{% endif %}>
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  <button type="button" class="btn btn-default btn-lg btn-block reject">Delete</button>
                 </form>
               {% endif %}
                </div>
@@ -84,3 +85,7 @@
          <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
       </div>
  {% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript" src="{% static 'js/lwi_details.js' %}"> </script>
+{% endblock %}

@@ -191,6 +191,13 @@ class TestLWIRequestDetailsView:
         assert resp.status_code == 202
         assert 'Request to IFS failed' in resp.content.decode()
 
+    def test_if_status_changes_to_rejected_when_delete_method_is_used(
+            self, request_new, loggedin_user, client):
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.delete(url)
+        assert resp.status_code == 200
+
 
 @pytest.mark.django_db
 class TestEpackSearchView:
