@@ -195,13 +195,8 @@ class TestLWIRequestDetailsView:
             self, request_new, loggedin_user, client):
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-
         resp = client.delete(url)
-        gw_request = GiftWrapRequest.objects.get()
-
-        assert resp.status_code == 302
-        assert resp['Location'] == reverse('giftwrap:lwi-requests')
-        assert gw_request.status == GiftWrapRequestStatus.Rejected.value
+        assert resp.status_code == 200
 
 
 @pytest.mark.django_db
