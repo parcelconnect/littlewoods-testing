@@ -105,18 +105,30 @@ class TestIFSClientRequestGiftWrap:
         }
 
     @responses.activate
-    def test_it_raises_TooLateError_when_status_is_fail(self, ifs_client):
-        responses.add(responses.POST, self.url, json={"status": "fail"})
-
-        with pytest.raises(ifs.TooLateError):
+    def test_it_raises_apierror_when_post_raises_connection_error(
+            self, ifs_client):
+        with pytest.raises(ifs.IFSAPIError):
             ifs_client.request_gift_wrap('FoobarUPI')
 
         assert len(responses.calls) == 1
 
     @responses.activate
-    def test_post_connection_error_raises(self, ifs_client):
+    def test_it_raises_apierror_when_post_returns_non_200_statu(
+            self, ifs_client):
+        responses.add(responses.POST, self.url, status=500,
+                      json={"status": "ok"})
+
         with pytest.raises(ifs.IFSAPIError):
             # responses will raise a connection error here
             ifs_client.request_gift_wrap(self.url)
+
+        assert len(responses.calls) == 1
+
+    @responses.activate
+    def test_it_raises_TooLateError_when_status_is_fail(self, ifs_client):
+        responses.add(responses.POST, self.url, json={"status": "fail"})
+
+        with pytest.raises(ifs.TooLateError):
+            ifs_client.request_gift_wrap('FoobarUPI')
 
         assert len(responses.calls) == 1
