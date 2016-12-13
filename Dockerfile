@@ -1,6 +1,9 @@
 FROM ubuntu:14.04.4
 
 RUN apt-get update
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository ppa:fkrull/deadsnakes
+RUN apt-get update
 RUN apt-get install -y python3.5 python3.5-dev
 RUN apt-get install -y build-essential python3-pip
 RUN apt-get install -y libpq-dev python3-psycopg2
