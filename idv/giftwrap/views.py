@@ -74,6 +74,7 @@ class RequestDetails(TemplateView):
         gw_request = context['gw_request']
         upi = request.POST.get('upi')
         if upi:
+            upi = upi.strip()
             domain.update_upi(gw_request, upi)
             result = domain.request_gift_wrap(gw_request)
             context['result'] = result
