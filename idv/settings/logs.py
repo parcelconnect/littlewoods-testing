@@ -1,6 +1,6 @@
 import os
 
-from .django import INSTALLED_APPS
+from .settings import INSTALLED_APPS
 
 LOG_HANDLERS = ['console']
 
