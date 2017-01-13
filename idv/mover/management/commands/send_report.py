@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta
 from optparse import make_option
 
@@ -5,6 +6,8 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from idv.mover.commands import send_move_report
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -29,7 +32,10 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         since = self.get_since_date(kwargs.get('since'))
         until = self.get_until_date(kwargs.get('until'))
+        logger.info('Sending report on files uploaded from {} to {}...'
+                    .format(since, until))
         send_move_report(since, until)
+        logger.info('Success sending report.')
 
     def get_since_date(self, date):
         date_obj = None
