@@ -29,7 +29,8 @@ class GiftWrapRequestForm(forms.ModelForm):
             'divert_county',
             'divert_contact_name',
             'divert_contact_number',
-            'card_message'
+            'card_message',
+            'deliver_by_special_date'
         ]
 
     account_number = forms.CharField(
