@@ -21,8 +21,7 @@ def request_gift_wrap(instance):
     address = _build_divert_address(instance)
     client = ifs.get_client_from_settings()
     try:
-        client.request_gift_wrap(instance.upi,
-                                 address)
+        client.request_gift_wrap(instance.upi, address)
     except ifs.TooLateError:
         instance.mark_as_failed()
     except ifs.IFSAPIError:

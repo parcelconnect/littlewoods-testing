@@ -118,6 +118,7 @@ class EpackSearch(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
