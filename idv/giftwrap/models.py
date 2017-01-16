@@ -40,6 +40,7 @@ class GiftWrapRequest(models.Model):
     divert_county = models.CharField(max_length=50, blank=True)
     divert_contact_name = models.CharField(max_length=80, blank=True)
     divert_contact_number = models.CharField(max_length=80, blank=True)
+    deliver_by_special_date = models.BooleanField(default=False)
 
     card_message = models.TextField()
 
