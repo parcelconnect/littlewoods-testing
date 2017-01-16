@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -61,6 +62,7 @@ class RequestDetails(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
         pk = kwargs['pk']
         context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
@@ -133,6 +135,11 @@ class RequestWrap(CreateView):
     template_name = 'giftwrap/customer_request.html'
     success_url = 'success'
     form_class = GiftWrapRequestForm
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
+        return context
 
 
 class RequestWrapSuccess(TemplateView):
