@@ -224,7 +224,7 @@ IFS_API_TEST_MODE = env_as_bool('IFS_API_TEST_MODE', default=False)
 
 SPECIAL_DATE_NAME = os.environ.get('SPECIAL_DATE_NAME', '')
 
-WHITELABEL_DATE_SETTINGS = {
+SPECIAL_DATE_SETTINGS = {
     'Valentine\'s Day': {
         'image': 'img/lwi-gift-wrapping-bg.png',
     },
@@ -232,7 +232,7 @@ WHITELABEL_DATE_SETTINGS = {
     'Christmas': {
         'image': 'img/lwi-gift-wrapping-bg.png',
     },
-    # sets a default img if the special date name is not set
+    # sets a default image if SPECIAL_DATE_NAME is not set
     '': {
         'image': 'img/lwi-gift-wrapping-bg.png'
     },
