@@ -56,8 +56,25 @@ class TestRequestWrapView:
             'divert_address1': 'Street 18',
             'divert_town': 'Sometown',
             'product_description': 'Awesome present',
-            'card_message': 'Best wishes'
+            'card_message': 'Best wishes',
+            'deliver_by_special_date': True
         }
+
+    def test_it_displays_the_special_date_when_set(self, client, settings):
+        settings.SPECIAL_DATE_NAME = "Christmas"
+        resp = client.get(self.url)
+
+        assert resp.status_code == 200
+        assert resp.context['special_date_name'] == "Christmas"
+        assert 'Deliver by' in resp.content.decode()
+
+    def test_it_hides_the_special_date_when_not_set(self, client, settings):
+        settings.SPECIAL_DATE_NAME = ""
+        resp = client.get(self.url)
+
+        assert resp.status_code == 200
+        assert resp.context['special_date_name'] == ""
+        assert 'Deliver by' not in resp.content.decode()
 
     def test_new_request_is_stored_in_db(self, client, valid_post_data):
         resp = client.post(self.url, valid_post_data)
@@ -130,6 +147,28 @@ class TestLWIRequestDetailsView:
         response = resp.content.decode()
         assert request_new.account_number in response
         assert request_new.card_message in response
+
+    def test_it_displays_the_special_date_when_set(
+            self, loggedin_user, client, request_new, settings):
+        settings.SPECIAL_DATE_NAME = "Christmas"
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.get(url)
+
+        assert resp.status_code == 200
+        assert resp.context['special_date_name'] == "Christmas"
+        assert 'Deliver by' in resp.content.decode()
+
+    def test_it_hides_the_special_date_when_not_set(
+            self, loggedin_user, client, request_new, settings):
+        settings.SPECIAL_DATE_NAME = ""
+        url = reverse('giftwrap:lwi-request-details',
+                      kwargs={'pk': request_new.pk})
+        resp = client.get(url)
+
+        assert resp.status_code == 200
+        assert resp.context['special_date_name'] == ""
+        assert 'Deliver by' not in resp.content.decode()
 
     @responses.activate
     def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
@@ -204,6 +243,15 @@ class TestEpackSearchView:
 
     url = reverse('giftwrap:epack-search')
 
+    @pytest.fixture
+    def request_success(self):
+        return GiftWrapRequest.objects.create(
+            account_number="A01",
+            upi="A001XXX",
+            card_message="Lovely",
+            status=GiftWrapRequestStatus.Success.value
+        )
+
     def test_it_redirects_to_login_page_when_not_authenticated(self, client):
         resp = client.get(self.url)
 
@@ -219,14 +267,25 @@ class TestEpackSearchView:
         assert 'Enter UPI' in resp.content.decode()
 
     def test_it_displays_details_when_upi_found(
-            self, loggedin_user, client, request_new):
-        request_new.upi = "A001XXX"
-        request_new.card_message = "Lovely"
-        request_new.save()
+            self, loggedin_user, client, request_success, settings):
+        settings.SPECIAL_DATE_NAME = "Christmas"
         resp = client.get(self.url, data={'upi': 'A001XXX'})
 
         assert resp.status_code == 200
-        assert 'A001XXX' in resp.content.decode()
+        assert resp.context['special_date_name'] == "Christmas"
+        assert 'UPI:A001XXX' in resp.content.decode()
+        assert 'Lovely' in resp.content.decode()
+        assert "Deliver by" in resp.content.decode()
+
+    def test_it_does_not_display_special_date_when_not_set(
+            self, loggedin_user, client, request_success, settings):
+        settings.SPECIAL_DATE_NAME = ""
+        resp = client.get(self.url, data={'upi': 'A001XXX'})
+
+        assert resp.status_code == 200
+        assert resp.context['special_date_name'] == ""
+        assert 'UPI:A001XXX' in resp.content.decode()
+        assert "Deliver by" not in resp.content.decode()
 
     def test_it_displays_error_msg_when_upi_not_found(
             self, loggedin_user, client):
