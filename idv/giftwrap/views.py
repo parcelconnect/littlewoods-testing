@@ -51,6 +51,7 @@ class RequestList(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         context['pending_requests'] = GiftWrapRequest.objects.new()
         context['error_requests'] = GiftWrapRequest.objects.error()
         return context
