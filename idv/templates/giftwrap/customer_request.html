@@ -41,9 +41,9 @@
                   {{form.card_message.errors}}
                   {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
                </div>
-               {% if special_delivery_date %}
+               {% if special_date_name %}
                   <div class="form-group">
-                    <strong><label for="deliver_by_special_date">Deliver by {{ special_delivery_date }}?</label></strong>
+                    <strong><label for="deliver_by_special_date">Deliver by {{ special_date_name }}?</label></strong>
                      {{form.deliver_by_special_date.errors}}
                     {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date" }}
                  </div>

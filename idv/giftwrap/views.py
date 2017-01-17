@@ -62,7 +62,7 @@ class RequestDetails(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
+        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         pk = kwargs['pk']
         context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
@@ -118,7 +118,7 @@ class EpackSearch(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
+        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -139,7 +139,7 @@ class RequestWrap(CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_delivery_date'] = settings.SPECIAL_DELIVERY_DATE
+        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         return context
 
 

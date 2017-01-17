@@ -222,4 +222,4 @@ IFS_API_USERNAME = os.environ.get('IFS_API_USERNAME')
 IFS_API_PASSWORD = os.environ.get('IFS_API_PASSWORD')
 IFS_API_TEST_MODE = env_as_bool('IFS_API_TEST_MODE', default=False)
 
-SPECIAL_DELIVERY_DATE = os.environ.get('SPECIAL_DELIVERY_DATE', '')
+SPECIAL_DATE_NAME = os.environ.get('SPECIAL_DATE_NAME', '')

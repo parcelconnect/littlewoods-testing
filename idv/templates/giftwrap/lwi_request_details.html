@@ -54,9 +54,9 @@
                  {{gw_request.card_message}}
               </address>
               <hr>
-              {% if special_delivery_date %}
+              {% if special_date_name %}
                 <address>
-                   <strong>Deliver by {{ special_delivery_date }}?</strong><br>
+                   <strong>Deliver by {{ special_date_name }}?</strong><br>
                 {% if gw_request.deliver_by_special_date %}
                   Yes
                 {% else %}
