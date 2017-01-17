@@ -14,6 +14,8 @@ from .forms import GiftWrapRequestForm
 from .models import GiftWrapRequest
 from .types import GiftWrapRequestStatus
 
+from .mixins import SpecialDateMixin
+
 
 ##########################################################
 #                     Generic views                      #
@@ -41,40 +43,27 @@ lwi_login_required = login_required(
 )
 
 
-class LWILogin(TemplateLoginView):
+class LWILogin(SpecialDateMixin, TemplateLoginView):
     template_name = 'giftwrap/lwi_login.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
-        return context
 
 
 @method_decorator(lwi_login_required, name="dispatch")
-class RequestList(TemplateView):
+class RequestList(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
         context['pending_requests'] = GiftWrapRequest.objects.new()
         context['error_requests'] = GiftWrapRequest.objects.error()
         return context
 
 
 @method_decorator(lwi_login_required, name="dispatch")
-class RequestDetails(TemplateView):
+class RequestDetails(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
         pk = kwargs['pk']
         context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
@@ -120,26 +109,16 @@ epack_login_required = login_required(
 )
 
 
-class EpackLogin(TemplateLoginView):
+class EpackLogin(SpecialDateMixin, TemplateLoginView):
     template_name = 'giftwrap/epack_login.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
-        return context
 
 
 @method_decorator(epack_login_required, name="dispatch")
-class EpackSearch(TemplateView):
+class EpackSearch(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/epack_search.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -153,26 +132,11 @@ class EpackSearch(TemplateView):
 #                    Customer views                      #
 ##########################################################
 
-class RequestWrap(CreateView):
+class RequestWrap(SpecialDateMixin, CreateView):
     template_name = 'giftwrap/customer_request.html'
     success_url = 'success'
     form_class = GiftWrapRequestForm
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
-        context['special_date_name'] = special_date_name
-        return context
 
-
-class RequestWrapSuccess(TemplateView):
+class RequestWrapSuccess(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/success.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        special_date_name = settings.SPECIAL_DATE_NAME
-        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
-            special_date_name].get('image')
-        return context
