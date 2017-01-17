@@ -47,6 +47,7 @@ def get_orders_for_upi(upi):
             'divert_address2',
             'divert_town',
             'divert_county',
-            'card_message'
+            'card_message',
+            'deliver_by_special_date'
         )
     )

@@ -54,6 +54,16 @@
                  {{gw_request.card_message}}
               </address>
               <hr>
+              {% if special_date_name %}
+                <address>
+                   <strong>Deliver by {{ special_date_name }}?</strong><br>
+                {% if gw_request.deliver_by_special_date %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+                </address>
+              {% endif %}
               {% if result == "failed" %}
               <div class="alert alert-danger" role="alert">
                  <strong>Failure!</strong> Request is too late and cannot be processed. Please contact customer.
