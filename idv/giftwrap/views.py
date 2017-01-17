@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -11,10 +10,9 @@ from django.views.generic.edit import CreateView
 
 from . import domain
 from .forms import GiftWrapRequestForm
+from .mixins import SpecialDateMixin
 from .models import GiftWrapRequest
 from .types import GiftWrapRequestStatus
-
-from .mixins import SpecialDateMixin
 
 
 ##########################################################
