@@ -44,6 +44,13 @@ lwi_login_required = login_required(
 class LWILogin(TemplateLoginView):
     template_name = 'giftwrap/lwi_login.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
+        return context
+
 
 @method_decorator(lwi_login_required, name="dispatch")
 class RequestList(TemplateView):
@@ -51,7 +58,9 @@ class RequestList(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
         context['pending_requests'] = GiftWrapRequest.objects.new()
         context['error_requests'] = GiftWrapRequest.objects.error()
         return context
@@ -63,7 +72,9 @@ class RequestDetails(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
         pk = kwargs['pk']
         context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
@@ -112,6 +123,13 @@ epack_login_required = login_required(
 class EpackLogin(TemplateLoginView):
     template_name = 'giftwrap/epack_login.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
+        return context
+
 
 @method_decorator(epack_login_required, name="dispatch")
 class EpackSearch(TemplateView):
@@ -119,7 +137,9 @@ class EpackSearch(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -140,9 +160,19 @@ class RequestWrap(CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
+        context['special_date_name'] = special_date_name
         return context
 
 
 class RequestWrapSuccess(TemplateView):
     template_name = 'giftwrap/success.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        special_date_name = settings.SPECIAL_DATE_NAME
+        context['img'] = settings.WHITELABEL_DATE_SETTINGS[
+            special_date_name].get('image')
+        return context
