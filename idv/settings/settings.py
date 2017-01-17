@@ -228,7 +228,6 @@ SPECIAL_DATE_SETTINGS = {
     'Valentine\'s Day': {
         'image': 'img/lwi-gift-wrapping-bg.png',
     },
-
     'Christmas': {
         'image': 'img/lwi-gift-wrapping-bg.png',
     },

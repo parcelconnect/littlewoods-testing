@@ -66,7 +66,8 @@ class TestRequestWrapView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == "Christmas"
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'Deliver by' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(self, client, settings):
@@ -75,7 +76,8 @@ class TestRequestWrapView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == ""
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'Deliver by' not in resp.content.decode()
 
     def test_new_request_is_stored_in_db(self, client, valid_post_data):
@@ -159,7 +161,8 @@ class TestLWIRequestDetailsView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == "Christmas"
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'Deliver by' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(
@@ -171,7 +174,8 @@ class TestLWIRequestDetailsView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == ""
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'Deliver by' not in resp.content.decode()
 
     @responses.activate
@@ -277,7 +281,8 @@ class TestEpackSearchView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == "Christmas"
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
         assert 'Lovely' in resp.content.decode()
         assert "Deliver by" in resp.content.decode()
@@ -289,7 +294,8 @@ class TestEpackSearchView:
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == ""
-        assert 'lwi-gift-wrapping-bg.png' in resp.content.decode()
+        assert settings.SPECIAL_DATE_SETTINGS[
+            'Christmas']['image'] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
         assert "Deliver by" not in resp.content.decode()
 
