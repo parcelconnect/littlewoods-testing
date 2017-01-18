@@ -58,15 +58,10 @@
                   <strong>Message for card</strong><br>
                   {{ order.card_message }}
                 </address>
-                {% if special_date_name %}
-                  <address>
-                     <strong>Deliver on {{ special_date_name }}?</strong><br>
-                     {% if order.deliver_by_special_date %}
-                       Yes
-                     {% else %}
-                       No
-                     {% endif %}
-                  </address>
+                {% if special_date_name and order.deliver_by_special_date %}
+                <address id="special_date_delivery_message">
+                   <strong>Deliver this Parcel on {{ special_date_name }}</strong><br>
+                </address>
               {% endif %}
               </div>
             </div>

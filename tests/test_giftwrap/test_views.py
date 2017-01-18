@@ -163,7 +163,6 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver on' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(
             self, loggedin_user, client, request_new, settings):
@@ -176,7 +175,6 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver on' not in resp.content.decode()
 
     @responses.activate
     def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
@@ -285,7 +283,6 @@ class TestEpackSearchView:
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
         assert 'Lovely' in resp.content.decode()
-        assert "Deliver on" in resp.content.decode()
 
     def test_it_does_not_display_special_date_when_not_set(
             self, loggedin_user, client, request_success, settings):
@@ -297,7 +294,6 @@ class TestEpackSearchView:
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
-        assert "Deliver on" not in resp.content.decode()
 
     def test_it_displays_error_msg_when_upi_not_found(
             self, loggedin_user, client):

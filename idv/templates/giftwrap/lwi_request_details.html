@@ -54,14 +54,9 @@
                  {{gw_request.card_message}}
               </address>
               <hr>
-              {% if special_date_name %}
-                <address>
-                   <strong>Deliver on {{ special_date_name }}?</strong><br>
-                {% if gw_request.deliver_by_special_date %}
-                  Yes
-                {% else %}
-                  No
-                {% endif %}
+              {% if special_date_name and order.deliver_by_special_date %}
+                <address id="special_date_delivery_message">
+                   <strong>Deliver this Parcel on {{ special_date_name }}</strong><br>
                 </address>
               {% endif %}
               {% if result == "failed" %}
