@@ -68,7 +68,7 @@ class TestRequestWrapView:
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver on' in resp.content.decode()
+        assert 'delivered on' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(self, client, settings):
         settings.SPECIAL_DATE_NAME = ""
@@ -78,7 +78,7 @@ class TestRequestWrapView:
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver on' not in resp.content.decode()
+        assert 'delivered on' not in resp.content.decode()
 
     def test_new_request_is_stored_in_db(self, client, valid_post_data):
         resp = client.post(self.url, valid_post_data)

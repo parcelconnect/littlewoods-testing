@@ -43,7 +43,7 @@
                </div>
                {% if special_date_name %}
                   <div class="form-group">
-                    <strong><label for="deliver_by_special_date">Deliver on {{ special_date_name }}?</label></strong>
+                    <strong><label for="deliver_by_special_date">Have your parcel delivered on {{ special_date_name }}?</label></strong>
                      {{form.deliver_by_special_date.errors}}
                     {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date"|attr:"class:checkbox-inline" }}
                  </div>
