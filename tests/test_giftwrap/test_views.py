@@ -155,6 +155,8 @@ class TestLWIRequestDetailsView:
     def test_it_displays_the_special_date_when_set(
             self, loggedin_user, client, request_new, settings):
         settings.SPECIAL_DATE_NAME = "Christmas"
+        request_new.deliver_by_special_date = True
+        request_new.save()
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
         resp = client.get(url)
@@ -163,6 +165,7 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
+        assert 'Deliver this parcel on' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(
             self, loggedin_user, client, request_new, settings):
@@ -175,6 +178,7 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
+        assert 'Deliver this parcel on' not in resp.content.decode()
 
     @responses.activate
     def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
@@ -275,6 +279,8 @@ class TestEpackSearchView:
     def test_it_displays_details_when_upi_found(
             self, loggedin_user, client, request_success, settings):
         settings.SPECIAL_DATE_NAME = "Christmas"
+        request_success.deliver_by_special_date = True
+        request_success.save()
         resp = client.get(self.url, data={'upi': 'A001XXX'})
 
         assert resp.status_code == 200
@@ -283,6 +289,7 @@ class TestEpackSearchView:
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
         assert 'Lovely' in resp.content.decode()
+        assert "Deliver this parcel on" in resp.content.decode()
 
     def test_it_does_not_display_special_date_when_not_set(
             self, loggedin_user, client, request_success, settings):
@@ -294,6 +301,7 @@ class TestEpackSearchView:
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
+        assert "Deliver this parcel on" not in resp.content.decode()
 
     def test_it_displays_error_msg_when_upi_not_found(
             self, loggedin_user, client):

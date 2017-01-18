@@ -45,18 +45,18 @@
               <address>
                  <strong>Delivery Address</strong><br>
                  {{gw_request.divert_address1}}<br>
-                 {{ order.divert_address2 }}<br>
-                 {{ order.divert_town }}<br>
-                 {{ order.divert_county }}
+                 {{ gw_request.divert_address2 }}<br>
+                 {{ gw_request.divert_town }}<br>
+                 {{ gw_request.divert_county }}
               </address>
               <address>
                  <strong>Message for card</strong><br>
                  {{gw_request.card_message}}
               </address>
               <hr>
-              {% if special_date_name and order.deliver_by_special_date %}
+              {% if special_date_name and gw_request.deliver_by_special_date %}
                 <address id="special_date_delivery_message">
-                   <strong>Deliver this Parcel on {{ special_date_name }}</strong><br>
+                   <strong>Deliver this parcel on {{ special_date_name }}</strong><br>
                 </address>
               {% endif %}
               {% if result == "failed" %}
