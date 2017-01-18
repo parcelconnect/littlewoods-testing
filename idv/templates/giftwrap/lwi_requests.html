@@ -19,7 +19,7 @@
     <div class="jumbotron">
        <div class="container">
           <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
-          <h2>Christmas Gift Wrapping</h2>
+          <h2>{{ special_date_name }} Gift Wrapping</h2>
        </div>
     </div>
 
@@ -57,6 +57,6 @@
     <!-- /.container -->
 
     <div id="bg2">
-      <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+      <img src="{% static background_img %}" alt="">
     </div>
  {% endblock %}

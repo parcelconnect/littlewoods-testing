@@ -236,6 +236,9 @@ h4 {
     background:transparent;
 }
 
+#deliver_by_special_date {
+  margin-top: -2px;
+}
 
 @media screen and (min-width: 768px) {
 .jumbotron {

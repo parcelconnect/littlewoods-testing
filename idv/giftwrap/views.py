@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -11,6 +10,7 @@ from django.views.generic.edit import CreateView
 
 from . import domain
 from .forms import GiftWrapRequestForm
+from .mixins import SpecialDateMixin
 from .models import GiftWrapRequest
 from .types import GiftWrapRequestStatus
 
@@ -41,12 +41,12 @@ lwi_login_required = login_required(
 )
 
 
-class LWILogin(TemplateLoginView):
+class LWILogin(SpecialDateMixin, TemplateLoginView):
     template_name = 'giftwrap/lwi_login.html'
 
 
 @method_decorator(lwi_login_required, name="dispatch")
-class RequestList(TemplateView):
+class RequestList(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/lwi_requests.html'
 
     def get_context_data(self, *args, **kwargs):
@@ -57,12 +57,11 @@ class RequestList(TemplateView):
 
 
 @method_decorator(lwi_login_required, name="dispatch")
-class RequestDetails(TemplateView):
+class RequestDetails(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/lwi_request_details.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         pk = kwargs['pk']
         context['gw_request'] = self._get_gw_request(pk)
         context['result'] = None
@@ -108,17 +107,16 @@ epack_login_required = login_required(
 )
 
 
-class EpackLogin(TemplateLoginView):
+class EpackLogin(SpecialDateMixin, TemplateLoginView):
     template_name = 'giftwrap/epack_login.html'
 
 
 @method_decorator(epack_login_required, name="dispatch")
-class EpackSearch(TemplateView):
+class EpackSearch(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/epack_search.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
         upi = self.request.GET.get('upi')
         if upi:
             context['upi'] = upi
@@ -132,16 +130,11 @@ class EpackSearch(TemplateView):
 #                    Customer views                      #
 ##########################################################
 
-class RequestWrap(CreateView):
+class RequestWrap(SpecialDateMixin, CreateView):
     template_name = 'giftwrap/customer_request.html'
     success_url = 'success'
     form_class = GiftWrapRequestForm
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['special_date_name'] = settings.SPECIAL_DATE_NAME
-        return context
 
-
-class RequestWrapSuccess(TemplateView):
+class RequestWrapSuccess(SpecialDateMixin, TemplateView):
     template_name = 'giftwrap/success.html'

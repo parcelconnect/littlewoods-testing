@@ -7,7 +7,7 @@
       <div class="jumbotron">
          <div class="container">
             <img src="{% static "img/lwi-logo-horizontal-white.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
-            <h2>Christmas Gift Wrapping</h2>
+            <h2>{{ special_date_name }} Gift Wrapping</h2>
          </div>
       </div>
       <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
@@ -43,9 +43,9 @@
                </div>
                {% if special_date_name %}
                   <div class="form-group">
-                    <strong><label for="deliver_by_special_date">Deliver by {{ special_date_name }}?</label></strong>
+                    <strong><label for="deliver_by_special_date">Deliver on {{ special_date_name }}?</label></strong>
                      {{form.deliver_by_special_date.errors}}
-                    {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date" }}
+                    {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date"|attr:"class:checkbox-inline" }}
                  </div>
                 {% endif %}
                <h5 style="font-size:1.20em;">New Address Details (if required)</h5>
@@ -104,7 +104,7 @@
       </div>
       <!-- /.container -->
       <div id="bg">
-         <img src="{% static "img/lwi-gift-wrapping-bg.png" %}" alt="">
+         <img src="{% static background_img %}" alt="">
       </div>
 {% endblock %}
 
