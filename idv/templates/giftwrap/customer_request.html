@@ -45,7 +45,7 @@
                   <div class="form-group">
                     <strong><label for="deliver_by_special_date">Deliver by {{ special_date_name }}?</label></strong>
                      {{form.deliver_by_special_date.errors}}
-                    {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date" }}
+                    {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date"|attr:"class:checkbox-inline" }}
                  </div>
                 {% endif %}
                <h5 style="font-size:1.20em;">New Address Details (if required)</h5>
