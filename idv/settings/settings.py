@@ -224,15 +224,7 @@ IFS_API_TEST_MODE = env_as_bool('IFS_API_TEST_MODE', default=False)
 
 SPECIAL_DATE_NAME = os.environ.get('SPECIAL_DATE_NAME', '')
 
-SPECIAL_DATE_SETTINGS = {
-    'Valentine\'s Day': {
-        'image': 'img/lwi-gift-wrapping-bg.png',
-    },
-    'Christmas': {
-        'image': 'img/lwi-gift-wrapping-bg.png',
-    },
-    # sets a default image if SPECIAL_DATE_NAME is not set
-    '': {
-        'image': 'img/lwi-gift-wrapping-bg.png'
-    },
+SPECIAL_DATE_IMAGE = {
+    'Valentine\'s Day': 'img/lwi-gift-wrapping-bg.png',
+    'Christmas': 'img/lwi-gift-wrapping-bg.png',
 }
