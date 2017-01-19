@@ -62,6 +62,7 @@ h4 {
 
 .white-bg {
   background-color:#fff;
+  margin-bottom: -20px;
 }
 
 /* Buttons */
@@ -102,7 +103,7 @@ h4 {
 /* Background Image */
 
 #bg, #bg2 {
-  height:200%;
+  height:178%;
   left:-50%;
   position:fixed;
   width:200%;
