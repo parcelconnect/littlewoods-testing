@@ -13,7 +13,8 @@ class TestGiftWrapRequestForm:
                 'divert_address1': 'Street 18',
                 'divert_town': 'Sometown',
                 'product_description': 'Awesome present',
-                'card_message': 'Best wishes'
+                'card_message': 'Best wishes',
+                'deliver_by_special_date': 'Before'
             }
         )
         assert form.is_valid(), form.errors

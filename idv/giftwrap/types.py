@@ -8,3 +8,9 @@ class GiftWrapRequestStatus(Enum):
     Failed = 'failed'
     Error = 'error'
     Rejected = 'rejected'
+
+
+@unique
+class DeliverBySpecialDate(Enum):
+    Before = "Before"
+    On = "On"
