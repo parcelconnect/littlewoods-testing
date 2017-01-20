@@ -57,7 +57,7 @@ class TestRequestWrapView:
             'divert_town': 'Sometown',
             'product_description': 'Awesome present',
             'card_message': 'Best wishes',
-            'deliver_by_special_date': True
+            'deliver_by_special_date': 'Before'
         }
 
     def test_it_displays_the_special_date_when_set(self, client, settings):

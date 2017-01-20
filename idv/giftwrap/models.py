@@ -2,7 +2,7 @@ from django.db import models
 
 from idv.common.utils import enum_to_choices
 
-from .types import GiftWrapRequestStatus
+from .types import DeliverBySpecialDate, GiftWrapRequestStatus
 
 
 class GiftWrapRequestQuerySet(models.query.QuerySet):
@@ -40,7 +40,10 @@ class GiftWrapRequest(models.Model):
     divert_county = models.CharField(max_length=50, blank=True)
     divert_contact_name = models.CharField(max_length=80, blank=True)
     divert_contact_number = models.CharField(max_length=80, blank=True)
-    deliver_by_special_date = models.BooleanField(default=False)
+    deliver_by_special_date = models.CharField(
+        max_length=8,
+        choices=enum_to_choices(DeliverBySpecialDate),
+    )
 
     card_message = models.TextField()
 
