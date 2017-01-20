@@ -68,7 +68,7 @@ class TestRequestWrapView:
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'delivered on' in resp.content.decode()
+        assert 'Christmas' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(self, client, settings):
         settings.SPECIAL_DATE_NAME = ""
@@ -78,7 +78,7 @@ class TestRequestWrapView:
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'delivered on' not in resp.content.decode()
+        assert 'Christmas' not in resp.content.decode()
 
     def test_new_request_is_stored_in_db(self, client, valid_post_data):
         resp = client.post(self.url, valid_post_data)
@@ -165,7 +165,7 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver this parcel on' in resp.content.decode()
+        assert 'Deliver this parcel' in resp.content.decode()
 
     def test_it_hides_the_special_date_when_not_set(
             self, loggedin_user, client, request_new, settings):
@@ -178,7 +178,7 @@ class TestLWIRequestDetailsView:
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'Deliver this parcel on' not in resp.content.decode()
+        assert 'Deliver this parcel' not in resp.content.decode()
 
     @responses.activate
     def test_it_returns_400_and_displays_error_msg_when_post_has_no_upi_value(
@@ -289,7 +289,7 @@ class TestEpackSearchView:
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
         assert 'Lovely' in resp.content.decode()
-        assert "Deliver this parcel on" in resp.content.decode()
+        assert "Deliver this parcel" in resp.content.decode()
 
     def test_it_does_not_display_special_date_when_not_set(
             self, loggedin_user, client, request_success, settings):
@@ -301,7 +301,7 @@ class TestEpackSearchView:
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
         assert 'UPI:A001XXX' in resp.content.decode()
-        assert "Deliver this parcel on" not in resp.content.decode()
+        assert "Deliver this parcel" not in resp.content.decode()
 
     def test_it_displays_error_msg_when_upi_not_found(
             self, loggedin_user, client):
