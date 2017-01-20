@@ -242,7 +242,7 @@ h4 {
 }
 
 #special_date_delivery_message {
-  color: red;
+  color: #e10129;
   text-transform: uppercase;
 }
 
@@ -251,4 +251,46 @@ h4 {
     padding-top: 40px;
     padding-bottom: 20px;
   }
+}
+
+/* Special Delivery Options */
+
+.special-delivery-options {
+  background: #e10129;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  padding: 5px 0px;
+  margin: 25px 0px;
+}
+
+.special-delivery-options .form-group {
+  margin-bottom: 0px;
+}
+
+.special-delivery-options p {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top:2.5px;
+}
+
+.special-delivery-options label {
+  font-size: 14px;
+}
+
+.special-delivery-options input[type=radio]{
+  width:15px;
+  height: 15px;
+  background: #fff;
+  margin-top:0px;
+}
+
+.special-delivery-options img {
+  width: 15%;
+  float: right;
+  margin-top: 1%;
+  margin-right: 4%;
+  -ms-transform: rotate(20deg);
+  -webkit-transform: rotate(20deg);
+  transform: rotate(20deg);
 }

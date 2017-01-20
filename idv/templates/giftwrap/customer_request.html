@@ -42,11 +42,19 @@
                   {{ form.card_message|add_class:"form-control"|attr:"lwi-product-desc"|attr:"rows:3"}}
                </div>
                {% if special_date_name %}
-                  <div class="form-group">
-                    <strong><label for="deliver_by_special_date">Have your parcel delivered on {{ special_date_name }}?</label></strong>
-                     {{form.deliver_by_special_date.errors}}
-                    {{ form.deliver_by_special_date|attr:"type:checkbox"|attr:"id:deliver_by_special_date"|attr:"class:checkbox-inline" }}
-                 </div>
+                  <div class="panel panel-default special-delivery-options">
+                    <div class="panel-body">
+                      <img src="{% static "img/lwi-parcel-icon.png" %}"/>
+                      <p>When would you like your gift delivered?</p>
+                      <div class="form-group">
+                        <input type="radio" name="deliver_by_special_date" value="Before" class="radio-inline" checked="checked">
+                        <strong><label for="deliver_by_special_date">Before {{ special_date_name }}</label></strong>
+                       <br>
+                       <input type="radio" name="deliver_by_special_date" value="On" class="radio-inline">
+                      <strong><label for="deliver_by_special_date">On {{ special_date_name }}</label></strong>
+                     </div>
+                    </div>
+                  </div>
                 {% endif %}
                <h5 style="font-size:1.20em;">New Address Details (if required)</h5>
                <div class="form-group">

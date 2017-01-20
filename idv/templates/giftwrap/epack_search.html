@@ -23,7 +23,7 @@
     </div>
     <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
     <div class="container">
-       <div class="wrapper">
+       <div class="wrapper white-bg">
           <h3>Order Search</h3>
           <form method="GET" action="">
             <div class="input-group input-group">
@@ -60,7 +60,7 @@
                 </address>
                 {% if special_date_name and order.deliver_by_special_date %}
                 <address id="special_date_delivery_message">
-                   <strong>Deliver this parcel on {{ special_date_name }}</strong><br>
+                   <strong>Deliver this parcel {{ order.deliver_by_special_date}} {{ special_date_name }}</strong><br>
                 </address>
               {% endif %}
               </div>

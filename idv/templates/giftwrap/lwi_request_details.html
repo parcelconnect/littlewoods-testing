@@ -23,7 +23,7 @@
       </div>
       <!-- <img src="img/lwi-gift-wrapping.png" class="img-responsive" alt="Responsive image"> -->
       <div class="container">
-         <div class="wrapper">
+         <div class="wrapper white-bg">
             <h4>Request to be processed</h4>
               <address>
                  <strong>LWI Account Number</strong>
@@ -56,7 +56,7 @@
               <hr>
               {% if special_date_name and gw_request.deliver_by_special_date %}
                 <address id="special_date_delivery_message">
-                   <strong>Deliver this parcel on {{ special_date_name }}</strong><br>
+                   <strong>Deliver this parcel {{gw_request.deliver_by_special_date}} {{ special_date_name }}</strong><br>
                 </address>
               {% endif %}
               {% if result == "failed" %}
