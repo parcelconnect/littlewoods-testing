@@ -32,7 +32,7 @@ LOGGING['loggers'] = {
         'level': 'INFO',
         'propagate': False,
     },
-    'fwtracking.tracking': {
+    'idv': {
         'handlers': LOG_HANDLERS,
         'level': 'INFO',
         'propagate': False,
