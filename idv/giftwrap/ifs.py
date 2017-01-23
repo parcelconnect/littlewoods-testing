@@ -80,11 +80,12 @@ class Client:
             logger.error(error_msg, response.status_code)
             raise IFSAPIError(error_msg % response.status_code)
         elif response.status_code == 200:
-            status = response.json().get('status')
+            response_content = response.json()
+            status = response_content.get('status')
             if status == "fail":
                 raise TooLateError('Too late to gift wrap UPI {}'.format(upi))
             elif status != "ok":
-                error_msg = '[IFS]: Unknown status value in response: %s'
+                error_msg = '[IFS]: response status value not "ok": %s'
                 logger.error(error_msg, status)
                 raise IFSAPIError(error_msg % status)
         return True
