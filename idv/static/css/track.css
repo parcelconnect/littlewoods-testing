@@ -1,6 +1,10 @@
+html {
+  height: 100%;
+}
+
 body {
   background-color: #F6F8F7;
-  background-image: url("../img/lwi-tracking-bg-desktop-new.png");
+  background-image: url("../img/lwi-tp-2017-ss-1920x1080-min.png");
   background-repeat: no-repeat;
   background-position: top 0px center;
   background-size: cover;
@@ -102,7 +106,7 @@ p.small-txt {
   color: #000000;
 }
 
-.panel-heading .date p:first-child, 
+.panel-heading .date p:first-child,
 .panel-heading .status p:first-child {
   margin-bottom: 5px;
 }
@@ -126,60 +130,60 @@ p.small-txt {
 /* Media queries */
 
 @media (max-width: 540px) {
-  
+
   .show-mobile {
     display: block;
   }
-  
+
   .show-mobile.dash {
     display: inline-block;
   }
-  
+
   .hide-mobile {
     display: none;
   }
-  
+
   .panel-body .status {
     margin-left: 35px;
     padding-right: 15px;
     width: auto;
   }
-  
+
   .panel-heading .status,
   .panel-heading .date {
     width: 100%;
   }
 
   .panel-heading .status p,
-  .panel-heading .date p, 
+  .panel-heading .date p,
   .show-mobile.date-time p {
     display: inline-block;
     text-align: left;
   }
-  
+
   .show-mobile.date-time p {
     margin-bottom: 5px;
   }
-  
+
   .panel-heading .status {
     border-top: 1px solid #DDDDDD;
     border-left: none;
   }
-  
+
   .form-group.track-input {
     width: 100%;
   }
-  
+
 }
 
 @media (max-width: 767px) {
-  
+
   body {
     background-image: none;
   }
-  
+
   .panel.tracking-panel {
     width: 100%;
-  } 
-  
+  }
+
 }
