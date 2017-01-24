@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from . import domain
-from .forms import GiftWrapRequestForm
+from .forms import GiftWrapRequestForm, UPIForm
 from .mixins import SpecialDateMixin
 from .models import GiftWrapRequest
 from .types import GiftWrapRequestStatus
@@ -73,14 +73,14 @@ class RequestDetails(SpecialDateMixin, TemplateView):
     def post(self, request, pk):
         context = self.get_context_data(pk=pk)
         gw_request = context['gw_request']
-        upi = request.POST.get('upi')
-        if upi:
-            upi = upi.strip()
-            domain.update_upi(gw_request, upi)
+        form = UPIForm(request.POST)
+        if form.is_valid():
+            domain.update_upi(gw_request, form.cleaned_data['upi'])
             result = domain.request_gift_wrap(gw_request)
             context['result'] = result
             if result == GiftWrapRequestStatus.Success.value:
-                msg = 'Success requesting gift wrapping for UPI {}'.format(upi)
+                msg = ('Success requesting gift wrapping for UPI {}'
+                       .format(form.cleaned_data['upi']))
                 messages.success(request, msg)
                 url = reverse_lazy('giftwrap:lwi-requests')
                 return redirect(url)
@@ -89,6 +89,7 @@ class RequestDetails(SpecialDateMixin, TemplateView):
         else:
             status = 400
             context['result'] = "validation-error"
+            context['form'] = form
         return super().render_to_response(context, status=status)
 
     def delete(self, request, pk):

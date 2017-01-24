@@ -73,7 +73,7 @@
                   <div class="form-group">
                     <label for="Textarea"><strong>Enter UPI</strong></label>
                     {% if result == "validation-error" %}
-                    <ul class="errorlist"><li>This field is required.</li></ul>
+                      <ul class="errorlist"><li>{{ form.upi.errors.0 }}</li></ul>
                       {% endif %}
                      <input type="text" name="upi" class="form-control" placeholder="Enter UPI" required{% if gw_request.upi %} value="{{ gw_request.upi }}"{% endif %}>
                   </div>

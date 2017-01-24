@@ -202,7 +202,7 @@ class TestLWIRequestDetailsView:
         mock_request.return_value = True
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'foobar-upi'})
+        resp = client.post(url, data={'upi': 'a' * 16})
 
         assert resp.status_code == 302
         assert resp['Location'] == reverse('giftwrap:lwi-requests')
@@ -218,7 +218,7 @@ class TestLWIRequestDetailsView:
             request_new):
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'foobar-upi'})
+        resp = client.post(url, data={'upi': 'a' * 16})
 
         assert resp.status_code == 202
         assert 'Request is too late' in resp.content.decode()
@@ -235,7 +235,7 @@ class TestLWIRequestDetailsView:
         mock_request.side_effect = ifs.IFSAPIError('Catastrophe')
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'foobar-upi'})
+        resp = client.post(url, data={'upi': 'a' * 16})
 
         assert resp.status_code == 202
         assert 'Request to IFS failed' in resp.content.decode()
