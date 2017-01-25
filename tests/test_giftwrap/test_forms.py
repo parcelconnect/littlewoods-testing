@@ -51,6 +51,12 @@ class TestUPIForm:
         form = UPIForm(data={'upi': '12345678abcde'})
         assert form.is_valid(), form.errors
 
+    def test_clean_data_sets_upper_case_upi(self):
+        upi = "12345678abcde"
+        form = UPIForm(data={'upi': upi})
+        assert form.is_valid(), form.errors
+        assert form.cleaned_data['upi'] == upi.upper()
+
     def test_upi_is_required(self):
         form = UPIForm(data={})
         form.is_valid()

@@ -59,6 +59,9 @@ class UPIForm(forms.ModelForm):
         validators=[valid_upi]
     )
 
+    def clean_upi(self):
+        return self.cleaned_data['upi'].upper()
+
 
 class EpackSearchForm(forms.ModelForm):
 
