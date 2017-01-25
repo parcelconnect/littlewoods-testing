@@ -261,7 +261,7 @@ class TestEpackSearchView:
     def request_success(self):
         return GiftWrapRequest.objects.create(
             account_number="A01",
-            upi="A001XXX",
+            upi="A" * 13,
             card_message="Lovely",
             status=GiftWrapRequestStatus.Success.value
         )
@@ -285,45 +285,53 @@ class TestEpackSearchView:
         settings.SPECIAL_DATE_NAME = "Christmas"
         request_success.deliver_by_special_date = True
         request_success.save()
-        resp = client.get(self.url, data={'upi': 'A001XXX'})
+        resp = client.get(self.url, data={'upi': request_success.upi})
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == "Christmas"
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'UPI:A001XXX' in resp.content.decode()
+        assert 'UPI:' + request_success.upi in resp.content.decode()
         assert 'Lovely' in resp.content.decode()
         assert "Deliver this parcel" in resp.content.decode()
 
     def test_it_does_not_display_special_date_when_not_set(
             self, loggedin_user, client, request_success, settings):
         settings.SPECIAL_DATE_NAME = ""
-        resp = client.get(self.url, data={'upi': 'A001XXX'})
+        resp = client.get(self.url, data={'upi': request_success.upi})
 
         assert resp.status_code == 200
         assert resp.context['special_date_name'] == ""
         assert settings.SPECIAL_DATE_IMAGE[
             "Christmas"] in resp.content.decode()
-        assert 'UPI:A001XXX' in resp.content.decode()
+        assert 'UPI:' + request_success.upi in resp.content.decode()
         assert "Deliver this parcel" not in resp.content.decode()
 
     def test_it_displays_error_msg_when_upi_not_found(
             self, loggedin_user, client):
-        resp = client.get(self.url, data={'upi': 'foobar-upi'})
+        resp = client.get(self.url, data={'upi': 'B' * 13})
 
         assert resp.status_code == 200
         assert 'UPI not found.' in resp.content.decode()
 
     def test_it_displays_error_when_upi_present_but_status_new(
             self, loggedin_user, client, request_new):
-        request_new.upi = "A001XXX"
+        request_new.upi = "B" * 13
         request_new.card_message = "Lovely"
         request_new.save()
 
-        resp = client.get(self.url, data={'upi': "A001XXX"})
+        resp = client.get(self.url, data={'upi': request_new.upi})
 
         assert resp.status_code == 200
         response = resp.content.decode()
         assert 'UPI not found.' in response
-        assert 'value="A001XXX"' in response
+        assert 'value="{}"'.format(request_new.upi) in response
         assert 'Lovely' not in response
+
+    def test_it_displays_error_msg_when_upi_invalid(
+            self, loggedin_user, client):
+        resp = client.get(self.url, data={'upi': 'A' * 18})
+
+        assert resp.status_code == 200
+        invalid_upi_error = 'The UPI must be made of 13 characters or digits.'
+        assert invalid_upi_error in resp.content.decode()
