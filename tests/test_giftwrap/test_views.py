@@ -130,6 +130,10 @@ class TestLWIRequestsView:
 @pytest.mark.django_db
 class TestLWIRequestDetailsView:
 
+    @pytest.fixture
+    def valid_upi(self):
+        return "A"*13
+
     def test_it_redirects_to_login_page_when_not_authenticated(
             self, client, request_new):
         url = reverse('giftwrap:lwi-request-details',
@@ -198,11 +202,11 @@ class TestLWIRequestDetailsView:
     @responses.activate
     def test_it_returns_201_and_displays_success_msg_when_post_succeeds(
             self, mock_request, client_settings, loggedin_user, client,
-            request_new):
+            request_new, valid_upi):
         mock_request.return_value = True
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'a' * 16})
+        resp = client.post(url, data={'upi': valid_upi})
 
         assert resp.status_code == 302
         assert resp['Location'] == reverse('giftwrap:lwi-requests')
@@ -215,10 +219,10 @@ class TestLWIRequestDetailsView:
     @responses.activate
     def test_it_returns_204_and_displays_failed_msg_when_post_fails(
             self, mock_request, client_settings, loggedin_user, client,
-            request_new):
+            request_new, valid_upi):
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'a' * 16})
+        resp = client.post(url, data={'upi': valid_upi})
 
         assert resp.status_code == 202
         assert 'Request is too late' in resp.content.decode()
@@ -231,11 +235,11 @@ class TestLWIRequestDetailsView:
     @responses.activate
     def test_it_returns_204_and_displays_error_msg_when_post_fails(
             self, mock_request, client_settings, loggedin_user, client,
-            request_new):
+            request_new, valid_upi):
         mock_request.side_effect = ifs.IFSAPIError('Catastrophe')
         url = reverse('giftwrap:lwi-request-details',
                       kwargs={'pk': request_new.pk})
-        resp = client.post(url, data={'upi': 'a' * 16})
+        resp = client.post(url, data={'upi': valid_upi})
 
         assert resp.status_code == 202
         assert 'Request to IFS failed' in resp.content.decode()

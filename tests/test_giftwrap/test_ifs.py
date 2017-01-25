@@ -60,7 +60,7 @@ class TestIFSClientRequestGiftWrap:
         assert request_performed.headers['referer'] == 'Littlewoods'
         assert json.loads(request_performed.body) == {
             "giftwrap": {
-                "upi": ['MadeUpUPINum'],
+                "upi": ['MadeUpUPINum049'],
             }
         }
 
@@ -76,7 +76,7 @@ class TestIFSClientRequestGiftWrap:
         assert json.loads(request_performed.body) == {
             "giftwrap": {
                 "mode": "test",
-                "upi": ['MadeUpUPINum'],
+                "upi": ['MadeUpUPINum049'],
             }
         }
 
@@ -90,7 +90,7 @@ class TestIFSClientRequestGiftWrap:
         request_performed = responses.calls[0].request
         assert json.loads(request_performed.body) == {
             "giftwrap": {
-                "upi": ['MadeUpUPINum'],
+                "upi": ['MadeUpUPINum049'],
                 "receiver": {
                     "add1": "7 Stanley Studios",
                     "add2": "Park Walk",

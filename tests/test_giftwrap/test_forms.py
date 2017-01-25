@@ -48,7 +48,7 @@ class TestGiftWrapRequestForm:
 class TestUPIForm:
 
     def test_is_valid_returns_true_when_valid_upi_given(self):
-        form = UPIForm(data={'upi': '12345678abcdefgh'})
+        form = UPIForm(data={'upi': '12345678abcde'})
         assert form.is_valid(), form.errors
 
     def test_upi_is_required(self):
@@ -57,7 +57,7 @@ class TestUPIForm:
         assert 'upi' in form.errors
 
     def test_invalid_upi_with_symbols(self):
-        form = UPIForm(data={'upi': '12345678abcdefg$'})
+        form = UPIForm(data={'upi': '12345678abcd$'})
         form.is_valid()
         assert 'upi' in form.errors
 
@@ -71,4 +71,4 @@ class TestUPIForm:
         form.is_valid()
         assert 'upi' in form.errors
         assert form.errors['upi'] == [
-            'The UPI must be made of 16 characters or digits.']
+            'The UPI must be made of 13 characters or digits.']
