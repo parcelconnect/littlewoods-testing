@@ -1,4 +1,4 @@
-from idv.giftwrap.forms import GiftWrapRequestForm
+from idv.giftwrap.forms import GiftWrapRequestForm, UPIForm
 
 
 class TestGiftWrapRequestForm:
@@ -43,3 +43,32 @@ class TestGiftWrapRequestForm:
         form = GiftWrapRequestForm(data={})
         form.is_valid()
         assert 'email' in form.errors
+
+
+class TestUPIForm:
+
+    def test_is_valid_returns_true_when_valid_upi_given(self):
+        form = UPIForm(data={'upi': '12345678abcdefgh'})
+        assert form.is_valid(), form.errors
+
+    def test_upi_is_required(self):
+        form = UPIForm(data={})
+        form.is_valid()
+        assert 'upi' in form.errors
+
+    def test_invalid_upi_with_symbols(self):
+        form = UPIForm(data={'upi': '12345678abcdefg$'})
+        form.is_valid()
+        assert 'upi' in form.errors
+
+    def test_invalid_upi_with_wrong_number_of_chars(self):
+        form = UPIForm(data={'upi': '1456789'})
+        form.is_valid()
+        assert 'upi' in form.errors
+
+    def test_invalid_upi_too_long(self):
+        form = UPIForm(data={'upi': 'a' * 17})
+        form.is_valid()
+        assert 'upi' in form.errors
+        assert form.errors['upi'] == [
+            'The UPI must be made of 16 characters or digits.']

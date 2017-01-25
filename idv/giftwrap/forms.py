@@ -6,13 +6,22 @@ from django.core.exceptions import ValidationError
 from .models import GiftWrapRequest
 
 ACCOUNT_NUMBER_LENGTH = 8
+UPI_LENGTH = 16
 
 
 def valid_account_number(value):
     regex = r'^[a-zA-Z\d]{%s}$' % ACCOUNT_NUMBER_LENGTH
     if re.match(regex, value) is None:
-        error_msg = 'The account number is made of {} characters/digits.'
+        error_msg = (
+            'The account number must be made of {} characters or digits.')
         raise ValidationError(error_msg.format(ACCOUNT_NUMBER_LENGTH))
+
+
+def valid_upi(value):
+    regex = r'^[a-zA-Z\d]{%s}$' % UPI_LENGTH
+    if re.match(regex, value) is None:
+        error_msg = 'The UPI must be made of {} characters or digits.'
+        raise ValidationError(error_msg.format(UPI_LENGTH))
 
 
 class GiftWrapRequestForm(forms.ModelForm):
@@ -39,14 +48,25 @@ class GiftWrapRequestForm(forms.ModelForm):
     )
 
 
+class UPIForm(forms.ModelForm):
+
+    class Meta:
+        model = GiftWrapRequest
+        fields = ['upi']
+
+    upi = forms.CharField(
+        required=True,
+        validators=[valid_upi]
+    )
+
+
 class EpackSearchForm(forms.ModelForm):
 
     class Meta:
         model = GiftWrapRequest
-        fields = [
-            'upi'
-        ]
+        fields = ['upi']
 
     upi = forms.CharField(
         required=True,
+        validators=[valid_upi]
     )
