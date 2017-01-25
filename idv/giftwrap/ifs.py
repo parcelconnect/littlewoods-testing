@@ -20,6 +20,7 @@ class Client:
     GIFTWRAP_URL_PATH = "/webhooks/giftwrap/"
     REFERER = "Littlewoods"
     USER_AGENT = "Littlewoods Gift Wrapping"
+    YODEL_TRAILING_ID = '049'
 
     def __init__(self, base_url, username, password, test_mode=False):
         self.base_url = base_url
@@ -55,9 +56,10 @@ class Client:
         return resp
 
     def request_gift_wrap(self, upi, address=None):
+        real_upi = upi + self.YODEL_TRAILING_ID
         data = {
             "giftwrap": {
-                "upi": [upi],
+                "upi": [real_upi],
             }
         }
         if self.test_mode is True:
