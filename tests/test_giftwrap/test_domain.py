@@ -18,7 +18,7 @@ class TestRequestGiftWrap:
     def gift_wrap_request(self):
         return GiftWrapRequest(
             account_number=123,
-            upi="ABC123",
+            upi="A"*13,
             divert_address1="7 Stanley Studios",
             divert_address2="Park Walk",
             divert_town="Wexford Town",
@@ -38,7 +38,7 @@ class TestRequestGiftWrap:
         request_performed = responses.calls[0].request
         response = json.loads(request_performed.body)
 
-        assert response["giftwrap"]["upi"] == ['ABC123']
+        assert response["giftwrap"]["upi"] == [gift_wrap_request.upi + '049']
         assert response["giftwrap"]["receiver"] == {
             "add1": "7 Stanley Studios",
             "add2": "Park Walk",

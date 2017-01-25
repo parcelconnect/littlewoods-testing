@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from .models import GiftWrapRequest
 
 ACCOUNT_NUMBER_LENGTH = 8
-UPI_LENGTH = 16
+UPI_LENGTH = 13
 
 
 def valid_account_number(value):
