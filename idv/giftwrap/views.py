@@ -118,14 +118,16 @@ class EpackSearch(SpecialDateMixin, TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        form = UPIForm(self.request.GET)
-        if form.is_valid():
-            details = domain.get_orders_for_upi(form.cleaned_data['upi'])
-            if details:
-                context['order_details'] = details
-            else:
-                form.add_error("upi", "UPI not found.")
-        context['form'] = form
+        if self.request.GET.get('upi'):
+            form = UPIForm(self.request.GET)
+            if form.is_valid():
+                details = domain.get_orders_for_upi(form.cleaned_data['upi'])
+                if details:
+                    context['order_details'] = details
+                else:
+                    form.add_error("upi", "UPI not found.")
+            context['form'] = form
+
         return context
 
 

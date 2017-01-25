@@ -274,11 +274,14 @@ class TestEpackSearchView:
         expected_redirect_url = "{}?next={}".format(login_url, self.url)
         assert resp['Location'] == expected_redirect_url
 
-    def test_it_displays_text_when_using_get(self, loggedin_user, client):
+    def test_it_does_not_set_input_value_and_shows_no_errors_if_upi_not_given(
+            self, loggedin_user, client):
         resp = client.get(self.url)
 
         assert resp.status_code == 200
         assert 'Enter UPI' in resp.content.decode()
+        assert 'value="' not in resp.content.decode()
+        assert 'alert' not in resp.content.decode()
 
     def test_it_displays_details_when_upi_found(
             self, loggedin_user, client, request_success, settings):
