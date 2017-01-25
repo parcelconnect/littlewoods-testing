@@ -146,6 +146,7 @@ EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = 'support@fastway.ie'
 REPORT_RECIPIENTS = env_as_list('REPORT_RECIPIENTS')
+UPI_REPORT_RECIPIENTS = env_as_list('UPI_REPORT_RECIPIENTS')
 
 # -----------------------------------------------------------------------------
 # S3
