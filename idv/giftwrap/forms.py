@@ -61,15 +61,3 @@ class UPIForm(forms.ModelForm):
 
     def clean_upi(self):
         return self.cleaned_data['upi'].upper()
-
-
-class EpackSearchForm(forms.ModelForm):
-
-    class Meta:
-        model = GiftWrapRequest
-        fields = ['upi']
-
-    upi = forms.CharField(
-        required=True,
-        validators=[valid_upi]
-    )
