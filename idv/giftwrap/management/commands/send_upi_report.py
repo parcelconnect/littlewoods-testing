@@ -13,14 +13,13 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
 
-    report_date = timezone.now().date() - timedelta(day=1)
-    formatted_date = report_date.strftime("%d of %B")
-
     help = 'Send report on successful upis'
 
     def handle(self, *args, **kwargs):
-        succesful_upis = get_successful_upis(self.report_date)
+        report_date = timezone.now().date() - timedelta(day=1)
+        formatted_date = report_date.strftime("%d of %B")
+        succesful_upis = get_successful_upis(report_date)
         logger.info('Sending report on succesful upis on {}...'
-                    .format(self.formatted_date))
+                    .format(formatted_date))
         send_report_email(succesful_upis)
         logger.info('Success sending report.')
