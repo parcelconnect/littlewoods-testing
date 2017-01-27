@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = 'Send report on successful upis'
 
     def handle(self, *args, **kwargs):
-        report_date = timezone.now().date() - timedelta(day=1)
+        report_date = timezone.now().date() - timedelta(days=1)
         formatted_date = report_date.strftime("%d of %B")
         logger.info('Sending report on succesful upis on {}...'
                     .format(formatted_date))
