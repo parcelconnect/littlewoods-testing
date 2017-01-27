@@ -24,13 +24,13 @@ def send_report_email(run_report_date):
     successful_upis = get_successful_upis_for_day(run_report_date)
     from_email = settings.DEFAULT_FROM_EMAIL
     recipients = settings.UPI_REPORT_RECIPIENTS
-    subject = ('Littlewoods ID&V Gift Wrapping Requests processed on the {}'
+    subject = ('Littlewood\'s Gift Wrapping Requests processed on the {}'
                .format(formatted_date))
     message = ('There were {} successful gift wrapping requests processed on '
-               'the {}.\n'.format(len(successful_upis), formatted_date))
+               'the {}.\r\n'.format(len(successful_upis), formatted_date))
 
     for upi in successful_upis:
-        message = message + upi + "\n"
+        message = message + upi + "\r\n"
 
     msg = EmailMultiAlternatives(subject, message, from_email, recipients)
     msg.send()
