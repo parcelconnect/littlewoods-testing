@@ -1,7 +1,7 @@
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 from idv.common.decorators import retry
-from idv.common.mail import create_mail
 from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
 
 
@@ -22,6 +22,7 @@ def send_report_email(run_report_date):
 
     formatted_date = run_report_date.strftime("%dth of %B")
     successful_upis = get_successful_upis_for_day(run_report_date)
+    from_email = settings.DEFAULT_FROM_EMAIL
     recipients = settings.UPI_REPORT_RECIPIENTS
     subject = ('Littlewoods ID&V Gift Wrapping Requests processed on the {}'
                .format(formatted_date))
@@ -31,9 +32,5 @@ def send_report_email(run_report_date):
     for upi in successful_upis:
         message = message + upi + "\n"
 
-    msg = create_mail(
-        subject=subject,
-        context=message,
-        emails=recipients,
-    )
+    msg = EmailMultiAlternatives(subject, message, from_email, recipients)
     msg.send()
