@@ -257,15 +257,6 @@ class TestEpackSearchView:
 
     url = reverse('giftwrap:epack-search')
 
-    @pytest.fixture
-    def request_success(self):
-        return GiftWrapRequest.objects.create(
-            account_number="A01",
-            upi="A" * 13,
-            card_message="Lovely",
-            status=GiftWrapRequestStatus.Success.value
-        )
-
     def test_it_redirects_to_login_page_when_not_authenticated(self, client):
         resp = client.get(self.url)
 
