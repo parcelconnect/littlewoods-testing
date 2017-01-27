@@ -33,10 +33,10 @@ class TestSendReportEmail:
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = request_success.created_at.date()
         formatted_date = run_report_at.strftime("%dth of %B")
-        subject = ('Littlewoods ID&V Gift Wrapping Requests processed '
+        subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on the {}'.format(formatted_date))
         message = ('There were 1 successful gift wrapping requests processed '
-                   'on the {}.\n{}\n'
+                   'on the {}.\r\n{}\r\n'
                    .format(formatted_date, request_success.upi))
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
@@ -53,10 +53,10 @@ class TestSendReportEmail:
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = datetime.now().date()
         formatted_date = run_report_at.strftime("%dth of %B")
-        subject = ('Littlewoods ID&V Gift Wrapping Requests processed '
+        subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on the {}'.format(formatted_date))
         message = ('There were 0 successful gift wrapping requests processed '
-                   'on the {}.\n'
+                   'on the {}.\r\n'
                    .format(formatted_date))
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
