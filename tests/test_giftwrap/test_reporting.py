@@ -27,9 +27,9 @@ class TestGetSuccessfulUpis:
 @pytest.mark.django_db
 class TestSendReportEmail:
 
-    @patch('idv.giftwrap.reporting.create_mail')
+    @patch('idv.giftwrap.reporting.EmailMultiAlternatives')
     def test_it_sends_email_with_upis_when_found_for_given_day(
-            self, mock_create_mail, settings, request_success):
+            self, mock_EmailMultiAlternatives, settings, request_success):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = request_success.created_at.date()
         formatted_date = run_report_at.strftime("%dth of %B")
@@ -38,16 +38,18 @@ class TestSendReportEmail:
         message = ('There were 1 successful gift wrapping requests processed '
                    'on the {}.\n{}\n'
                    .format(formatted_date, request_success.upi))
+        from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
-        mock_create_mail.assert_called_once_with(
-            subject=subject,
-            context=message,
-            emails=["example@example.com"]
+        mock_EmailMultiAlternatives.assert_called_once_with(
+            subject,
+            message,
+            from_email,
+            ["example@example.com"]
         )
 
-    @patch('idv.giftwrap.reporting.create_mail')
+    @patch('idv.giftwrap.reporting.EmailMultiAlternatives')
     def test_it_sends_email_when_no_upis_found_for_given_day(
-            self, mock_create_mail, settings):
+            self, mock_EmailMultiAlternatives, settings):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = datetime.now().date()
         formatted_date = run_report_at.strftime("%dth of %B")
@@ -56,9 +58,11 @@ class TestSendReportEmail:
         message = ('There were 0 successful gift wrapping requests processed '
                    'on the {}.\n'
                    .format(formatted_date))
+        from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
-        mock_create_mail.assert_called_once_with(
-            subject=subject,
-            context=message,
-            emails=["example@example.com"]
+        mock_EmailMultiAlternatives.assert_called_once_with(
+            subject,
+            message,
+            from_email,
+            ["example@example.com"]
         )
