@@ -18,7 +18,7 @@
             {% csrf_token %}
             {{ form.non_field_errors }}
                <div class="form-group">
-                  <label for="lwi-account-number">LWI Account Number</label><br>
+                  <label for="lwi-account-number">Littlewoods Ireland Account Number</label><br>
                   {{form.account_number.errors}}
                   {{ form.account_number|attr:"type:text"|add_class:"form-control"|attr:"id:lwi-account-number"|attr:"placeholder:Account number"}}
                   <small class="form-text text-muted">Your account number can be found under 'My Account' (next to your name).</small>
@@ -32,7 +32,7 @@
                <div class="form-group">
                   <label for="exampleTextarea">Product Description</label>
                   {{form.product_description.errors}}
-                  {{form.product_description|add_class:"form-control"|attr:"id:lwi-product-desc"|attr:"rows:3" }}
+                  {{form.product_description|add_class:"form-control"|attr:"id:lwi-product-desc"|attr:"rows:3"|attr:"placeholder:i.e. V By Very Ruffle Jumper" }}
                </div>
                <div class="clear"></div>
                <h4>Details for Gift Wrapping</h4>
@@ -53,10 +53,11 @@
                        <input type="radio" name="deliver_by_special_date" value="On" class="radio-inline">
                       <strong><label for="deliver_by_special_date">On {{ special_date_name }}</label></strong>
                      </div>
+                     <small>Orders must be placed by midnight on the 8th of February.</small>
                     </div>
                   </div>
                 {% endif %}
-               <h5 style="font-size:1.20em;">New Address Details (if required)</h5>
+               <h5 style="font-size:1.20em;">Recipients Address Details (if different to original delivery address)</h5>
                <div class="form-group">
                   <label for="lwi-email-address">Address Line 1</label>
                   <small class="form-text text-muted">&nbsp;</small>
@@ -101,7 +102,11 @@
                <div class="panel-body">
                   Terms and Conditions Apply<br><br>
                   <small>
-                  Only small items 5kg in weight and up to 1 metre in length are subject to gift wrapping, if your item does not fit in the specified box, Fastway will contact you. Seasonal items that come direct from the supplier are excluded from gift wrapping. A gift receipt will not be included in the parcel; however, the advice note will be sent directly to you. Items can only be sent within the Republic of Ireland. If the item is faulty or unwanted it must be returned by the account holder. Once your gift wrapped parcel has been delivered, your Littlewoods Ireland account will be charged &#8364;5.99 for this service.
+                  Only small items 5kg in weight and up to 1 metre in length are subject to gift wrapping, if your item does not fit in the specified box,
+                  Fastway will contact you. Seasonal items that come direct from the supplier are excluded from gift wrapping. A gift receipt will not be
+                  included in the parcel; however, the advice note will be sent directly to you. Items can only be sent within the Republic of Ireland.
+                  If the item is faulty or unwanted it must be returned by the account holder. Once your gift wrapped parcel has been delivered, your
+                  Littlewoods Ireland account will be charged &#8364;5.99 for this service. Orders must be placed by midnight on the 8th of February.
                      <br><br>
                      If you have any queries in relation to the gift wrapping service, please contact Littlewoods Ireland 01 8112307 or email us at
                      <a href="mailto:clickandcollect@shopdirect.com?Subject=Gift%20Wrapping" target="_top">clickandcollect@shopdirect.com</a>
