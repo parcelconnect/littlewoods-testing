@@ -45,7 +45,7 @@ class GiftWrapRequest(models.Model):
         choices=enum_to_choices(DeliverBySpecialDate),
     )
 
-    card_message = models.TextField()
+    card_message = models.TextField(max_length=80, blank=True)
 
     status = models.CharField(
         max_length=8,

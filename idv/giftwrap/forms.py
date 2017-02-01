@@ -7,6 +7,7 @@ from .models import GiftWrapRequest
 
 ACCOUNT_NUMBER_LENGTH = 8
 UPI_LENGTH = 13
+CARD_MESSAGE_LENGTH = 80
 
 
 def valid_account_number(value):
@@ -22,6 +23,12 @@ def valid_upi(value):
     if re.match(regex, value) is None:
         error_msg = 'The UPI must be made of {} characters or digits.'
         raise ValidationError(error_msg.format(UPI_LENGTH))
+
+
+def valid_card_message(value):
+    if len(value) > CARD_MESSAGE_LENGTH:
+        error_msg = 'The card message must be max {} characters.'
+        raise ValidationError(error_msg.format(CARD_MESSAGE_LENGTH))
 
 
 class GiftWrapRequestForm(forms.ModelForm):
@@ -45,6 +52,11 @@ class GiftWrapRequestForm(forms.ModelForm):
     account_number = forms.CharField(
         required=True,
         validators=[valid_account_number]
+    )
+
+    card_message = forms.CharField(
+        required=False,
+        validators=[valid_card_message]
     )
 
 
