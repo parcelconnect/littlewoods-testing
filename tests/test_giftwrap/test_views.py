@@ -60,6 +60,15 @@ class TestRequestWrapView:
             'deliver_by_special_date': 'Before'
         }
 
+    @pytest.fixture
+    def data_with_invalid_card_message(self, valid_post_data):
+        invalid_post_data = valid_post_data
+        invalid_post_data['card_message'] = 'Two roads diverged in a yellow wood\
+        , And sorry I could not travel both And be one traveler, long I stood\
+         And looked down one as far as I could To where it bent in\
+         the undergrowth;'
+        return invalid_post_data
+
     def test_it_displays_the_special_date_when_set(self, client, settings):
         settings.SPECIAL_DATE_NAME = "Christmas"
         resp = client.get(self.url)
@@ -93,6 +102,15 @@ class TestRequestWrapView:
 
         assert resp.status_code == 200
         assert 'This field is required.' in resp.content.decode()
+        assert GiftWrapRequest.objects.count() == 0
+
+    def test_max_char_error_message_displays(
+            self, client, data_with_invalid_card_message):
+        data_with_invalid_card_message.pop('account_number')
+        resp = client.post(self.url, data_with_invalid_card_message)
+
+        assert resp.status_code == 200
+        assert 'The card message must be max' in resp.content.decode()
         assert GiftWrapRequest.objects.count() == 0
 
 
