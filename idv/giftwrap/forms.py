@@ -55,6 +55,7 @@ class GiftWrapRequestForm(forms.ModelForm):
     )
 
     card_message = forms.CharField(
+        widget=forms.Textarea(),
         required=False,
         validators=[valid_card_message]
     )
