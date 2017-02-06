@@ -32,11 +32,11 @@ class TestSendReportEmail:
             self, mock_EmailMultiAlternatives, settings, request_success):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = request_success.created_at.date()
-        formatted_date = run_report_at.strftime("%dth of %B")
+        formatted_date = run_report_at.strftime("%B %d")
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
-                   'on the {}'.format(formatted_date))
+                   'on {}'.format(formatted_date))
         message = ('There were 1 successful gift wrapping requests processed '
-                   'on the {}.\r\n{}\r\n'
+                   'on {}.\r\n{}\r\n'
                    .format(formatted_date, request_success.upi))
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
@@ -52,11 +52,11 @@ class TestSendReportEmail:
             self, mock_EmailMultiAlternatives, settings):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
         run_report_at = datetime.now().date()
-        formatted_date = run_report_at.strftime("%dth of %B")
+        formatted_date = run_report_at.strftime("%B %d")
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
-                   'on the {}'.format(formatted_date))
+                   'on {}'.format(formatted_date))
         message = ('There were 0 successful gift wrapping requests processed '
-                   'on the {}.\r\n'
+                   'on {}.\r\n'
                    .format(formatted_date))
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
