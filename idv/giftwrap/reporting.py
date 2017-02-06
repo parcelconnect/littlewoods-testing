@@ -20,14 +20,14 @@ def send_report_email(run_report_date):
      Creates an email report for the successful upis for the previous day
     """
 
-    formatted_date = run_report_date.strftime("%dth of %B")
+    formatted_date = run_report_date.strftime("%B %d")
     successful_upis = get_successful_upis_for_day(run_report_date)
     from_email = settings.DEFAULT_FROM_EMAIL
     recipients = settings.UPI_REPORT_RECIPIENTS
-    subject = ('Littlewood\'s Gift Wrapping Requests processed on the {}'
+    subject = ('Littlewood\'s Gift Wrapping Requests processed on {}'
                .format(formatted_date))
     message = ('There were {} successful gift wrapping requests processed on '
-               'the {}.\r\n'.format(len(successful_upis), formatted_date))
+               '{}.\r\n'.format(len(successful_upis), formatted_date))
 
     for upi in successful_upis:
         message = message + upi + "\r\n"
