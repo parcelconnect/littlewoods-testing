@@ -25,6 +25,30 @@ class GiftWrapRequestQuerySet(models.query.QuerySet):
     def with_upi(self, upi):
         return self.filter(upi=upi)
 
+    def created_on(self, date):
+        return self.filter(
+            created_at__year=date.year,
+            created_at__month=date.month,
+            created_at__day=date.day
+        )
+
+    def created_until(self, date):
+        return self.filter(
+            created_at__lte=date
+        )
+
+    def modified_on(self, date):
+        return self.filter(
+            updated_at__year=date.year,
+            updated_at__month=date.month,
+            updated_at__day=date.day
+        )
+
+    def modified_until(self, date):
+        return self.filter(
+            updated_at__lte=date
+        )
+
 
 class GiftWrapRequest(models.Model):
 

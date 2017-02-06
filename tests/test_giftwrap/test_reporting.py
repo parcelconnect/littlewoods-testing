@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from idv.giftwrap.reporting import (
-    get_successful_upis_for_day, send_report_email
+    _get_success_upis_for_day, send_report_email
 )
 
 
@@ -14,13 +14,13 @@ class TestGetSuccessfulUpis:
     def test_it_returns_upis_when_found_on_given_day(
             self, request_success):
         run_report_at = request_success.created_at.date()
-        successful_upis = get_successful_upis_for_day(run_report_at)
+        successful_upis = _get_success_upis_for_day(run_report_at)
         assert len(successful_upis) == 1
 
     def test_it_does_not_return_upi_when_different_day_given(
             self, request_success):
         run_report_at = request_success.created_at.date() - timedelta(days=1)
-        successful_upis = get_successful_upis_for_day(run_report_at)
+        successful_upis = _get_success_upis_for_day(run_report_at)
         assert len(successful_upis) == 0
 
 
