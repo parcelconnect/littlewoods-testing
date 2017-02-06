@@ -34,7 +34,7 @@ class TestSendReportEmail:
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on {}'.format(formatted_date))
         message = ('There were 1 successful gift wrapping requests processed '
-                   'on 2017-02-06.\r\n AAAAAAAAAAAAA\r\n--------------------'
+                   'on 2017-02-06.\r\nAAAAAAAAAAAAA\r\n--------------------'
                    '-----------------------------\r\n\r\nThere were 0 succes'
                    'sful gift wrapping requests processed until 2017-02-06.'
                    '\r\n-------------------------------------------------\r'
