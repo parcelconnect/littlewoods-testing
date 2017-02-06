@@ -3,9 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from idv.giftwrap.reporting import (
-    _get_success_upis_for_day, send_report_email
-)
+from idv.giftwrap.reporting import _get_success_upis_for_day, send_report_email
 
 
 @pytest.mark.django_db
