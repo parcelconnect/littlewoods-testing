@@ -14,22 +14,6 @@ def _get_success_upis_for_day(date):
     )
 
 
-def _get_request_upis_for_day(date):
-    return (
-        GiftWrapRequest.objects
-        .created_on(date)
-        .values_list("upi", flat=True)
-    )
-
-
-def _get_request_upis_until_date(date):
-    return (
-        GiftWrapRequest.objects
-        .created_until(date)
-        .values_list("upi", flat=True)
-    )
-
-
 def _get_success_upis_until_date(date):
     return (
         GiftWrapRequest.objects
@@ -39,8 +23,16 @@ def _get_success_upis_until_date(date):
     )
 
 
+def _request_count_for_day(date):
+    return GiftWrapRequest.objects.created_on(date).count()
+
+
+def _request_count_until_date(date):
+    return GiftWrapRequest.objects.created_until(date).count()
+
+
 def _build_message(successful_yesterday, successful_until_yesterday,
-                   requests_yesterday, requests_until_yesterday, date):
+                   request_count_yesterday, request_count_until_date, date):
     message = ""
     message = message + (
         "There were {} successful gift wrapping requests processed on {}."
@@ -61,21 +53,15 @@ def _build_message(successful_yesterday, successful_until_yesterday,
 
     message = message + (
         "-------------------------------------------------\r\n\r\n"
-        "There were {} gift wrapping requests processed on {}."
-        "\r\n".format(len(requests_yesterday), date)
+        "There were {} new gift wrapping requests on {}."
+        "\r\n".format(request_count_yesterday, date)
     )
-
-    for upi in requests_yesterday:
-        message = message + upi + "\r\n"
 
     message = message + (
         "-------------------------------------------------\r\n\r\n"
-        "There were {} gift wrapping requests processed until {}."
-        "\r\n".format(len(requests_until_yesterday), date)
+        "There were {} gift wrapping requests made until {}."
+        "\r\n".format(request_count_until_date, date)
     )
-
-    for upi in requests_until_yesterday:
-        message = message + upi + "\r\n"
 
     return message
 
@@ -91,8 +77,8 @@ def send_report_email(run_report_date):
     successful_upis_until_yesterday = _get_success_upis_until_date(
         run_report_date
     )
-    requests_yesterday = _get_request_upis_for_day(run_report_date)
-    requests_until_yesterday = _get_request_upis_until_date(run_report_date)
+    request_count_yesterday = _request_count_for_day(run_report_date)
+    request_count_until_yesterday = _request_count_until_date(run_report_date)
     from_email = settings.DEFAULT_FROM_EMAIL
     recipients = settings.UPI_REPORT_RECIPIENTS
     subject = ('Littlewood\'s Gift Wrapping Requests processed on {}'
@@ -101,8 +87,8 @@ def send_report_email(run_report_date):
     message = _build_message(
         successful_upis_yesterday,
         successful_upis_until_yesterday,
-        requests_yesterday,
-        requests_until_yesterday,
+        request_count_yesterday,
+        request_count_until_yesterday,
         run_report_date
     )
 
