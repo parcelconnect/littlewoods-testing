@@ -38,14 +38,15 @@ class TestSendReportEmail:
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on {}'.format(formatted_date))
         message = (
-            'There were 1 successful gift wrapping requests processed on '
-            '2017-02-06.\r\nAAAAAAAAAAAAA\r\n----------------------------'
-            '---------------------\r\n\r\nThere were 1 successful gift '
+            'There were 1 gift wrapping requests processed on '
+            '2017-02-06.\r\nAAAAAAAAAAAAA\r\n'
+            '\r\n\r\nThere were 1 gift '
             'wrapping requests processed until 2017-02-06.\r\nAAAAAAAAAAAAA'
-            '\r\n-------------------------------------------------\r\n\r\n'
-            'There were 1 new gift wrapping requests on 2017-02-06.\r\n'
-            '-------------------------------------------------\r\n\r\n'
-            'There were 1 gift wrapping requests made until 2017-02-06.\r\n'
+            '\r\n\r\n\r\n'
+            'There were 1 customer gift wrapping requests on 2017-02-06.\r\n'
+            '\r\n\r\n'
+            'There were 1 customer gift wrapping requests made'
+            ' until 2017-02-06.\r\n'
         )
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
@@ -66,14 +67,14 @@ class TestSendReportEmail:
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on {}'.format(formatted_date))
         message = (
-            'There were 0 successful gift wrapping requests processed on '
-            '2017-02-06.\r\n-------------------------------------------------'
-            '\r\n\r\nThere were 0 successful gift wrapping requests processed'
-            ' until 2017-02-06.\r\n------------------------------------------'
-            '-------\r\n\r\nThere were 0 new gift wrapping requests on '
-            '2017-02-06.\r\n-------------------------------------------------'
-            '\r\n\r\nThere were 0 gift wrapping requests made until 2017-02-'
-            '06.\r\n'
+            'There were 0 gift wrapping requests processed on '
+            '2017-02-06.\r\n'
+            '\r\n\r\nThere were 0 gift wrapping requests processed'
+            ' until 2017-02-06.\r\n'
+            '\r\n\r\nThere were 0 customer gift wrapping requests on '
+            '2017-02-06.\r\n'
+            '\r\n\r\nThere were 0 customer gift wrapping requests made'
+            ' until 2017-02-06.\r\n'
         )
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
