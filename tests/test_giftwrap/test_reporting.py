@@ -39,12 +39,12 @@ class TestSendReportEmail:
                    'on {}'.format(formatted_date))
         message = (
             'There were 1 gift wrapping requests processed on '
-            '2017-02-06.\r\nAAAAAAAAAAAAA\r\n----------------------------'
-            '---------------------\r\n\r\nThere were 1 gift '
+            '2017-02-06.\r\nAAAAAAAAAAAAA\r\n'
+            '\r\n\r\nThere were 1 gift '
             'wrapping requests processed until 2017-02-06.\r\nAAAAAAAAAAAAA'
-            '\r\n-------------------------------------------------\r\n\r\n'
+            '\r\n\r\n\r\n'
             'There were 1 customer gift wrapping requests on 2017-02-06.\r\n'
-            '-------------------------------------------------\r\n\r\n'
+            '\r\n\r\n'
             'There were 1 customer gift wrapping requests made'
             ' until 2017-02-06.\r\n'
         )
@@ -68,11 +68,11 @@ class TestSendReportEmail:
                    'on {}'.format(formatted_date))
         message = (
             'There were 0 gift wrapping requests processed on '
-            '2017-02-06.\r\n-------------------------------------------------'
+            '2017-02-06.\r\n'
             '\r\n\r\nThere were 0 gift wrapping requests processed'
-            ' until 2017-02-06.\r\n------------------------------------------'
-            '-------\r\n\r\nThere were 0 customer gift wrapping requests on '
-            '2017-02-06.\r\n-------------------------------------------------'
+            ' until 2017-02-06.\r\n'
+            '\r\n\r\nThere were 0 customer gift wrapping requests on '
+            '2017-02-06.\r\n'
             '\r\n\r\nThere were 0 customer gift wrapping requests made'
             ' until 2017-02-06.\r\n'
         )

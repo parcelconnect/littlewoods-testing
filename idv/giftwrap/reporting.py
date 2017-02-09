@@ -43,7 +43,7 @@ def _build_message(successful_yesterday, successful_until_yesterday,
         message = message + upi + "\r\n"
 
     message = message + (
-        "-------------------------------------------------\r\n\r\n"
+        "\r\n\r\n"
         "There were {} gift wrapping requests processed until {}."
         "\r\n".format(len(successful_until_yesterday), date)
     )
@@ -52,13 +52,13 @@ def _build_message(successful_yesterday, successful_until_yesterday,
         message = message + upi + "\r\n"
 
     message = message + (
-        "-------------------------------------------------\r\n\r\n"
+        "\r\n\r\n"
         "There were {} customer gift wrapping requests on {}."
         "\r\n".format(request_count_yesterday, date)
     )
 
     message = message + (
-        "-------------------------------------------------\r\n\r\n"
+        "\r\n\r\n"
         "There were {} customer gift wrapping requests made until {}."
         "\r\n".format(request_count_until_date, date)
     )
