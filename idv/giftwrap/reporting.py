@@ -35,7 +35,7 @@ def _build_message(successful_yesterday, successful_until_yesterday,
                    request_count_yesterday, request_count_until_date, date):
     message = ""
     message = message + (
-        "There were {} successful gift wrapping requests processed on {}."
+        "There were {} gift wrapping requests processed on {}."
         "\r\n".format(len(successful_yesterday), date)
     )
 
@@ -44,7 +44,7 @@ def _build_message(successful_yesterday, successful_until_yesterday,
 
     message = message + (
         "-------------------------------------------------\r\n\r\n"
-        "There were {} successful gift wrapping requests processed until {}."
+        "There were {} gift wrapping requests processed until {}."
         "\r\n".format(len(successful_until_yesterday), date)
     )
 
@@ -53,13 +53,13 @@ def _build_message(successful_yesterday, successful_until_yesterday,
 
     message = message + (
         "-------------------------------------------------\r\n\r\n"
-        "There were {} new gift wrapping requests on {}."
+        "There were {} customer gift wrapping requests on {}."
         "\r\n".format(request_count_yesterday, date)
     )
 
     message = message + (
         "-------------------------------------------------\r\n\r\n"
-        "There were {} gift wrapping requests made until {}."
+        "There were {} customer gift wrapping requests made until {}."
         "\r\n".format(request_count_until_date, date)
     )
 
