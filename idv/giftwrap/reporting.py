@@ -91,6 +91,7 @@ def send_report_email(run_report_date):
         request_count_until_yesterday,
         run_report_date
     )
-
+    html_msg = "<body>" + message.replace("\r\n", "<br>") + "</body>"
     msg = EmailMultiAlternatives(subject, message, from_email, recipients)
+    msg.attach_alternative(html_msg, "text/html")
     msg.send()
