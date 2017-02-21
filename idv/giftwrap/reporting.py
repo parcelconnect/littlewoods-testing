@@ -6,6 +6,11 @@ from django.core.mail import EmailMultiAlternatives
 from idv.common.decorators import retry
 from idv.giftwrap.models import GiftWrapRequest
 
+FROM_DATE = datetime.strptime(
+    settings.RUN_REPORT_FROM_DATE,
+    '%Y %m %d'
+)
+
 
 def _get_success_upis_for_day(date):
     return (
@@ -18,14 +23,9 @@ def _get_success_upis_for_day(date):
 
 def _get_success_upis_until_date(date):
 
-    modified_from_date = datetime.strptime(
-        settings.RUN_REPORT_FROM_DATE,
-        '%Y %m %d'
-    )
-
     return (
         GiftWrapRequest.objects
-        .modified_from(modified_from_date)
+        .modified_from(FROM_DATE)
         .modified_until(date)
         .success()
         .values_list("upi", flat=True)
@@ -37,7 +37,12 @@ def _request_count_for_day(date):
 
 
 def _request_count_until_date(date):
-    return GiftWrapRequest.objects.created_until(date).count()
+    return (
+        GiftWrapRequest.objects
+        .created_from(FROM_DATE)
+        .created_until(date)
+        .count()
+    )
 
 
 def _build_message(successful_yesterday, successful_until_yesterday,

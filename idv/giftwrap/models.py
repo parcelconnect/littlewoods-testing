@@ -32,6 +32,11 @@ class GiftWrapRequestQuerySet(models.query.QuerySet):
             created_at__day=date.day
         )
 
+    def created_from(self, date):
+        return self.filter(
+            created_at__gte=date
+        )
+
     def created_until(self, date):
         return self.filter(
             created_at__lte=date
