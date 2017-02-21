@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
@@ -15,8 +17,15 @@ def _get_success_upis_for_day(date):
 
 
 def _get_success_upis_until_date(date):
+
+    modified_from_date = datetime.strptime(
+        settings.RUN_REPORT_FROM_DATE,
+        '%Y %m %d'
+    )
+
     return (
         GiftWrapRequest.objects
+        .modified_from(modified_from_date)
         .modified_until(date)
         .success()
         .values_list("upi", flat=True)
