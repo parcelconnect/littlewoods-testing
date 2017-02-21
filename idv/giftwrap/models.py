@@ -49,6 +49,11 @@ class GiftWrapRequestQuerySet(models.query.QuerySet):
             updated_at__lte=date
         )
 
+    def modified_from(self, date):
+        return self.filter(
+            updated_from__lte=date
+        )
+
 
 class GiftWrapRequest(models.Model):
 
