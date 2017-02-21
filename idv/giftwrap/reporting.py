@@ -16,16 +16,17 @@ def _get_success_upis_for_day(date):
     )
 
 
-def _get_success_upis_until_date(date):
+from_date = datetime.strptime(
+    settings.RUN_REPORT_FROM_DATE,
+    '%Y %m %d'
+)
 
-    modified_from_date = datetime.strptime(
-        settings.RUN_REPORT_FROM_DATE,
-        '%Y %m %d'
-    )
+
+def _get_success_upis_until_date(date):
 
     return (
         GiftWrapRequest.objects
-        .modified_from(modified_from_date)
+        .modified_from(from_date)
         .modified_until(date)
         .success()
         .values_list("upi", flat=True)
@@ -37,7 +38,12 @@ def _request_count_for_day(date):
 
 
 def _request_count_until_date(date):
-    return GiftWrapRequest.objects.created_until(date).count()
+    return (
+        GiftWrapRequest.objects
+        .created_from(from_date)
+        .created_until(date)
+        .count()
+    )
 
 
 def _build_message(successful_yesterday, successful_until_yesterday,
