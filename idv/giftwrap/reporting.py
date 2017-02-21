@@ -1,17 +1,10 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
 from idv.common.decorators import retry
 from idv.giftwrap.models import GiftWrapRequest
-
-
-def _get_success_upis_from_date(date):
-    return (
-        GiftWrapRequest.objects
-        .modified_from(date)
-        .success()
-        .values_list("upi", flat=True)
-    )
 
 
 def _get_success_upis_for_day(date):
@@ -24,9 +17,15 @@ def _get_success_upis_for_day(date):
 
 
 def _get_success_upis_until_date(date):
+
+    modified_from_date = datetime.strptime(
+        settings.RUN_REPORT_FROM_DATE,
+        '%Y %m %d'
+    )
+
     return (
         GiftWrapRequest.objects
-        .modified_from(settings.RUN_REPORT_FROM_DATE)
+        .modified_from(modified_from_date)
         .modified_until(date)
         .success()
         .values_list("upi", flat=True)
@@ -84,10 +83,9 @@ def send_report_email(run_report_date):
 
     formatted_date = run_report_date.strftime("%B %d")
     successful_upis_yesterday = _get_success_upis_for_day(run_report_date)
-    success_upis_from_date_to_yesterday = _get_success_upis_until_date(
+    successful_upis_until_yesterday = _get_success_upis_until_date(
         run_report_date
     )
-    successful_upis_from_a_date = settings.RUN_REPORT_FROM_DATE
     request_count_yesterday = _request_count_for_day(run_report_date)
     request_count_until_yesterday = _request_count_until_date(run_report_date)
     from_email = settings.DEFAULT_FROM_EMAIL
@@ -97,8 +95,7 @@ def send_report_email(run_report_date):
 
     message = _build_message(
         successful_upis_yesterday,
-        success_upis_from_date_to_yesterday,
-        successful_upis_from_a_date,
+        successful_upis_until_yesterday,
         request_count_yesterday,
         request_count_until_yesterday,
         run_report_date

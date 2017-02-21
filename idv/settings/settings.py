@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
@@ -231,6 +230,4 @@ SPECIAL_DATE_IMAGE = {
     'Christmas': 'img/lwi-gift-wrapping-bg.png',
 }
 
-RUN_REPORT_FROM_DATE = datetime.strptime(
-    os.environ.get('RUN_REPORT_FROM_DATE', '21 Feb 2017'), '%d %b %Y'
-)
+RUN_REPORT_FROM_DATE = '2017 02 21'
