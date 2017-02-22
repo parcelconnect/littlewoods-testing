@@ -4,7 +4,7 @@ dependencies:
 
 machine:
   python:
-    version: 3.4.2
+    version: 3.4.4
   environment:
     DJANGO_SETTINGS_MODULE: idv.settings
     DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/lw_test
