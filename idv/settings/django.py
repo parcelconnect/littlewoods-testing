@@ -1,27 +1,9 @@
 import os
 
 import dj_database_url
-from django.core.exceptions import ImproperlyConfigured
 
 from .utils import env_as_bool, env_as_list
 
-# -----------------------------------------------------------------------------
-# Environment constants
-
-ENV_DEV = 'dev'
-ENV_STAGING = 'staging'
-ENV_PROD = 'prod'
-_envinronments = [ENV_DEV, ENV_STAGING, ENV_PROD]
-
-# -----------------------------------------------------------------------------
-# Load environment settings
-
-IDV_ENVIRONMENT = os.environ['IDV_ENVIRONMENT'].lower()
-
-if IDV_ENVIRONMENT not in _envinronments:
-    raise ImproperlyConfigured(
-        'Unsupported environment: {}'.format(IDV_ENVIRONMENT)
-    )
 
 # -----------------------------------------------------------------------------
 # Base settings
@@ -126,17 +108,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH, 'static'),
 )
 
-if IDV_ENVIRONMENT == ENV_PROD:
-    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 # -----------------------------------------------------------------------------
 # Email
-
-if IDV_ENVIRONMENT == ENV_DEV:
-    EMAIL_BACKEND = os.environ.get(
-        'EMAIL_BACKEND',
-        'django.core.mail.backends.console.EmailBackend'
-    )
 
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'localhost')
 EMAIL_PORT = os.getenv('EMAIL_PORT', 25)
@@ -164,14 +137,6 @@ HTTP_PROXY = {
     'username': os.getenv('HTTP_PROXY_USERNAME'),
     'password': os.getenv('HTTP_PROXY_PASSWORD'),
 }
-
-# -----------------------------------------------------------------------------
-# Customization for development
-
-if IDV_ENVIRONMENT == ENV_DEV:
-    INSTALLED_APPS += (
-        'django_extensions',
-    )
 
 # -----------------------------------------------------------------------------
 # Customization for development
