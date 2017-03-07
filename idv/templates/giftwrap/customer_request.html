@@ -48,12 +48,12 @@
                       <p>When would you like your gift delivered?</p>
                       <div class="form-group">
                         <input type="radio" name="deliver_by_special_date" value="Before" class="radio-inline" checked="checked">
-                        <strong><label for="deliver_by_special_date">Before {{ special_date_name }}</label></strong>
+                        <strong><label for="deliver_by_special_date">Before {# {{ special_date_name }} #}Friday 24th March</label></strong>
                        <br>
                        <input type="radio" name="deliver_by_special_date" value="On" class="radio-inline">
-                      <strong><label for="deliver_by_special_date">On {{ special_date_name }}</label></strong>
+                       <strong><label for="deliver_by_special_date">On {# {{ special_date_name }} #}Friday 24th March</label></strong>
                      </div>
-                     <small>Orders must be placed by midnight on the 8th of February.</small>
+                     <small>Orders must be placed by midnight on the 19th of March.</small>
                     </div>
                   </div>
                 {% endif %}
@@ -97,7 +97,7 @@
                </div>
                <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
             </form>
-            <img src="{% static "img/gift-box.png" %}" class="img-responsive" alt="Littlewoods Ireland logo" width="50%" height="auto">
+            <img src="{% static "img/lwi-mother-gift-box.png" %}" class="img-responsive" alt="Littlewoods Ireland logo" width="50%" height="auto">
             <div class="panel panel-default">
                <div class="panel-body">
                   Terms and Conditions Apply<br><br>

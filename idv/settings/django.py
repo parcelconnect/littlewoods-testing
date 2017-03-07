@@ -193,6 +193,7 @@ SPECIAL_DATE_NAME = os.environ.get('SPECIAL_DATE_NAME', '')
 SPECIAL_DATE_IMAGE = {
     'Valentine\'s Day': 'img/lwi-valentine-wrap-bg.png',
     'Christmas': 'img/lwi-gift-wrapping-bg.png',
+    'Mother\'s Day': 'img/lwi-mother-wrap-bg.png',
 }
 
 RUN_REPORT_FROM_DATE = '2017 02 21'
