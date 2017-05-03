@@ -1,5 +1,7 @@
 import pytest
 
+from freezegun import freeze_time
+
 from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
 
 
@@ -13,6 +15,7 @@ def client_settings(settings):
 
 
 @pytest.fixture
+@freeze_time('2017-02-21')
 def request_success():
     return GiftWrapRequest.objects.create(
         account_number="A01",
