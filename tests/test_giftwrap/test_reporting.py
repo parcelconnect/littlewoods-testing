@@ -26,7 +26,7 @@ class TestGetSuccessfulUpis:
 @pytest.mark.django_db
 class TestSendReportEmail:
 
-    @freeze_time('2017-02-21')
+    @freeze_time('2017-05-02')
     @patch('idv.giftwrap.reporting.EmailMultiAlternatives')
     def test_it_sends_email_with_upis_when_found_for_given_day(
             self, mock_EmailMultiAlternatives, settings, request_success):
@@ -39,14 +39,14 @@ class TestSendReportEmail:
                    'on {}'.format(formatted_date))
         message = (
             'There were 1 gift wrapping requests processed on '
-            '2017-02-21.\r\nAAAAAAAAAAAAA\r\n'
+            '2017-05-02.\r\nAAAAAAAAAAAAA\r\n'
             '\r\n\r\nThere were 1 gift '
-            'wrapping requests processed until 2017-02-21.\r\nAAAAAAAAAAAAA'
+            'wrapping requests processed until 2017-05-02.\r\nAAAAAAAAAAAAA'
             '\r\n\r\n\r\n'
-            'There were 1 customer gift wrapping requests on 2017-02-21.\r\n'
+            'There were 1 customer gift wrapping requests on 2017-05-02.\r\n'
             '\r\n\r\n'
             'There were 1 customer gift wrapping requests made'
-            ' until 2017-02-21.\r\n'
+            ' until 2017-05-02.\r\n'
         )
         from_email = 'support@fastway.ie'
         send_report_email(run_report_at)
