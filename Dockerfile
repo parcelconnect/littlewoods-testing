@@ -1,4 +1,4 @@
-FROM ubuntu:14.04.4
+FROM ubuntu:14.04.5
 
 RUN apt-get update
 RUN apt-get -y install software-properties-common
@@ -19,4 +19,5 @@ ENV LC_ALL en_US.UTF-8
 ADD . /code
 WORKDIR /code
 
+RUN pip3 install -U pip setuptools
 RUN pip3 install -r requirements/dev.txt
