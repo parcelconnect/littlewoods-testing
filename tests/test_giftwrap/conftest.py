@@ -1,7 +1,5 @@
 import pytest
 
-from freezegun import freeze_time
-
 from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
 
 
