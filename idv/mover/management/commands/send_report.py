@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def valid_date(date_string):
     try:
-        return datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
+        return datetime.strptime(date_string, "%Y-%m-%d").date()
     except ValueError:
         msg = "Not a valid date: '{0}'.".format(date_string)
         raise argparse.ArgumentTypeError(msg)
