@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from unittest.mock import patch
 
 import pytest
+from django.core.management import call_command
 from django.utils import timezone
 from freezegun import freeze_time
 
@@ -70,6 +71,28 @@ class TestMove:
 
 @pytest.mark.django_db
 class TestSendMoreReport:
+
+    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.commands.move_credential_files')
+    @freeze_time('2016-01-05')
+    def test_command_send_email_for_yesterday(self, move_mock, mail_mock):
+        move()
+        since = datetime(2016, 1, 4).date()
+        until = datetime(2016, 1, 5).date()
+        call_command('send_report')
+
+        mail_mock.send_move_report.assert_called_once_with((since, until))
+
+    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.commands.move_credential_files')
+    @freeze_time('2016-01-05')
+    def test_command_send_email_for_given_dates(self, move_mock, mail_mock):
+        move()
+        since = datetime(2016, 1, 2).date()
+        until = datetime(2016, 1, 3).date()
+        call_command('send_report', since=since, until=until)
+
+        mail_mock.send_move_report.assert_called_once_with((since, until))
 
     def test_value_error_if_no_move_checkpoint(self):
         since = timezone.now().date()
