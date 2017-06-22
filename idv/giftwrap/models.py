@@ -44,19 +44,19 @@ class GiftWrapRequestQuerySet(models.query.QuerySet):
 
     def modified_on(self, date):
         return self.filter(
-            updated_at__year=date.year,
-            updated_at__month=date.month,
-            updated_at__day=date.day
+            modified_at__year=date.year,
+            modified_at__month=date.month,
+            modified_at__day=date.day
         )
 
     def modified_until(self, date):
         return self.filter(
-            updated_at__lte=date
+            modified_at__lte=date
         )
 
     def modified_from(self, date):
         return self.filter(
-            updated_at__gte=date
+            modified_at__gte=date
         )
 
 
@@ -89,7 +89,7 @@ class GiftWrapRequest(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     objects = GiftWrapRequestQuerySet.as_manager()
 
