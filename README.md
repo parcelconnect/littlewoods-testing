@@ -108,6 +108,9 @@ original SFTP request to LW SFTP.
 That EC2 instance is under the `parcelconnect` AWS account and it's named
 `fastwaybox`.
 
+The url for AWS management console access is: https://fastway-ie.signin.aws.amazon.com/console
+(as of this edit, there are users in IAM defined for salvadorperez, miqueltorres and pcurtain)
+
 - - -
 
 # App: Tracking
