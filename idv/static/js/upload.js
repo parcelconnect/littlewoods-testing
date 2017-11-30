@@ -163,7 +163,9 @@ IDV.UploadForm = (function() {
     .done(function() {
       uploadFileDoneHandler(file);
     })
-    .fail(function() {
+    .fail(function(request, status, error) {
+      var error = 'Request: ' + request + '\nStatus: ' + status + '\nError: ' + error;
+      Raven.captureException(error);
       uploadFileFailHandler(file);
     });
   };
