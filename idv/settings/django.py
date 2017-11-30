@@ -4,7 +4,6 @@ import dj_database_url
 
 from .utils import env_as_bool, env_as_list
 
-
 # -----------------------------------------------------------------------------
 # Base settings
 
@@ -31,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'idv.common',
     'idv.collector',
     'idv.mover',
     'idv.sftp',

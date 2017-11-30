@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% load ravenscript %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,6 +47,8 @@
       {% block content %}
       {% endblock %}
     </div>
+
+    {% raveninit %}
   </body>
 
 </html>
