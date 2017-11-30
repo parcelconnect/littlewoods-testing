@@ -2,15 +2,15 @@
 
 # Testing
 coverage==4.2
-pytest==2.9.2
-pytest-cov==2.4.0
-pytest-django==2.9.1
-freezegun==0.3.8
+pytest>=3.2,<3.3
+pytest-cov==2.5.1
+pytest-django>=3.1,<3.2
+freezegun==0.3.9
 responses<0.6.0
 
 # Linting
-flake8==3.2.0
-isort==4.2.5
+flake8>=3.4,<3.5
+isort==4.2.15
 
 # Development
 ipython

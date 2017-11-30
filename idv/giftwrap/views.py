@@ -14,10 +14,10 @@ from .mixins import SpecialDateMixin
 from .models import GiftWrapRequest
 from .types import GiftWrapRequestStatus
 
-
 ##########################################################
 #                     Generic views                      #
 ##########################################################
+
 
 class TemplateLoginView(TemplateView):
 
