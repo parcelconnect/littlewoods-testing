@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'idv.common',
     'idv.collector',
     'idv.mover',
     'idv.sftp',
