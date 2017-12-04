@@ -165,7 +165,7 @@ IDV.UploadForm = (function() {
     })
     .fail(function(jqXHR, textStatus, error) {
       if (typeof Raven !== 'undefined') {
-        Raven.captureException('Error uploading Photo ID file', {
+        Raven.captureMessage('Error uploading Photo ID file', {
           extra: {status: jqXHR.status, response: jqXHR.response}
         });
       } else {
@@ -216,7 +216,7 @@ IDV.UploadForm = (function() {
     if (jqXHR.status !== 400) {
       var error_msg = 'Unexpected response when submitting id verification form: status ' + jqXHR.status;
       if (typeof Raven !== 'undefined') {
-        Raven.captureException(error_msg, {
+        Raven.captureMessage(error_msg, {
           extra: {status: jqXHR.status, response: jqXHR.responseText}
         });
       } else {
