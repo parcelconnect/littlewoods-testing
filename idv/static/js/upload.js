@@ -166,10 +166,10 @@ IDV.UploadForm = (function() {
     .fail(function(jqXHR, textStatus, error) {
       if (typeof Raven !== 'undefined') {
         Raven.captureException('Error uploading Photo ID file', {
-          extra: {status: jqXHR.status, response: jqXHR.responseText}
+          extra: {status: jqXHR.status, response: jqXHR.response}
         });
       } else {
-        console.log(JSON.stringify({status: jqXHR.status, response: jqXHR.responseText}))
+        console.log(JSON.stringify({status: jqXHR.status, response: jqXHR.response}))
       }
       uploadFileFailHandler(file);
     });
@@ -213,23 +213,21 @@ IDV.UploadForm = (function() {
   };
 
   var failedSignHandler = function(jqXHR) {
-    if (jqXHR.status === 400) {
-      var error_msg = 'Validation error when submitting id verification form.';
-    } else {
+    if (jqXHR.status !== 400) {
       var error_msg = 'Unexpected response when submitting id verification form: status ' + jqXHR.status;
+      if (typeof Raven !== 'undefined') {
+        Raven.captureException(error_msg, {
+          extra: {status: jqXHR.status, response: jqXHR.responseText}
+        });
+      } else {
+        console.log(error_msg);
+        console.log(JSON.stringify({status: jqXHR.status, response: jqXHR.responseText}));
+      }
       uploadFileFailHandler();
       return;
     }
-    var errors = jqXHR.responseJSON.errors;
-    if (typeof Raven !== 'undefined') {
-      Raven.captureException(error_msg, {
-        extra: {status: jqXHR.status, errors: errors}
-      });
-    } else {
-      console.log(error_msg);
-      console.log(JSON.stringify({status: jqXHR.status, errors: errors}));
-    }
 
+    var errors = jqXHR.responseJSON.errors;
     for (var fieldName in errors) {
       var $field = $('input[name="' + fieldName + '"]');
       var fieldErrors = errors[fieldName];
