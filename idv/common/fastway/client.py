@@ -126,7 +126,11 @@ class Client:
             if 'Label' in str(e) and 'does not have any scans' in str(e):
                 raise LabelNotFound('Label ID not found')
             elif 'Invalid label number' in str(e):
-                raise ValidationError('Invalid label ID')
+                raise ValidationError(
+                    'No tracking information found for {}.<br />This means '
+                    'your order has not yet been processed and shipped.<br />'
+                    'Please contact Littlewoods Customer Service for a status '
+                    'update.'.format(label_id))
             else:
                 raise
         data = []
