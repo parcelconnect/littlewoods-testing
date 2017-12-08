@@ -14,4 +14,4 @@ machine:
 test:
   override:
     - ./bin/runlintchecks.sh
-    - py.test tests/ --junit-xml=$CIRCLE_TEST_REPORTS/django/metadata.xml
+    - pytest tests --junit-xml=$CIRCLE_TEST_REPORTS/django/metadata.xml
