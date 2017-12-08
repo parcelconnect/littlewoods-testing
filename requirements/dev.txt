@@ -11,6 +11,7 @@ responses<0.6.0
 # Linting
 flake8>=3.4,<3.5
 isort==4.2.15
+flake8-isort>=2.2,<2.3
 
 # Development
 ipython

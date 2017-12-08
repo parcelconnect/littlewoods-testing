@@ -1,0 +1,62 @@
+version: 2.0
+jobs:
+    build:
+      working_directory: /tmp/littlewoods-idv
+      docker:
+        - image: heroku/heroku:16
+          environment:
+            - DJANGO_SETTINGS_MODULE=idv.settings.dev
+            - DATABASE_URL=postgres://ubuntu:@127.0.0.1:5432/lw_test
+            - IDV_ENVIRONMENT=dev
+        - image: postgres:9.5.5-alpine
+          environment:
+            - POSTGRES_USER=ubuntu
+            - POSTGRES_DB=lw_test
+      steps:
+        - checkout
+
+        - restore_cache:
+            key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}
+
+        - run:
+            name: Install image dependencies
+            command: apt-get update && apt-get install -y python3-pip python3-venv
+
+        - run:
+            name: Install dockerize
+            command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+            environment:
+              DOCKERIZE_VERSION: v0.6.0
+
+        - run:
+            name: Install requirements
+            command: |
+              python3 -m venv venv
+              . venv/bin/activate
+              pip3 install -U pip setuptools
+              pip3 install -r requirements/dev.txt
+
+        - save_cache:
+            key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}-{{ epoch }}
+            paths:
+              - "venv"
+
+        - run:
+            name: Lint checks
+            command: |
+              . venv/bin/activate
+              flake8 idv tests
+
+        - run:
+            name: Wait for db
+            command: dockerize -wait tcp://localhost:5432 -timeout 15s
+
+        - run:
+            name: Test suite run
+            command: |
+              . venv/bin/activate
+              mkdir -p test-reports/django/
+              pytest tests --junit-xml=test-reports/django/metadata.xml
+
+        - store_test_results:
+            path: test-reports
