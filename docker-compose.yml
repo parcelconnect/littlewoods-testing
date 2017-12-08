@@ -1,20 +1,23 @@
-version: '2'
+version: '3'
+
 services:
+  db:
+    image: postgres:9.5.5-alpine
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=lwi
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
     command: ./manage.py runserver 0.0.0.0:9002
     volumes:
       - .:/code
     ports:
       - "9002:9002"
-    environment:
-      - DJANGO_SETTINGS_MODULE=idv.settings.dev
-      - DATABASE_URL=postgres://postgres@db:5432/postgres
-      - DEBUG=True
     depends_on:
       - db
     env_file:
       - .env.default
       - .env
-  db:
-    image: postgres:9.4
