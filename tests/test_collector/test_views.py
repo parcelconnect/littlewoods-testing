@@ -7,6 +7,13 @@ from django.core.urlresolvers import reverse
 from idv.collector.models import Account, Credential
 
 
+@pytest.fixture(autouse=True)
+def aws_credentials(settings):
+    settings.AWS_ACCESS_KEY = "AWS-TEST-KEY"
+    settings.AWS_SECRET_KEY = "AWS-TEST-SECRET"
+    return settings
+
+
 class TestCollect:
 
     def test_json_context(self, client):
