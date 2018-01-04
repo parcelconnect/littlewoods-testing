@@ -1,7 +1,7 @@
 FROM heroku/heroku:16
 
-RUN apt-get update
-RUN apt-get install -y python3-pip
+RUN apt-get update && apt-get install -y python3-pip
+RUN apt-get autoclean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /code
 WORKDIR /code
