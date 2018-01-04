@@ -89,6 +89,15 @@ Create an empty `.env` file.
     $ docker-compose build
     $ docker-compose up
 
+NOTE: If you receive an error initializing the database, i.e.:
+
+`The data directory was initialized by PostgreSQL version 9.4, which is not compatible with this version 9.5.5.`
+
+Run the following commands:
+ - docker-compose stop db
+ - docker-compose rm -v db
+ - docker-compose up
+
 ## EC2 proxy for copying files from Fastway S3 to LW SFTP
 
 To allow us upload files to their SFTP server, Littlewoods wanted to whitelist
