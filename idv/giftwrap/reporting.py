@@ -1,15 +1,14 @@
-from datetime import datetime
+from datetime import datetime, time
 
+from dateutil.parser import parse
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
+from pytz import timezone
 
 from idv.common.decorators import retry
 from idv.giftwrap.models import GiftWrapRequest
 
-FROM_DATE = datetime.strptime(
-    settings.RUN_REPORT_FROM_DATE,
-    '%Y %m %d'
-)
+FROM_DATE = parse(settings.RUN_REPORT_FROM_DATE)
 
 
 def _get_success_upis_for_day(date):
@@ -21,12 +20,11 @@ def _get_success_upis_for_day(date):
     )
 
 
-def _get_success_upis_until_date(date):
-
+def _get_success_upis_until_date(end_datetime):
     return (
         GiftWrapRequest.objects
         .modified_from(FROM_DATE)
-        .modified_until(date)
+        .modified_until(end_datetime)
         .success()
         .values_list("upi", flat=True)
     )
@@ -36,11 +34,11 @@ def _request_count_for_day(date):
     return GiftWrapRequest.objects.created_on(date).count()
 
 
-def _request_count_until_date(date):
+def _request_count_until_date(end_datetime):
     return (
         GiftWrapRequest.objects
         .created_from(FROM_DATE)
-        .created_until(date)
+        .created_until(end_datetime)
         .count()
     )
 
@@ -85,18 +83,17 @@ def send_report_email(run_report_date):
     """
      Creates an email report for the successful upis for the previous day
     """
-
-    formatted_date = run_report_date.strftime("%B %d")
+    subject = ('Littlewood\'s Gift Wrapping Requests processed on {}'
+               .format(run_report_date.strftime("%B %d")))
+    report_datetime = datetime.combine(
+        run_report_date, time.max).replace(tzinfo=timezone(settings.TIME_ZONE))
     successful_upis_yesterday = _get_success_upis_for_day(run_report_date)
     successful_upis_until_yesterday = _get_success_upis_until_date(
-        run_report_date
-    )
+        report_datetime)
     request_count_yesterday = _request_count_for_day(run_report_date)
-    request_count_until_yesterday = _request_count_until_date(run_report_date)
+    request_count_until_yesterday = _request_count_until_date(report_datetime)
     from_email = settings.DEFAULT_FROM_EMAIL
     recipients = settings.UPI_REPORT_RECIPIENTS
-    subject = ('Littlewood\'s Gift Wrapping Requests processed on {}'
-               .format(formatted_date))
 
     message = _build_message(
         successful_upis_yesterday,

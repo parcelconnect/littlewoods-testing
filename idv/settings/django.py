@@ -197,4 +197,4 @@ SPECIAL_DATE_IMAGE = {
     'Father\'s Day': 'img/lwi-father-wrap-bg.png',
 }
 
-RUN_REPORT_FROM_DATE = '2017 05 02'
+RUN_REPORT_FROM_DATE = '2017 05 02 00:00:00 {}'.format(TIME_ZONE)
