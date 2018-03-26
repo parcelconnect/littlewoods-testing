@@ -5,7 +5,8 @@ import pytest
 from django.utils import timezone
 from freezegun import freeze_time
 
-from idv.giftwrap.reporting import _get_success_upis_for_day, send_report_email
+from idv.giftwrap.reporting import (
+    FROM_DATE, _get_success_upis_for_day, send_report_email)
 
 
 @pytest.mark.django_db
@@ -26,6 +27,10 @@ class TestGetSuccessfulUpis:
 
 @pytest.mark.django_db
 class TestSendReportEmail:
+
+    def test_from_date_is_timezone_aware(self):
+        assert FROM_DATE.tzinfo is not None
+        assert FROM_DATE.tzinfo.utcoffset(FROM_DATE) is not None
 
     @freeze_time('2017-05-02')
     @patch('idv.giftwrap.reporting.EmailMultiAlternatives')
