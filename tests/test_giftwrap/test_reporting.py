@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest.mock import patch
 
 import pytest
+from django.utils import timezone
 from freezegun import freeze_time
 
 from idv.giftwrap.reporting import _get_success_upis_for_day, send_report_email
@@ -31,7 +32,7 @@ class TestSendReportEmail:
     def test_it_sends_email_with_upis_when_found_for_given_day(
             self, mock_EmailMultiAlternatives, settings, request_success):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
-        request_success.created_at = datetime.now()
+        request_success.created_at = timezone.now()
         request_success.save()
         run_report_at = request_success.created_at.date()
         formatted_date = run_report_at.strftime("%B %d")
@@ -62,7 +63,7 @@ class TestSendReportEmail:
     def test_it_sends_email_when_no_upis_found_for_given_day(
             self, mock_EmailMultiAlternatives, settings):
         settings.UPI_REPORT_RECIPIENTS = ["example@example.com"]
-        run_report_at = datetime.now().date()
+        run_report_at = timezone.now().date()
         formatted_date = run_report_at.strftime("%B %d")
         subject = ('Littlewood\'s Gift Wrapping Requests processed '
                    'on {}'.format(formatted_date))
