@@ -19,4 +19,5 @@ def get_displayable_event_info(event):
         'status_description': event['StatusDescription'],
         'name': event['Name'],
         'franchisee': event['Franchise'],
+        'recipient': event['CompanyInfo']
     }

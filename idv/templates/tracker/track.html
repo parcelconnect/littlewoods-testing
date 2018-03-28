@@ -73,8 +73,12 @@
         <p class="description"><%= today %></p>
       </div>
       <div class="col-sm-8 col-xs-6 status">
-        <p>CURRENT STATUS <span class="show-mobile dash"> - </span></p>
-        <p  class="descriptioin"><%= latestEvent.type %></p>
+        <p>Recipient Data <span class="show-mobile dash"> - </span></p>
+        <p  class="descriptioin"><%= recipientData.contactName %></p>
+        <p  class="descriptioin"><%= recipientData.address1 %></p>
+        <p  class="descriptioin"><%= recipientData.address3 %></p>
+        <p  class="descriptioin"><%= recipientData.address4 %></p>
+        <p  class="descriptioin"><%= recipientData.address5 %></p>
       </div>
     </div>
     <div class="panel-body">
@@ -111,4 +115,3 @@
   </div>
 </div>
 </script>
-
