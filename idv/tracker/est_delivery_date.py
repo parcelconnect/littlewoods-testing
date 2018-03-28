@@ -1,10 +1,6 @@
 from datetime import datetime, timedelta
 
 BANK_HOLIDAYS = (
-    datetime(year=2017, month=10, day=31),
-    datetime(year=2017, month=12, day=25),
-    datetime(year=2017, month=12, day=26),
-    datetime(year=2017, month=12, day=27),
     datetime(year=2018, month=1, day=2),
     datetime(year=2018, month=3, day=17),
     datetime(year=2018, month=4, day=2),
@@ -26,7 +22,7 @@ PLUS_1_DAY_SCANS = [
 
 PLUS_2_DAYS_SCANS = ["R02", "RTD"]
 
-SAME_DAY_SCANS = ["HDN", "ONB"]
+SAME_DAY_SCANS = ["HDN", "ONB", "NEI", "YES"]
 
 
 def _get_week_day(start_date, plus_days):
@@ -44,12 +40,11 @@ def _get_week_day(start_date, plus_days):
 
 
 def get_est_delivery_date_from_event(event):
-    status_scan = event['status_scan']
-    if status_scan in SAME_DAY_SCANS:
+    if event['status_scan'] in SAME_DAY_SCANS:
         return event['date']
-    elif status_scan in PLUS_1_DAY_SCANS:
+    elif event['status_scan'] in PLUS_1_DAY_SCANS:
         return _get_week_day(start_date=event['date'], plus_days=1)
-    elif status_scan in PLUS_2_DAYS_SCANS:
+    elif event['status_scan'] in PLUS_2_DAYS_SCANS:
         return _get_week_day(start_date=event['date'], plus_days=2)
     # default estimated delivery is +2 days, this is subject to change
     else:
