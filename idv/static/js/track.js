@@ -25,7 +25,7 @@ IDV.Track = (function() {
         recipientData = event.recipient
       }
       // not all scan events have a contact name
-      if(event.recipient.contactName){
+      if(event.recipient.contactName != ""){
         recipientData['contactName'] = event.recipient.contactName
       }
     })
