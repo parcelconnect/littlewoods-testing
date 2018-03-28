@@ -36,6 +36,7 @@ IDV.Track = (function() {
       events: events_reverse_order,
       latestEvent: events_reverse_order[0],
       today: response.today,
+      estDeliveryDate: response.est_delivery_date,
       labelID: response.label_id,
       recipientData: recipientData
     });

@@ -16,6 +16,7 @@ def get_displayable_event_info(event):
         'date': date.strftime('%B %d, %Y'),
         'time': date.strftime('%A, %I:%M %p'),
         'description': event['Description'],
+        'status_scan': event['Status'],
         'status_description': event['StatusDescription'],
         'name': event['Name'],
         'franchisee': event['Franchise'],
