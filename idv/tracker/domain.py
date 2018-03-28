@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from idv.common.fastway import get_client_from_settings
+from idv.tracker.status_descriptions import map_status_to_description
 
 
 def get_tracking_events(label_id):
@@ -12,12 +13,11 @@ def get_tracking_events(label_id):
 def get_displayable_event_info(event):
     date = datetime.strptime(event['Date'], '%d/%m/%Y %H:%M:%S')
     return {
-        'type': event['TypeVerbose'],
         'date': date.strftime('%B %d, %Y'),
         'time': date.strftime('%A, %I:%M %p'),
         'description': event['Description'],
         'status_scan': event['Status'],
-        'status_description': event['StatusDescription'],
+        'status_description': map_status_to_description(event),
         'name': event['Name'],
         'franchisee': event['Franchise'],
         'recipient': event['CompanyInfo']

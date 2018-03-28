@@ -41,3 +41,11 @@ def test_returns_correct_date_when_end_date_during_weekend(
     est_delivery_date = get_est_delivery_date_from_event(
             ds1_scan_event_on_friday)
     assert est_delivery_date == 'April 09, 2018'
+
+
+def test_returns_correct_date_when_end_date_during_weekend_and_before_bank_holiday( # noqa
+        ds1_scan_event_on_friday):
+    ds1_scan_event_on_friday['date'] = 'October 26, 2018'
+    est_delivery_date = get_est_delivery_date_from_event(
+        ds1_scan_event_on_friday)
+    assert est_delivery_date == 'October 30, 2018'
