@@ -18,7 +18,7 @@ IDV.Track = (function() {
 
   var successHandler = function(response) {
     var eventsPanel = $('#js-events');
-    var recipientData = '';
+    var recipientData = {};
     // not all scan events have recipient data
     response.events.forEach(function (event){
       if(event.recipient.address1 != ""){
