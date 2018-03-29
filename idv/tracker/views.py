@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
+from idv.tracker.est_delivery_date import get_est_delivery_date_from_event
+
 from . import domain
 
 
@@ -30,10 +32,10 @@ def get_tracking_events(request):
     except Exception as exc:
         data = {'success': False, 'message': str(exc)}
         return JsonResponse(data, status=400)
-
     return JsonResponse({
         'success': True,
         'label_id': label_id,
         'events': events,
-        'today': datetime.now().strftime('%B %d, %Y')
+        'today': datetime.now().strftime('%B %d, %Y'),
+        'est_delivery_date': get_est_delivery_date_from_event(events[-1])
     }, status=200)

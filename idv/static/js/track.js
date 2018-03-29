@@ -18,6 +18,16 @@ IDV.Track = (function() {
 
   var successHandler = function(response) {
     var eventsPanel = $('#js-events');
+    var recipientData = {};
+    // not all scan events have recipient data
+    response.events.forEach(function (event){
+      if(event.recipient.address1 != ""){
+        recipientData = event.recipient
+      }
+      if(event.recipient.contactName != ""){
+        recipientData['contactName'] = event.recipient.contactName
+      }
+    })
     var templateHTML = $('#js-events-template').html();
     var template = _.template(templateHTML);
     var events_reverse_order = response.events.reverse();
@@ -25,7 +35,9 @@ IDV.Track = (function() {
       events: events_reverse_order,
       latestEvent: events_reverse_order[0],
       today: response.today,
-      labelID: response.label_id
+      estDeliveryDate: response.est_delivery_date,
+      labelID: response.label_id,
+      recipientData: recipientData
     });
     eventsPanel.html(eventsHTML);
     eventsPanel.removeClass('hidden');
