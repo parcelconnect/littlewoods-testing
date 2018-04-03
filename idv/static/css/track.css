@@ -47,8 +47,8 @@ body {
 }
 
 .tracking-panel .panel-heading {
-  background-color: #000000;
-  color: #FFFFFF;
+  background-color: #F9F9F9;
+  color: #000000;
 }
 
 .lwi-logo {
@@ -58,17 +58,13 @@ body {
 
 .date,
 .status {
-  padding: 30px 35px 0px 35px;
+  padding: 30px 35px 10px 35px;
   position: relative;
 }
 
 .panel-heading .date,
 .panel-heading .status {
   padding: 20px 35px 10px 35px;
-}
-
-.panel-heading .status {
-  border-left: 1px solid #DDDDDD;
 }
 
 .panel-body .status {
@@ -88,22 +84,12 @@ p.small-txt {
 }
 
 .panel-body p {
-  color: #CCCCCC;
+  color: #000000;
   margin: 0px;
 }
 
 .panel-body .description {
   font-weight: 500;
-}
-
-.panel-body .date:first-child p,
-.panel-body .status:nth-child(2) p {
-  color: #666666;
-}
-
-.panel-body .date:first-child .description,
-.panel-body .status:nth-child(2) .description {
-  color: #000000;
 }
 
 .panel-heading .date p:first-child,
@@ -125,6 +111,60 @@ p.small-txt {
 .error-msg {
   text-align: center;
   color: #A94440;
+}
+
+.recipient-info {
+  color: #A8A7A8;
+  margin-bottom: 0px;
+}
+
+.est-day {
+  font-weight: 800;
+  font-size: 38px;
+  margin: -8px 0 0 0;
+}
+
+.est-month {
+  font-size: 22px;
+  font-weight: 200;
+  margin: -8px 0 0 0;
+}
+
+.est-day-str {
+  font-weight: 200;
+}
+
+.customer {
+  padding-bottom: 12px;
+}
+
+.col-sm-8 .col-xs-6 .status {
+  padding-top: 0px;
+}
+
+.delivery-address {
+  margin-bottom: 0px;
+}
+
+.faq {
+  margin: 20px 0;
+}
+
+.breakpoint {
+  width: 35px;
+}
+
+.event-description {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.time span {
+  color: #A8A7A8;
+}
+
+.event-date {
+  padding-left: 0px;
 }
 
 /* Media queries */
@@ -155,10 +195,8 @@ p.small-txt {
   }
 
   .panel-heading .status p,
-  .panel-heading .date p,
   .show-mobile.date-time p {
     display: inline-block;
-    text-align: left;
   }
 
   .show-mobile.date-time p {
@@ -166,11 +204,22 @@ p.small-txt {
   }
 
   .panel-heading .status {
-    border-top: 1px solid #DDDDDD;
     border-left: none;
+    padding-top: 10px;
   }
 
   .form-group.track-input {
+    width: 100%;
+  }
+
+  .date p, .est-day p, .est-month p,
+  .customer, .recipient-info, .delivery-address,
+  .faq {
+    text-align: center;
+  }
+
+  .est-day, .est-month, .customer, .recipient-info,
+  .faq, .delivery-address {
     width: 100%;
   }
 
@@ -184,6 +233,10 @@ p.small-txt {
 
   .panel.tracking-panel {
     width: 100%;
+  }
+
+  .timeline {
+    margin-left: 200px;
   }
 
 }
