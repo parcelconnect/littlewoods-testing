@@ -36,12 +36,12 @@ def _get_week_day(start_date, plus_days):
         ):
             end_date += timedelta(days=1)
         delivery_date += timedelta(days=1)
-    return delivery_date.strftime('%B %d, %Y')
+    return delivery_date
 
 
 def get_est_delivery_date_from_event(event):
     if event['status_scan'] in SAME_DAY_SCANS:
-        return event['date']
+        return datetime.strptime(event['date'], '%B %d, %Y')
     elif event['status_scan'] in PLUS_1_DAY_SCANS:
         return _get_week_day(start_date=event['date'], plus_days=1)
     elif event['status_scan'] in PLUS_2_DAYS_SCANS:

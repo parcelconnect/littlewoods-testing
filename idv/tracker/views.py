@@ -32,10 +32,12 @@ def get_tracking_events(request):
     except Exception as exc:
         data = {'success': False, 'message': str(exc)}
         return JsonResponse(data, status=400)
+    est_delivery_date = get_est_delivery_date_from_event(events[-1])
     return JsonResponse({
         'success': True,
         'label_id': label_id,
         'events': events,
-        'today': datetime.now().strftime('%B %d, %Y'),
-        'est_delivery_date': get_est_delivery_date_from_event(events[-1])
+        'est_delivery_day': est_delivery_date.strftime('%d'),
+        'est_delivery_day_str': est_delivery_date.strftime('%A'),
+        'est_delivery_month': est_delivery_date.strftime('%B %Y')
     }, status=200)
