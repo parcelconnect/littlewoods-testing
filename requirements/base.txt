@@ -9,6 +9,7 @@ psycopg2==2.7.3
 paramiko==2.0.2
 cffi>=1.4.1  # needed by cryptography, needed by paramiko2
 requests==2.9.2
+holidays  # No version to have always latest
 
 # Django
 django==1.11.8
