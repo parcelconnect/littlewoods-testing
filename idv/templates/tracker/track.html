@@ -69,42 +69,32 @@
   <div class="panel panel-default tracking-panel center-block">
     <div class="col-sm-12 col-xs-12 panel-heading">
       <div class="col-sm-4 col-xs-6 date">
-        <p>Arriving <span class="show-mobile dash"> - </span> </p>
-        <p class="description"><%= estDeliveryDate %></p>
+        <p><strong>Arriving:</strong></p>
+        <p class="description est-day"><%= estDeliveryDay %></p>
+        <p class="description est-month"><%= estDeliveryMonth %></p>
+        <p class="description est-day-str"><%= estDeliveryDayStr %></p>
       </div>
       <div class="col-sm-8 col-xs-6 status">
-        <p>Recipient Data <span class="show-mobile dash"> - </span></p>
-        <p  class="descriptioin"><%= recipientData.contactName %></p>
-        <p  class="descriptioin"><%= recipientData.address1 %></p>
-        <p  class="descriptioin"><%= recipientData.address3 %></p>
-        <p  class="descriptioin"><%= recipientData.address4 %></p>
-        <p  class="descriptioin"><%= recipientData.address5 %></p>
+        <p class="customer"><strong>Customer:</strong> <span class="recipient-info"><%= recipientData.contactName %></span></p>
+        <p class="delivery-address"><strong>Delivery Address:</strong></p>
+        <p  class="recipient-info"><%= recipientData.address1 %></p>
+        <p  class="recipient-info"><%= recipientData.address3 %></p>
+        <p  class="recipient-info"><%= recipientData.address4 %></p>
+        <p  class="recipient-info"><%= recipientData.address5 %></p>
+        <p class="faq"><i>Have a question? <a href="https://www.littlewoodsireland.ie/help/en/online-help-system.page">FAQs</a></i></p>
       </div>
     </div>
     <div class="panel-body">
 
     <% _.each(events, function(event, index) { %>
-      <div class="col-sm-4 col-xs-6 date hide-mobile">
-        <p class="description"><%= event.date %></p>
-        <p class="time small-txt"> <%= event.time %></p>
-      </div>
-      <div class="col-sm-8 col-xs-6 status">
+      <div class="col-sm-8 col-sm-offset-2 col-xs-10 status timeline">
         <div class="img-container">
-        <% if(index === 0) { %>
-          <img src="{% static "img/circle-black.png" %}" class="breakpoint" alt="timeline-breakpoint">
-        <% } else { %>
-          <img src="{% static "img/circle-grey.png" %}" class="breakpoint" alt="timeline-breakpoint">
-        <% } %>
-
+          <img src="{% static "img/tick.png" %}" class="breakpoint" alt="timeline-breakpoint">
         </div>
         <div class="status-container">
-          <div class="show-mobile date-time">
-            <p class="description"><%= event.date %></p>
-            <p class="time small-txt"><%= event.time %></p>
-          </div>
           <div class="status-description">
-            <p class="description"><%= event.status_description %></p>
-            <p class="small-txt"><%= event.name %></p>
+            <p class="description event-description"><%= event.status_description %></p>
+            <p class="description time small-txt"><span class="col-md-4 event-date"><%= event.date %></span><span class="col-md-5"><%=event.time %></span></p>
           </div>
         </div>
       </div>

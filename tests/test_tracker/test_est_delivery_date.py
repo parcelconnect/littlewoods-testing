@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 
 from idv.tracker.est_delivery_date import get_est_delivery_date_from_event
@@ -7,14 +9,14 @@ from idv.tracker.est_delivery_date import get_est_delivery_date_from_event
 def hdn_scan_event():
     return {
         'status_scan': 'HDN',
-        'date': 'April 6, 2018'}
+        'date': 'April 06, 2018'}
 
 
 @pytest.fixture
 def r10_scan_event_day_before_bank_holiday():
     return {
         'status_scan': 'R10',
-        'date': 'April 1, 2018'}
+        'date': 'April 01, 2018'}
 
 
 @pytest.fixture
@@ -26,21 +28,21 @@ def ds1_scan_event_on_friday():
 
 def test_returns_correct_date(hdn_scan_event):
     est_delivery_date = get_est_delivery_date_from_event(hdn_scan_event)
-    assert est_delivery_date == hdn_scan_event['date']
+    assert est_delivery_date.strftime('%B %d, %Y') == hdn_scan_event['date']
 
 
 def test_returns_correct_date_when_end_date_during_bank_holiday(
         r10_scan_event_day_before_bank_holiday):
     est_delivery_date = get_est_delivery_date_from_event(
             r10_scan_event_day_before_bank_holiday)
-    assert est_delivery_date == 'April 03, 2018'
+    assert est_delivery_date == datetime.datetime(2018, 4, 3, 0, 0)
 
 
 def test_returns_correct_date_when_end_date_during_weekend(
         ds1_scan_event_on_friday):
     est_delivery_date = get_est_delivery_date_from_event(
             ds1_scan_event_on_friday)
-    assert est_delivery_date == 'April 09, 2018'
+    assert est_delivery_date == datetime.datetime(2018, 4, 9, 0, 0)
 
 
 def test_returns_correct_date_when_end_date_during_weekend_and_before_bank_holiday( # noqa
@@ -48,4 +50,4 @@ def test_returns_correct_date_when_end_date_during_weekend_and_before_bank_holid
     ds1_scan_event_on_friday['date'] = 'October 26, 2018'
     est_delivery_date = get_est_delivery_date_from_event(
         ds1_scan_event_on_friday)
-    assert est_delivery_date == 'October 30, 2018'
+    assert est_delivery_date == datetime.datetime(2018, 10, 30, 0, 0)

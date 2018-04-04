@@ -1,16 +1,9 @@
 from datetime import datetime, timedelta
 
-BANK_HOLIDAYS = (
-    datetime(year=2018, month=1, day=2),
-    datetime(year=2018, month=3, day=17),
-    datetime(year=2018, month=4, day=2),
-    datetime(year=2018, month=5, day=1),
-    datetime(year=2018, month=6, day=5),
-    datetime(year=2018, month=8, day=6),
-    datetime(year=2018, month=10, day=29),
-    datetime(year=2018, month=12, day=25),
-    datetime(year=2018, month=12, day=26),
-)
+import holidays
+
+BANK_HOLIDAYS = holidays.Ireland(years=[i for i in range(
+    2017, datetime.today().year + 1)])
 
 PLUS_1_DAY_SCANS = [
     "U01", "U02", "U03", "U04", "U05", "U06", "U07", "U08",
@@ -36,12 +29,12 @@ def _get_week_day(start_date, plus_days):
         ):
             end_date += timedelta(days=1)
         delivery_date += timedelta(days=1)
-    return delivery_date.strftime('%B %d, %Y')
+    return delivery_date
 
 
 def get_est_delivery_date_from_event(event):
     if event['status_scan'] in SAME_DAY_SCANS:
-        return event['date']
+        return datetime.strptime(event['date'], '%B %d, %Y')
     elif event['status_scan'] in PLUS_1_DAY_SCANS:
         return _get_week_day(start_date=event['date'], plus_days=1)
     elif event['status_scan'] in PLUS_2_DAYS_SCANS:
