@@ -177,8 +177,7 @@ IDV.UploadForm = (function() {
 
   var showUploadSuccessMessage = function() {
     var content = $('#successful-upload-template').html();
-    $('#js-modal .modal-content').html(content)
-    $('#js-modal').modal('show');
+    $('#content-wrapper').html(content)
   };
 
   var uploadFileDoneHandler = function(file) {
