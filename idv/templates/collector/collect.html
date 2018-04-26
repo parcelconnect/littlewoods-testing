@@ -10,7 +10,7 @@
 {% block content %}
 
 <!-- Large modal -->
-<div style="display: none;" id="js-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="js-modal" class="collapse modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     </div>
@@ -100,7 +100,7 @@
 
   <!-- Templates. They are minimal/straightforward so underscore was not used -->
 
-  <div id="progress-bar-template-container" style="display: none;">
+  <div id="progress-bar-template-container" class="collapse">
     <div class="filename">__filename__</div>
     <div class="progress">
       <div data-filename="__filename__" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -108,7 +108,7 @@
     </div>
   </div>
 
-  <div id="successful-upload-template" style="display: none;">
+  <div id="successful-upload-template" class="collapse">
     <div class="row">
       <div class="col-md-9 success-msg-container">
         <h4>Thanks for uploading your identification details!</h4>
@@ -124,7 +124,7 @@
     </div>
   </div>
 
-  <div id="failed-upload-template" style="display: none;">
+  <div id="failed-upload-template" class="collapse">
     <div class="modal-body">
       <h3>Something went wrong.</h3>
       <p>If the problem persists, please contact us at validation@shopdirect.com</p>
