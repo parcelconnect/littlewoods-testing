@@ -56,14 +56,10 @@ body {
   max-width: 960px;
 }
 
-.img-text-container {
+.main-container {
     position: absolute;
     top: 13px;
     left: 16px;
-}
-
-.text-white {
-  color: #ffffff;
 }
 
 .title-header {
@@ -71,6 +67,7 @@ body {
   font-weight: bold;
   text-align: left;
   margin: 0;
+  color: #ffffff;
 }
 
 .title-description {
@@ -79,6 +76,7 @@ body {
   text-align: left;
   margin-top: 20px;
   max-width: 324px;
+  color: #ffffff;
 }
 
 .form-group label {
@@ -106,15 +104,19 @@ body {
   max-width: 328px;
 }
 
-.btn-blue {
-  background-color: #0091ea;
-  border-color: #0091ea;
+.btn-common {
+  font-size: 14px;
+  line-height: 1.29;
 }
 
-.btn-blue-text {
-  font-size: 14px;
+.btn-upload {
+  background-color: #0091ea;
+  border-color: #0091ea;
   font-weight: normal;
-  line-height: 1.29;
+  color: #ffffff;
+}
+
+.btn-upload span {
   color: #ffffff;
 }
 
@@ -139,10 +141,11 @@ body {
   background-color: #00c853;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
-  font-size: 14px;
-  line-height: 1.29;
-  color: #ffffff;
   margin-top: 0;
+}
+
+.btn-submit span, .btn-submit i {
+  color: #ffffff;
 }
 
 .md-no-padding {
