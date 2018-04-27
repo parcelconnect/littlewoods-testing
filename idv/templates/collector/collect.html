@@ -10,78 +10,128 @@
 {% block content %}
 
 <!-- Large modal -->
-<div style="display: none;" id="js-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div id="js-modal" class="collapse modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     </div>
   </div>
 </div>
 
-<div class="starter-template">
-  <img src="{% static "img/lwi-aw2017.png" %}" class="img-responsive img-thumbnail" alt="Responsive image">
-  <h1><strong>ID Verification</strong></h1>
-  <p class="lead">Welcome to Littlewoods Ireland, to submit your identification documents please follow the instructions below:</p>
-  <hr>
-  <form action="{% url 'collector:collect' %}" method="POST" id="id-docs">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="lwi-email-address">Email Address</label>
-      <p>Please use the email address that you use on your Littlewoods Ireland account.</p>
-      <input type="email" class="form-control" name="email" id="lwi-email-address" placeholder="Email address" required>
-    </div>
-    <div class="form-group">
-      <label for="lwi-account-number">LWI Account Number</label>
-      <p>Details of your account number can be found in the My Account section on your Littlewoods Ireland account.</p>
-      <input type="text" class="form-control" maxlength="9" name="account_number" id="lwi-account-number" placeholder="Account number" required>
-    </div>
-    <hr>
-    <div class="form-group">
-      <label for="exampleInputFile">Proof of Identity</label>
-        <p>Upload your photo(s)</p>
-        <input type="file" name="files" id="files" multiple="multiple" required>
-        <p class="help-block">Maximum file size 4mb</p></li>
-      <br>
-    </div>
-    <div id="progress-bars">
-    </div>
-    <input type="submit" class="btn btn-default btn-lg" value="Submit">
-  </form>
 
-  <p class="disclaimer">Shop Direct Ireland Limited trading as Littlewoods Ireland, is regulated by the Central Bank of Ireland</p>
-</div>
-
-<!-- Templates. They are minimal/straightforward so underscore was not used -->
-
-<div id="progress-bar-template-container" style="display: none;">
-  <div class="filename">__filename__</div>
-  <div class="progress">
-    <div data-filename="__filename__" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+<div class="page-wrapper">
+  <!-- Back to My account button -->
+  <div class="row">
+    <div class="col-sm-12 col-md-3">
+      <a class="btn btn-default btn-back-text" href="
+        https://www.littlewoodsireland.ie/account/myaccount/accountSummary.page">
+        <i class="fa fa-arrow-left btn-back-arrow" aria-hidden="true"></i>
+        <span>Back to My account</span>
+      </a>
     </div>
   </div>
-</div>
 
-<div id="successful-upload-template" style="display: none;">
-  <div class="modal-header">
-    <img src="{% static "img/lwi-logo-modal.svg" %}" class="img-responsive" alt="Littlewoods Ireland logo">
-  </div>
-  <div class="modal-body">
-    <h3>Thanks for uploading your ID&amp;V</h3>
-    <p>Your details will be securely stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.</p>
-    <p>We hope you enjoy shopping with us.</p>
-    <p><strong>The Littlewoods Ireland Team</strong></p>
-  </div>
-  <div class="modal-footer">
-    <a href="http://www.littlewoodsireland.ie" type="button" class="btn btn-default">Take me to Littlewoods Ireland</a>
-  </div>
-</div>
+  <div id="content-wrapper">
+    <!-- Main image -->
+    <div class="row">
+      <div class="col-md-12 md-no-padding">
+        <div class="img-verification-container">
+          <img src="{% static "img/lwi-aw2018.png" %}" class="img-responsive img-verification" alt="Responsive image">
+          <div class="main-container">
+            <div class="title-header">ID Verification</div>
+            <div class="title-description">
+              Welcome to Littlewoods Ireland, to submit your identification documents please follow the instructions below:
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<div id="failed-upload-template" style="display: none;">
-  <div class="modal-body">
-    <h3>Something went wrong.</h3>
-    <p>If the problem persists, please contact us at validation@shopdirect.com</p>
+    <!-- ID Verification form -->
+    <div class="row">
+      <div class="col-md-12">
+        <form action="{% url 'collector:collect' %}" method="POST" id="id-docs">
+          {% csrf_token %}
+
+          <!-- Email address -->
+          <div class="form-group">
+            <label for="lwi-email-address">Email Address</label>
+            <p>Please use the email address that you use on your Littlewoods Ireland account.</p>
+            <input type="email" class="form-control" name="email" id="lwi-email-address" placeholder="Email address" required>
+          </div>
+
+          <!-- LWI Account number -->
+          <div class="form-group">
+            <label for="lwi-account-number">LWI Account Number</label>
+            <p>Details of your account number can be found in the My Account section on your Littlewoods Ireland account.</p>
+            <input type="text" class="form-control" maxlength="9" name="account_number" id="lwi-account-number" placeholder="Account number" required>
+          </div>
+
+          <!-- Proof of identity -->
+          <div class="form-group">
+            <label for="exampleInputFile">Proof of identity</label>
+            <p>Upload your photo(s)</p>
+            <label for="files" class="btn btn-common btn-upload btn-file-upload">
+                <span>Take/Browse Photos</span>
+            </label>
+            <input type="file" name="files" id="files" multiple="multiple" required>
+
+            <p class="file-input-checker">No files selected</p>
+            <p class="help-block">Maximum file size 4mb</p>
+          </div>
+
+          <div id="progress-bars">
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-common btn-submit">
+            <i class="fa fa-lock"></i>
+            <span>Submit</span>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p class="disclaimer">Shop Direct Ireland Limited trading as Littlewoods Ireland, is regulated by the Central Bank of Ireland</p>
+    </div>
+  </div>
+
+  <!-- Templates. They are minimal/straightforward so underscore was not used -->
+
+  <div id="progress-bar-template-container" class="collapse">
+    <div class="filename">__filename__</div>
+    <div class="progress">
+      <div data-filename="__filename__" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+      </div>
+    </div>
+  </div>
+
+  <div id="successful-upload-template" class="collapse">
+    <div class="row">
+      <div class="col-md-9 success-msg-container">
+        <h4>Thanks for uploading your identification details!</h4>
+        <p>
+          Your details will be stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 lwi-link-container">
+        <a href="http://www.littlewoodsireland.ie" class="lwi-link">Littlewoods Ireland Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="failed-upload-template" class="collapse">
+    <div class="modal-body">
+      <h3>Something went wrong.</h3>
+      <p>If the problem persists, please contact us at validation@shopdirect.com</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
   </div>
 </div>
 
