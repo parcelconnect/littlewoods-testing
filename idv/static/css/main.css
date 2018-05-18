@@ -124,7 +124,11 @@ body {
   display: none;
 }
 
-.btn-file-upload{
+label.btn-file-upload {
+  font-weight: normal;
+}
+
+.btn-file-upload {
   display: inline-block;
   cursor: pointer;
 }
