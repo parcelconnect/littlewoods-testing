@@ -2,7 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
-from idv.tracker.est_delivery_date import get_est_delivery_date_from_event
+from idv.tracker.est_delivery_date import (
+    get_est_delivery_date_from_event, get_recipient_data)
 
 from . import domain
 
@@ -16,10 +17,6 @@ def track(request):
 
 @require_GET
 def get_tracking_events(request):
-    if not request.is_ajax():
-        data = {'success': False, 'message': 'Only AJAX requests allowed'}
-        return JsonResponse(data, status=406)
-
     label_id = request.GET.get('label_id')
     if not label_id:
         data = {'success': False, 'message': 'A tracking number is required.'}
@@ -31,11 +28,12 @@ def get_tracking_events(request):
         data = {'success': False, 'message': str(exc)}
         return JsonResponse(data, status=400)
     est_delivery_date = get_est_delivery_date_from_event(events[-1])
-    return JsonResponse({
+    return render(request, 'tracker/events_panel.html', {
         'success': True,
         'label_id': label_id,
         'events': events,
         'est_delivery_day': est_delivery_date.strftime('%d'),
         'est_delivery_day_str': est_delivery_date.strftime('%A'),
-        'est_delivery_month': est_delivery_date.strftime('%B %Y')
-    }, status=200)
+        'est_delivery_month': est_delivery_date.strftime('%B %Y'),
+        'recipient_data': get_recipient_data(events),
+    })

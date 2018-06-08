@@ -2,7 +2,8 @@ import datetime
 
 import pytest
 
-from idv.tracker.est_delivery_date import get_est_delivery_date_from_event
+from idv.tracker.est_delivery_date import (
+    get_est_delivery_date_from_event, get_recipient_data)
 
 
 @pytest.fixture
@@ -51,3 +52,68 @@ def test_returns_correct_date_when_end_date_during_weekend_and_before_bank_holid
     est_delivery_date = get_est_delivery_date_from_event(
         ds1_scan_event_on_friday)
     assert est_delivery_date == datetime.datetime(2018, 10, 30, 0, 0)
+
+
+class TestGetRecipientData:
+
+    def test_no_events(self):
+        assert {} == get_recipient_data([])
+
+    def test_if_address_not_empty_then_recipient_copied(self):
+        events = [
+            {
+                'recipient': {
+                    'address1': '',
+                    'address2': '',
+                    'contactName': '',
+                }
+            },
+            {
+                'recipient': {
+                    'address1': 'Address',
+                    'address2': '-',
+                    'address3': '',
+                    'contactName': '',
+                }
+            },
+            {
+                'recipient': {
+                    'address1': '',
+                    'address2': '',
+                    'contactName': '',
+                }
+            },
+        ]
+        recipient = get_recipient_data(events)
+        assert events[1]['recipient'] == recipient
+
+    def test_if_contact_name_not_empty_then_copied(self):
+        events = [
+            {
+                'recipient': {
+                    'address1': '',
+                    'address2': '',
+                    'contactName': '',
+                }
+            },
+            {
+                'recipient': {
+                    'address1': 'Address',
+                    'address2': '-',
+                    'address3': '',
+                    'contactName': '',
+                }
+            },
+            {
+                'recipient': {
+                    'address1': '',
+                    'address2': '',
+                    'contactName': 'Sławek',
+                }
+            },
+        ]
+        recipient = get_recipient_data(events)
+        assert events[1]['recipient']['address1'] == recipient['address1']
+        assert events[1]['recipient']['address2'] == recipient['address2']
+        assert events[1]['recipient']['address3'] == recipient['address3']
+        assert events[2]['recipient']['contactName'] == recipient['contactName']  # noqa

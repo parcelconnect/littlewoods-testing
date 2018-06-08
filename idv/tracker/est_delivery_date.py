@@ -42,3 +42,13 @@ def get_est_delivery_date_from_event(event):
     # default estimated delivery is +2 days, this is subject to change
     else:
         return _get_week_day(start_date=event['date'], plus_days=2)
+
+
+def get_recipient_data(events):
+    recipient_data = {}
+    for event in events:
+        if event['recipient']['address1'] != "":
+            recipient_data = event['recipient']
+        if event['recipient']['contactName'] != "":
+            recipient_data['contactName'] = event['recipient']['contactName']
+    return recipient_data

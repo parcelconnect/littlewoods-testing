@@ -1,103 +1,93 @@
 "use strict";
 
-var IDV = window.IDV || {};
+let IDV = window.IDV || {};
 
-IDV.Track = (function() {
-  var my = {},
-      trackingForm = null,
-      errorMsg = null;
+IDV.Track = (function () {
+  let my = {};
 
-  var getTrackingEvents = function($form, successHandler, failHandler) {
-    $.ajax({
-      url: $form.attr('action'),
-      data: $form.serialize()
-    })
-    .done(successHandler)
-    .fail(failHandler);
-  }
+  let loadingStart = new Event('loading_start');
+  let loadingStop = new Event('loading_stop');
 
-  var successHandler = function(response) {
-    var eventsPanel = $('#js-events');
-    var recipientData = {};
-    // not all scan events have recipient data
-    response.events.forEach(function (event){
-      if(event.recipient.address1 != ""){
-        recipientData = event.recipient
+  let getTrackingEvents = function (form, successHandler, failHandler) {
+    document.dispatchEvent(loadingStart);
+    let queryParams = "?label_id=" + form.querySelectorAll('[name=label_id]')[0].value;
+    fetch(form.getAttribute('action') + queryParams, {
+      credentials: 'same-origin',
+      method: 'GET',
+    }).then(async function (response) {
+      if (response.ok) {
+        successHandler(await response.text())
       }
-      if(event.recipient.contactName != ""){
-        recipientData['contactName'] = event.recipient.contactName
+      else {
+        let jsonResponse = await response.json();
+        failHandler(jsonResponse.message);
       }
-    })
-    var templateHTML = $('#js-events-template').html();
-    var template = _.template(templateHTML);
-    var events_reverse_order = response.events.reverse();
-    var eventsHTML = template({
-      events: events_reverse_order,
-      latestEvent: events_reverse_order[0],
-      estDeliveryDayStr: response.est_delivery_day_str,
-      estDeliveryDay: response.est_delivery_day,
-      estDeliveryMonth: response.est_delivery_month,
-      labelID: response.label_id,
-      recipientData: recipientData
+    }).catch(function (response) {
+      failHandler(response.body);
+    }).finally(function () {
+      document.dispatchEvent(loadingStop);
     });
-    eventsPanel.html(eventsHTML);
-    eventsPanel.removeClass('hidden');
   };
 
-  var failHandler = function(response) {
-    var errorMsg = $('#tracking-error');
-    var errorObj = jQuery.parseJSON(response.responseText);
-    errorMsg.html(errorObj.message);
+  let successHandler = function (responseBody) {
+    let eventsPanel = document.getElementById('events');
+    eventsPanel.innerHTML = responseBody;
+    eventsPanel.classList.remove('hidden');
+  };
+
+  let failHandler = function (message) {
+    let errorMsg = document.getElementById('tracking-error');
+    errorMsg.innerHTML = message;
     showErrors(errorMsg);
   };
 
-  var showErrors = function(errorContainer) {
-    errorContainer.parent().addClass('has-error');
-    errorContainer.removeClass('hidden');
-    $('#js-events').addClass('hidden');
+  let showErrors = function (errorContainer) {
+    errorContainer.parentElement.classList.add('has-error');
+    errorContainer.classList.remove('hidden');
+    document.getElementById('events').classList.add('hidden');
   };
 
-  var hideErrors = function(errorContainer) {
-    errorContainer.parent().removeClass('has-error');
-    errorContainer.addClass('hidden');
+  let hideErrors = function (errorContainer) {
+    errorContainer.parentElement.classList.remove('has-error');
+    errorContainer.classList.add('hidden');
   };
 
-  my.labelExists = function() {
-    return $('#tracking-number').val().length !== 0;
-  }
-
-  my.submit = function() {
-    var $trackingForm = $('#js-get-tracking-events');
-    var $errorMsg = $('#tracking-error');
-
-    hideErrors($errorMsg);
-    getTrackingEvents($trackingForm, successHandler, failHandler);
+  my.labelExists = function () {
+    return document.getElementById('tracking-number').value.length !== 0;
   };
 
-  my.init = function() {
-    $('#js-get-tracking-events').submit(function(event) {
+  my.submit = function () {
+    let trackingForm = document.getElementById('get-tracking-events');
+    let errorMsg = document.getElementById('tracking-error');
+
+    hideErrors(errorMsg);
+    getTrackingEvents(trackingForm, successHandler, failHandler);
+  };
+
+  my.init = function () {
+    document.getElementById('get-tracking-events').onsubmit = function (event) {
       event.preventDefault();
       my.submit();
-    });
+    };
 
-     $('#track-parcel').click(function(event) {
+    document.getElementById('track-parcel').onclick = function (event) {
       event.preventDefault();
       my.submit();
-    });
-  }
+    };
+  };
 
   return my;
 })();
 
-IDV.Spinner = (function() {
-  var my = {},
-      target = null,
-      spinner = null,
-      opts = null;
+IDV.Spinner = (function () {
+  let my = {},
+    target = null,
+    spinner = null,
+    opts = null;
 
-  my.init = function() {
+  my.init = function (event_start, event_stop) {
     // Spinner options
-    target = $('#spinner-container');
+    target = document.getElementById('spinner-container');
     opts = {
       lines: 13, // The number of lines to draw
       length: 10, // The length of each line
@@ -117,25 +107,22 @@ IDV.Spinner = (function() {
       left: '50%' // Left position relative to parent in px
     };
 
-    $(document).ajaxStart(function () {
-      spinner = new Spinner(opts).spin();
-      target.append(spinner.el);
+    document.addEventListener(event_start, function (e) {
+      spinner = new Spinner(opts).spin(target);
     });
 
-    $(document).ajaxStop(function () {
+    document.addEventListener(event_stop, function (e) {
       spinner.stop();
     });
-  }
+  };
 
   return my;
 })();
 
-/*
- * Entry point.
- */
-$(function() {
+
+document.addEventListener("DOMContentLoaded", function (event) {
   IDV.Track.init();
-  IDV.Spinner.init();
+  IDV.Spinner.init('loading_start', 'loading_stop');
 
   if (IDV.Track.labelExists()) {
     IDV.Track.submit();

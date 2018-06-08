@@ -2,105 +2,50 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{% block description %}{% endblock %}">
-    <meta name="author" content="{% block author %}{% endblock %}">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% block description %}{% endblock %}">
+  <meta name="author" content="{% block author %}{% endblock %}">
 
-    <title>Littlewoods Ireland ID Track</title>
+  <title>Littlewoods Ireland ID Track</title>
 
-    {% block css %}
-      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="{% static "css/main.css" %}">
-      <link rel="stylesheet" href="{% static "css/track.css" %}">
-      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-      <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
-    {% endblock %}
-  </head>
-  <body>
-    <script id="js-context" type="application/json">{{ json_context|safe }}</script>
-    <div id="container" class="container tracking-container">
-      {% block content %}
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="col-sm-12">
-            <img src="{% static "img/lwi-logo-black.svg" %}" class="img-responsive center-block lwi-logo" alt="Littlewoods Ireland logo">
-            <form id="js-get-tracking-events" method="GET" action="{% url 'tracker:get-events' %}">
-              <div class="form-group track-input center-block">
-                <input type="text" id="tracking-number" class="form-control" value="{{ tracking_number }}" name="label_id"/>
-                <i class="glyphicon glyphicon-search input-group-addon" id="track-parcel" type="submit"></i>
-                <div class="error-msg hidden" id="tracking-error"></div>
-              </div>
-            </form>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "css/main.css" %}">
+  <link rel="stylesheet" href="{% static "css/track.css" %}">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
+</head>
+<body>
+<script id="js-context" type="application/json">{{ json_context|safe }}</script>
+<div id="container" class="container tracking-container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="col-sm-12">
+        <img src="{% static "img/lwi-logo-black.svg" %}" class="img-responsive center-block lwi-logo"
+             alt="Littlewoods Ireland logo">
+        <form id="get-tracking-events" method="GET" action="{% url 'tracker:get-events' %}">
+          <div class="form-group track-input center-block">
+            <input type="text" id="tracking-number" class="form-control" value="{{ tracking_number }}" name="label_id"/>
+            <i class="glyphicon glyphicon-search input-group-addon" id="track-parcel" type="submit"></i>
+            <div class="error-msg hidden" id="tracking-error"></div>
           </div>
-        </div>
+        </form>
       </div>
-      <div class="row" id="js-events">
-      </div>
-      <div class="row">
-        <img src="{% static "img/fw-logo-grey.svg" %}" class="img-responsive center-block fw-logo" alt="Fastway Ireland logo">
-      </div>
-      {% endblock %}
-      <div id="spinner-container" class="spinner-container"></div>
-    </div>
-  {% block js %}
-    <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="{% static "js/underscore.1.8.3.min.js" %}"></script>
-    <script src="{% static "js/spin.2.3.2.min.js" %}"></script>
-    <!-- The following section is copied from the bootstrap documentation -->
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script src="{% static "js/track.js" %}"></script>
-  {% endblock %}
-  </body>
-
-</html>
-
-<script id="js-events-template" type="text/underscore-template">
-<div class="col-sm-12 panel-wrapper">
-  <div class="panel panel-default tracking-panel center-block">
-    <div class="col-sm-12 col-xs-12 panel-heading">
-      <div class="col-sm-4 col-xs-6 date">
-        <p><strong>Arriving:</strong></p>
-        <p class="description est-day"><%= estDeliveryDay %></p>
-        <p class="description est-month"><%= estDeliveryMonth %></p>
-        <p class="description est-day-str"><%= estDeliveryDayStr %></p>
-      </div>
-      <div class="col-sm-8 col-xs-6 status">
-        <p class="customer"><strong>Customer:</strong> <span class="recipient-info"><%= recipientData.contactName %></span></p>
-        <p class="delivery-address"><strong>Delivery Address:</strong></p>
-        <p  class="recipient-info"><%= recipientData.address1 %></p>
-        <p  class="recipient-info"><%= recipientData.address3 %></p>
-        <p  class="recipient-info"><%= recipientData.address4 %></p>
-        <p  class="recipient-info"><%= recipientData.address5 %></p>
-        <p class="faq"><i>Have a question? <a href="https://www.littlewoodsireland.ie/help/en/online-help-system.page">FAQs</a></i></p>
-      </div>
-    </div>
-    <div class="panel-body">
-
-    <% _.each(events, function(event, index) { %>
-      <div class="col-sm-8 col-sm-offset-2 col-xs-10 status timeline">
-        <div class="img-container">
-          <img src="{% static "img/tick.png" %}" class="breakpoint" alt="timeline-breakpoint">
-        </div>
-        <div class="status-container">
-          <div class="status-description">
-            <p class="description event-description"><%= event.status_description %></p>
-            <p class="description time small-txt"><span class="col-md-4 event-date"><%= event.date %></span><span class="col-md-5"><%=event.time %></span></p>
-          </div>
-        </div>
-      </div>
-    <% }) %>
-
     </div>
   </div>
+  <div class="row" id="events">
+  </div>
+  <div class="row">
+    <img src="{% static "img/fw-logo-grey.svg" %}" class="img-responsive center-block fw-logo"
+         alt="Fastway Ireland logo">
+  </div>
+  <div id="spinner-container" class="spinner-container"></div>
 </div>
-</script>
+<script src="{% static "js/spin.2.3.2.min.js" %}"></script>
+<script src="{% static "js/track.js" %}"></script>
+</body>
+
+</html>

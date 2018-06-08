@@ -1,0 +1,40 @@
+{% load staticfiles %}
+
+<div class="col-sm-12 panel-wrapper">
+  <div class="panel panel-default tracking-panel center-block">
+    <div class="col-sm-12 col-xs-12 panel-heading">
+      <div class="col-sm-4 col-xs-6 date">
+        <p><strong>Arriving:</strong></p>
+        <p class="description est-day">{{ est_delivery_day }}</p>
+        <p class="description est-month">{{ est_delivery_month }}</p>
+        <p class="description est-day-str">{{ est_delivery_day_str }}</p>
+      </div>
+      <div class="col-sm-8 col-xs-6 status">
+        <p class="customer"><strong>Customer:</strong> <span
+          class="recipient-info">{{ recipient_data.contactName }}</span></p>
+        <p class="delivery-address"><strong>Delivery Address:</strong></p>
+        <p class="recipient-info">{{ recipient_data.address3 }}</p>
+        <p class="recipient-info">{{ recipient_data.address4 }}</p>
+        <p class="recipient-info">{{ recipient_data.address5 }}</p>
+        <p class="faq"><i>Have a question? <a href="https://www.littlewoodsireland.ie/help/en/online-help-system.page">FAQs</a></i>
+        </p>
+      </div>
+    </div>
+    <div class="panel-body">
+      {% for event in events %}
+        <div class="col-sm-8 col-sm-offset-2 col-xs-10 status timeline">
+          <div class="img-container">
+            <img src="{% static "img/tick.png" %}" class="breakpoint" alt="timeline-breakpoint">
+          </div>
+          <div class="status-container">
+            <div class="status-description">
+              <p class="description event-description">{{ event.status_description }}</p>
+              <p class="description time small-txt"><span class="col-md-4 event-date">{{ event.date }}</span><span
+                class="col-md-5">{{ event.time }}</span></p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
