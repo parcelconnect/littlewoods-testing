@@ -56,7 +56,11 @@ jobs:
             command: |
               . venv/bin/activate
               mkdir -p test-reports/django/
-              pytest tests --junit-xml=test-reports/django/metadata.xml
+              pytest --cov --cov-report xml:test-reports/coverage/coverage.xml --cov-report html:test-reports/coverage/html tests --junit-xml=test-reports/django/metadata.xml
+              if [ $CIRCLE_BRANCH != 'devel' ] && [ $CIRCLE_BRANCH != 'master' ]; then diff-cover test-reports/coverage/coverage.xml --html-report test-reports/coverage/diff-coverage-report.html --fail-under=95 --compare-branch=origin/devel; fi
 
         - store_test_results:
+            path: test-reports
+
+        - store_artifacts:
             path: test-reports
