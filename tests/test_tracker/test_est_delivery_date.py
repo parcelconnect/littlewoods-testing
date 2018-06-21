@@ -35,14 +35,14 @@ def test_returns_correct_date(hdn_scan_event):
 def test_returns_correct_date_when_end_date_during_bank_holiday(
         r10_scan_event_day_before_bank_holiday):
     est_delivery_date = get_est_delivery_date_from_event(
-            r10_scan_event_day_before_bank_holiday)
+        r10_scan_event_day_before_bank_holiday)
     assert est_delivery_date == datetime.datetime(2018, 4, 3, 0, 0)
 
 
 def test_returns_correct_date_when_end_date_during_weekend(
         ds1_scan_event_on_friday):
     est_delivery_date = get_est_delivery_date_from_event(
-            ds1_scan_event_on_friday)
+        ds1_scan_event_on_friday)
     assert est_delivery_date == datetime.datetime(2018, 4, 9, 0, 0)
 
 

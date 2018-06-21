@@ -21,6 +21,7 @@ def get_or_create_account(email, account_number):
         account_number (str): Account number in Littlewoods
     Returns:
         idv.collector.models.Account obj
+
     """
     try:
         account = Account.objects.get(account_number=account_number)
@@ -45,6 +46,7 @@ def create_credential(account, filename):
                         purposes in the future, if any.
     Returns:
         idv.collector.models.Credential obj
+
     """
     s3_key = _generate_s3_key(account, filename)
     credential = Credential.objects.create(

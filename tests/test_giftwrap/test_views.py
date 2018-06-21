@@ -150,7 +150,7 @@ class TestLWIRequestDetailsView:
 
     @pytest.fixture
     def valid_upi(self):
-        return "A"*13
+        return "A" * 13
 
     def test_it_redirects_to_login_page_when_not_authenticated(
             self, client, request_new):

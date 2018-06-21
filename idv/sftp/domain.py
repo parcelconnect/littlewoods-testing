@@ -23,6 +23,7 @@ def get_sftp_client_from_model(sftp_account, http_proxy=None):
 
     Returns:
         paramiko.SFTPClient: connected to the host
+
     """
     sock = get_transport_sock(sftp_account, http_proxy)
     transport = paramiko.Transport(sock)

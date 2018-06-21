@@ -54,6 +54,7 @@ class Client:
         Raises:
             FastwayAPIError: on connection failure, or non-2xx
                 response status
+
         """
         url = self._make_url(url, params=params)
         log_safe_url = self._update_query(url, api_key='APIKEY-HIDDEN')

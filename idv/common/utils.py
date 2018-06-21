@@ -7,6 +7,7 @@ def enum_to_choices(enum):
         enum (enum.Enum)
     Returns:
         tuple of (value, uppercase key name) tuples.
+
     """
     return tuple([
         (member.value, member.name.upper())

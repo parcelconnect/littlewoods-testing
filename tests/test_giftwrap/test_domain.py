@@ -18,7 +18,7 @@ class TestRequestGiftWrap:
     def gift_wrap_request(self):
         return GiftWrapRequest(
             account_number=123,
-            upi="A"*13,
+            upi="A" * 13,
             divert_address1="7 Stanley Studios",
             divert_address2="Park Walk",
             divert_town="Wexford Town",
