@@ -61,7 +61,7 @@ class Credential(models.Model):
     """
     Represents a file that a littlewoods user uploads to prove his identity.
     """
-    account = models.ForeignKey(Account)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     original_filename = models.CharField(max_length=256, null=False)
     s3_key = models.CharField(max_length=30, null=False)
     status = models.IntegerField(
@@ -115,7 +115,7 @@ class AccountCredentialIndex(models.Model):
     up being named [prefix]_1.jpg [prefix_2]. Those two numbers just before
     the extension are generated from this model.
     """
-    account = models.OneToOneField(Account)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
     index = models.IntegerField(null=False, default=0)
 
     @classmethod
