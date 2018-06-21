@@ -26,7 +26,7 @@ def generate_presigned_s3_url(client_method, bucket, key,
         client = get_s3_client()
 
     params.update({
-        'Bucket': settings.S3_BUCKET,
+        'Bucket': bucket,
         'Key': key,
     })
     return client.generate_presigned_url(
