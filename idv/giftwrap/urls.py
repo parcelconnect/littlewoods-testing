@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'giftwrap'
 urlpatterns = [
     url(r'success$', views.RequestWrapSuccess.as_view(),
         name='request-wrap-success'),
