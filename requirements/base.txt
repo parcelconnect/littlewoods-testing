@@ -12,6 +12,6 @@ requests==2.9.2
 holidays  # No version to have always latest
 
 # Django
-django==1.11.8
+django==1.11.13
 dj-database-url==0.4.2
 django-widget-tweaks==1.4.1
