@@ -3,7 +3,7 @@ from unittest import mock
 import pytest
 import responses
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from idv.giftwrap import ifs
 from idv.giftwrap.models import GiftWrapRequest, GiftWrapRequestStatus
