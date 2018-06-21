@@ -13,6 +13,7 @@
         <p class="customer"><strong>Customer:</strong> <span
           class="recipient-info">{{ recipient_data.contactName }}</span></p>
         <p class="delivery-address"><strong>Delivery Address:</strong></p>
+        <p class="recipient-info">{{ recipient_data.address1 }}</p>
         <p class="recipient-info">{{ recipient_data.address3 }}</p>
         <p class="recipient-info">{{ recipient_data.address4 }}</p>
         <p class="recipient-info">{{ recipient_data.address5 }}</p>
@@ -24,7 +25,7 @@
       {% for event in events %}
         <div class="col-sm-8 col-sm-offset-2 col-xs-10 status timeline">
           <div class="img-container">
-            <img src="{% static "img/tick.png" %}" class="breakpoint" alt="timeline-breakpoint">
+            <img src="{% static 'img/tick.png' %}" class="breakpoint" alt="timeline-breakpoint">
           </div>
           <div class="status-container">
             <div class="status-description">
