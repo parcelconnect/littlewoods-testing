@@ -19,3 +19,6 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+
+# PyCharm
+.idea/

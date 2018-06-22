@@ -42,10 +42,18 @@ jobs:
               - "venv"
 
         - run:
-            name: Lint checks
+            name: Code style checks
             command: |
               . venv/bin/activate
               flake8 idv tests
+
+        - run:
+            name: Pylint checks
+            command: |
+              . venv/bin/activate
+              mkdir -p test-reports/quality
+              pylint --load-plugins pylint_django --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" agentk > test-reports/quality/pylint_report.txt || true
+              diff-quality --violations=pylint test-reports/quality/pylint_report.txt --fail-under=95
 
         - run:
             name: Wait for db
