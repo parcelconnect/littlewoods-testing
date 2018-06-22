@@ -1,8 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
+app_name = 'tracker'
 urlpatterns = [
-    url(r'^$', views.track, name='track'),
-    url(r'^events/?$', views.get_tracking_events, name='get-events'),
+    path('', views.track, name='track'),
+    path('events/?', views.get_tracking_events, name='get-events'),
 ]

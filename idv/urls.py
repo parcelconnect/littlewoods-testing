@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import include, path
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    url('^IDV/', include('idv.collector.urls', namespace='collector')),
-    url('^track/', include('idv.tracker.urls', namespace='tracker')),
-    url('^gift-wrapping/', include('idv.giftwrap.urls', namespace='giftwrap')),
+    path('IDV/', include('idv.collector.urls', namespace='collector')),
+    path('track/', include('idv.tracker.urls', namespace='tracker')),
+    path('gift-wrapping/', include('idv.giftwrap.urls', namespace='giftwrap')),
 ]

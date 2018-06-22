@@ -2,7 +2,7 @@ import json
 import re
 
 import pytest
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from idv.collector.models import Account, Credential
 

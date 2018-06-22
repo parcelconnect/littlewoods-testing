@@ -80,9 +80,7 @@ def _build_message(successful_yesterday, successful_until_yesterday,
 
 @retry(tries=5, delay=60)
 def send_report_email(run_report_date):
-    """
-     Creates an email report for the successful upis for the previous day
-    """
+    """Creates an email report for the successful upis for the previous day"""
     subject = ('Littlewood\'s Gift Wrapping Requests processed on {}'
                .format(run_report_date.strftime("%B %d")))
     report_datetime = datetime.combine(

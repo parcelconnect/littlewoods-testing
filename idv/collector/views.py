@@ -1,9 +1,9 @@
 import json
 
-from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 
 from idv.common.http import extract_json_from_GET
 

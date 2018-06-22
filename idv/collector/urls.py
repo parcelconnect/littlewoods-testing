@@ -1,8 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
+app_name = 'collector'
 urlpatterns = [
-    url(r'^$', views.collect, name='collect'),
-    url(r'^sign-s3-request/$', views.sign_s3_request, name='sign-s3-request'),
+    path('', views.collect, name='collect'),
+    path('sign-s3-request/', views.sign_s3_request, name='sign-s3-request'),
 ]

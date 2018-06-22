@@ -21,12 +21,12 @@ def get_s3_client(credentials=None):
 
 
 def generate_presigned_s3_url(client_method, bucket, key,
-                              client=None, expires_in=5*60, **params):
+                              client=None, expires_in=5 * 60, **params):
     if client is None:
         client = get_s3_client()
 
     params.update({
-        'Bucket': settings.S3_BUCKET,
+        'Bucket': bucket,
         'Key': key,
     })
     return client.generate_presigned_url(
