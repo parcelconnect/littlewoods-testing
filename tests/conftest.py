@@ -94,3 +94,11 @@ def credentials(unchecked_credential, found_credential, not_found_credential,
         moved_credential,
         blocked_credential,
     ]
+
+
+@pytest.fixture
+def settings(settings):
+    settings.AWS_ACCESS_KEY = 'TEST-KEY'
+    settings.AWS_SECRET_KEY = 'TEST-SECRET-KEY'
+    settings.S3_BUCKET = 'BUCK'
+    return settings

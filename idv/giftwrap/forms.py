@@ -60,6 +60,8 @@ class GiftWrapRequestForm(forms.ModelForm):
         validators=[valid_card_message]
     )
 
+    deliver_by_special_date = forms.CharField(required=False)
+
 
 class UPIForm(forms.ModelForm):
 
