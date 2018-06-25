@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 import pytest
-from django.conf import settings
 
 from idv.collector.domain import (
     create_credential, generate_presigned_s3_url, get_or_create_account,
@@ -39,13 +38,14 @@ class TestCredentialCreation:
 class TestPreseignedS3UrlGeneration:
 
     @patch('idv.common.aws.generate_presigned_s3_url')
-    def test_parameters(self, generation_func_mock):
-        settings.AWS_ACCESS_KEY = 'TEST-KEY'
-        settings.AWS_SECRET_KEY = 'TEST-SECRET-KEY'
-        settings.S3_BUCKET = 'BUCK'
-        generate_presigned_s3_url('cooking', 'json')
+    def test_parameters(self, generation_func_mock, settings):
+        assert generate_presigned_s3_url('cooking', 'json') is not None
         generation_func_mock.assert_called_once_with(
             'put_object', 'BUCK', 'cooking', ContentType='json')
+
+    def test_no_settings_returns_none(self, settings):
+        settings.S3_BUCKET = None
+        assert generate_presigned_s3_url('cooking', 'json') is None
 
 
 @pytest.mark.django_db
