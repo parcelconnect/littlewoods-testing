@@ -1,3 +1,4 @@
+import logging
 import os.path
 
 from django.conf import settings
@@ -6,6 +7,8 @@ from django.db import transaction
 from idv.common import aws
 
 from .models import Account, AccountCredentialIndex, Credential
+
+logger = logging.getLogger(__name__)
 
 
 @transaction.atomic
@@ -79,6 +82,11 @@ def generate_presigned_s3_url(s3_key, filetype):
     Returns:
         str: A presigned s3 url
     """
+    if (not settings.AWS_ACCESS_KEY or not settings.AWS_SECRET_KEY or
+            not settings.S3_BUCKET):
+        # Raise exception to get a notification on
+        logger.exception('No AWS settings found!')
+        return None
     return aws.generate_presigned_s3_url(
         'put_object', settings.S3_BUCKET, s3_key, ContentType=filetype)
 

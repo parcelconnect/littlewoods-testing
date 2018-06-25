@@ -40,6 +40,8 @@ class TestPreseignedS3UrlGeneration:
 
     @patch('idv.common.aws.generate_presigned_s3_url')
     def test_parameters(self, generation_func_mock):
+        settings.AWS_ACCESS_KEY = 'TEST-KEY'
+        settings.AWS_SECRET_KEY = 'TEST-SECRET-KEY'
         settings.S3_BUCKET = 'BUCK'
         generate_presigned_s3_url('cooking', 'json')
         generation_func_mock.assert_called_once_with(
