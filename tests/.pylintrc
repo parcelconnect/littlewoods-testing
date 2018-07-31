@@ -1,0 +1,10 @@
+[MASTER]
+# Regular expression matching correct method names. Overrides method-naming-
+# style
+method-rgx=(([a-z_][a-z0-9_]{2,})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+
+[TYPECHECK]
+ignored-classes=responses,pytest
+
+[MESSAGES CONTROL]
+disable=no-self-use,unused-argument,missing-docstring,invalid-name,line-too-long,redefined-outer-name,protected-access,too-many-locals,unpacking-non-sequence
