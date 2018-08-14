@@ -38,10 +38,12 @@ class TestMove:
     def test_filters_credentials_by_creation_date(self, move_creds_mock,
                                                   account):
         with freeze_time('2016-01-01'):
-            cred1 = collector_domain.create_credential(account, 'zxcv.jpg')
+            cred1 = collector_domain.create_credential(account, 'zxcv.jpg',
+                                                       'normal')
             cred1.mark_as_found()
         with freeze_time('2016-02-01'):
-            cred2 = collector_domain.create_credential(account, 'zxcv.jpg')
+            cred2 = collector_domain.create_credential(account, 'zxcv.jpg',
+                                                       'normal')
             cred2.mark_as_found()
         with freeze_time('2016-02-01'):
             move()
@@ -56,7 +58,8 @@ class TestMove:
     def test_moves_only_credentials_need_moving(self, move_creds_mock,
                                                 credentials, account):
         with freeze_time('2016-01-05'):
-            found2 = collector_domain.create_credential(account, 'zxcv.jpg')
+            found2 = collector_domain.create_credential(account, 'zxcv.jpg',
+                                                        'normal')
             found2.mark_as_found()
         need_moving = Credential.objects.need_moving()
         move()

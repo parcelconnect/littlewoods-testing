@@ -29,7 +29,7 @@ class TestCredentialQuerysets:
         assert credentials[1].status == CredentialStatus.NotFound.value
 
     def test_not_found_query(self, account, credentials):
-        cred = create_credential(account, 'asdf.jpg')
+        cred = create_credential(account, 'asdf.jpg', 'normal')
         cred.status = CredentialStatus.NotFound.value
         cred.save()
 
@@ -39,7 +39,7 @@ class TestCredentialQuerysets:
         assert not_found[1].status == CredentialStatus.NotFound.value
 
     def test_moved_query(self, account, credentials):
-        cred = create_credential(account, 'asdf.jpg')
+        cred = create_credential(account, 'asdf.jpg', 'normal')
         cred.status = CredentialStatus.Moved.value
         cred.save()
 
@@ -49,7 +49,7 @@ class TestCredentialQuerysets:
         assert moved[1].status == CredentialStatus.Moved.value
 
     def test_blocked_query(self, account, credentials):
-        cred = create_credential(account, 'asdf.jpg')
+        cred = create_credential(account, 'asdf.jpg', 'normal')
         cred.mark_as_blocked()
 
         blocked = Credential.objects.blocked()

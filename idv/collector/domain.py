@@ -36,7 +36,7 @@ def get_or_create_account(email, account_number):
 
 
 @transaction.atomic
-def create_credential(account, filename):
+def create_credential(account, filename, verification_type):
     """
     Create an `idv.collector.models.Credential` object by using
     `idv.collector.models.AccountCredentialIndex` to generate a unique s3 key.
@@ -47,11 +47,12 @@ def create_credential(account, filename):
         filename (str): The filename of the original file the user wants to
                         upload. Not used anywhere, just stored for debugging
                         purposes in the future, if any.
+        verification_type (str): The type of verification
     Returns:
         idv.collector.models.Credential obj
 
     """
-    s3_key = _generate_s3_key(account, filename)
+    s3_key = _generate_s3_key(account, filename, verification_type)
     credential = Credential.objects.create(
         account=account,
         original_filename=filename,
@@ -62,13 +63,15 @@ def create_credential(account, filename):
     return credential
 
 
-def _generate_s3_key(account, filename):
+def _generate_s3_key(account, filename, verification_type):
     _, extension = os.path.splitext(filename)
     file_index = AccountCredentialIndex.next(account)
-    s3_key = '{account_number}_{file_index}{extension}'.format(
+    s3_key_fmt = '{verification_type}_{account_number}_{file_index}{extension}'
+    s3_key = s3_key_fmt.format(
         account_number=account.account_number,
         file_index=file_index,
-        extension=extension
+        extension=extension,
+        verification_type=verification_type
     )
     return s3_key
 

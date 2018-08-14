@@ -1,26 +1,35 @@
 import json
+from collections import OrderedDict
 
 from django.db import transaction
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
+from idv.collector.settings.django import VERIFICATION_TYPES
 from idv.common.http import extract_json_from_GET
 
 from . import domain
 from .forms import AccountForm
 
 
-def collect(request):
-    context = {}
-    context['json_context'] = json.dumps({
-        'sign_s3_request_url': reverse('collector:sign-s3-request')
-    })
+def collect(request, verification_type='normal'):
+    if verification_type not in VERIFICATION_TYPES:
+        raise Http404("Page not found")
+
+    context = {'json_context': json.dumps({
+        'sign_s3_request_url':
+            reverse('parametrized-collector:sign-s3-request',
+                    kwargs={'verification_type': verification_type})
+    })}
     return render(request, 'collector/collect.html', context=context)
 
 
 @transaction.atomic
-def sign_s3_request(request):
+def sign_s3_request(request, verification_type='normal'):
+    if verification_type not in VERIFICATION_TYPES:
+        raise Http404("Page not found")
+
     file_data = extract_json_from_GET(request, 'file_data')
 
     account_form = AccountForm(request.GET)
@@ -31,9 +40,10 @@ def sign_s3_request(request):
         account_form.cleaned_data['email'],
         account_form.cleaned_data['account_number']
     )
-    data = {}
+    data = OrderedDict()
     for filename, filetype in file_data.items():
-        credential = domain.create_credential(account, filename)
+        credential = domain.create_credential(account, filename,
+                                              verification_type)
         signed_url = domain.generate_presigned_s3_url(
             credential.s3_key, filetype)
         data[filename] = signed_url

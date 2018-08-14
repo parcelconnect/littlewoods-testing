@@ -26,11 +26,11 @@ class TestReportCsv:
 
     def test_creation_date_filtering(self, credentials, other_account):
         with freeze_time('2016-01-10'):
-            cred = create_credential(other_account, 'moved.jpg')
+            cred = create_credential(other_account, 'moved.jpg', 'normal')
             cred.status = CredentialStatus.Moved.value
             cred.save()
 
-            cred = create_credential(other_account, 'not_found.jpg')
+            cred = create_credential(other_account, 'not_found.jpg', 'normal')
             cred.status = CredentialStatus.NotFound.value
             cred.save()
 
@@ -47,7 +47,7 @@ class TestReportCsv:
 
     def test_lists_moved(self, credentials, account):
         with freeze_time('2016-01-04'):
-            cred = create_credential(account, 'moved-away.jpg')
+            cred = create_credential(account, 'moved-away.jpg', 'normal')
             cred.status = CredentialStatus.Moved.value
             cred.save()
 
@@ -67,7 +67,7 @@ class TestReportCsv:
 
     def test_lists_not_found(self, not_found_credential, account):
         with freeze_time('2016-01-04'):
-            cred = create_credential(account, 'not--found.jpg')
+            cred = create_credential(account, 'not--found.jpg', 'normal')
             cred.status = CredentialStatus.NotFound.value
             cred.save()
 
@@ -87,7 +87,7 @@ class TestReportCsv:
 
     def test_lists_blocked(self, blocked_credential, account):
         with freeze_time('2016-01-04'):
-            create_credential(account, 'blocked2.exe')
+            create_credential(account, 'blocked2.exe', 'normal')
 
         date_range = (
             datetime(2016, 1, 1),

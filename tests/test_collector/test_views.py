@@ -1,5 +1,7 @@
 import json
 import re
+from collections import OrderedDict
+from unittest import mock
 
 import pytest
 from django.urls import reverse
@@ -16,11 +18,27 @@ def aws_credentials(settings):
 
 class TestCollect:
 
-    def test_json_context(self, client):
-        sign_s3_request_url = reverse('collector:sign-s3-request')
+    def test_json_context_normal(self, client):
+        sign_s3_request_url = reverse('parametrized-collector:sign-s3-request',
+                                      kwargs={'verification_type': 'normal'})
         response = client.get(reverse('collector:collect'))
         json_context = json.loads(response.context['json_context'])
         assert json_context['sign_s3_request_url'] == sign_s3_request_url
+
+    def test_json_context_priority(self, client):
+        sign_s3_request_url = reverse('parametrized-collector:sign-s3-request',
+                                      kwargs={'verification_type': 'priority'})
+        url = reverse('parametrized-collector:collect',
+                      kwargs={'verification_type': 'priority'})
+        response = client.get(url)
+        json_context = json.loads(response.context['json_context'])
+        assert json_context['sign_s3_request_url'] == sign_s3_request_url
+
+    def test_returns_404_for_unknown_validation_type(self, client):
+        url = reverse('parametrized-collector:collect',
+                      kwargs={'verification_type': 'XXX'})
+        response = client.get(url)
+        assert response.status_code == 404
 
 
 @pytest.mark.django_db
@@ -80,23 +98,70 @@ class TestSignS3Request:
         creds = Credential.objects.filter(account=account_with_chars)
         assert creds.count() == 2
 
-    def test_returns_signed_urls(self, client, account):
+    def test_returns_404_for_unknown_validation_type(self, client, account):
+        url = reverse('parametrized-collector:sign-s3-request',
+                      kwargs={'verification_type': 'XXX'})
+        response = client.get(url, data={
+            'email': 'account@littlewoods.ie',
+            'account_number': '12345678',
+            'file_data': json.dumps(OrderedDict([('image.jpg', 'JPEG'),
+                                                 ('photo.png', 'PNG')]))
+        })
+        assert response.status_code == 404
+
+    @mock.patch("idv.common.aws.generate_presigned_s3_url")
+    def test_returns_signed_urls(self, gen_mock, client, account):
+        gen_mock.side_effect = ["XYZ", "ABC"]
         url = reverse('collector:sign-s3-request')
         response = client.get(url, data={
             'email': 'account@littlewoods.ie',
             'account_number': '12345678',
-            'file_data': json.dumps({
-                'image.jpg': 'JPEG',
-                'photo.png': 'PNG',
-            })
+            'file_data': json.dumps(OrderedDict([('image.jpg', 'JPEG'),
+                                                 ('photo.png', 'PNG')]))
         })
-        cred1 = Credential.objects.get(original_filename='image.jpg')
-        cred2 = Credential.objects.get(original_filename='photo.png')
+        cred1_s3_key = r'normal_12345678_\d+\.jpg'
+        cred2_s3_key = r'normal_12345678_\d+\.png'
 
-        url_regexp = 'https://.*amazon.*{}.*'
-        cred1_url_re = url_regexp.format(cred1.s3_key)
-        cred2_url_re = url_regexp.format(cred2.s3_key)
+        assert len(gen_mock.call_args_list) == 2
+        args1, kwargs1 = gen_mock.call_args_list[0]
+        args2, kwargs2 = gen_mock.call_args_list[1]
+        assert re.match(cred1_s3_key, args1[2])
+        assert re.match(cred2_s3_key, args2[2])
+        assert kwargs1['ContentType'] == 'JPEG'
+        assert kwargs2['ContentType'] == 'PNG'
+
+        assert Credential.objects.get(original_filename='image.jpg')
+        assert Credential.objects.get(original_filename='photo.png')
 
         content = json.loads(response.content.decode())
-        assert re.match(cred1_url_re, content['image.jpg']) is not None
-        assert re.match(cred2_url_re, content['photo.png']) is not None
+        assert content['image.jpg'] == "XYZ"
+        assert content['photo.png'] == "ABC"
+
+    @mock.patch("idv.common.aws.generate_presigned_s3_url")
+    def test_returns_signed_urls_for_priority(self, gen_mock, client, account):
+        gen_mock.side_effect = ["XYZ", "ABC"]
+        url = reverse('parametrized-collector:sign-s3-request',
+                      kwargs={'verification_type': 'priority'})
+        response = client.get(url, data={
+            'email': 'account@littlewoods.ie',
+            'account_number': '12345678',
+            'file_data': json.dumps(OrderedDict([('image.jpg', 'JPEG'),
+                                                 ('photo.png', 'PNG')]))
+        })
+        cred1_s3_key = r'priority_12345678_\d+\.jpg'
+        cred2_s3_key = r'priority_12345678_\d+\.png'
+
+        assert len(gen_mock.call_args_list) == 2
+        args1, kwargs1 = gen_mock.call_args_list[0]
+        args2, kwargs2 = gen_mock.call_args_list[1]
+        assert re.match(cred1_s3_key, args1[2])
+        assert re.match(cred2_s3_key, args2[2])
+        assert kwargs1['ContentType'] == 'JPEG'
+        assert kwargs2['ContentType'] == 'PNG'
+
+        assert Credential.objects.get(original_filename='image.jpg')
+        assert Credential.objects.get(original_filename='photo.png')
+
+        content = json.loads(response.content.decode())
+        assert content['image.jpg'] == "XYZ"
+        assert content['photo.png'] == "ABC"
