@@ -3,6 +3,128 @@
 var IDV = window.IDV || {};
 var Django = window.Django || {};
 
+function readFileAsArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      resolve(fr.result);
+    };
+    fr.readAsArrayBuffer(file);
+  });
+}
+
+function logError(message, extra) {
+  if (typeof Raven !== 'undefined') {
+    Raven.captureMessage(message, {
+      extra: extra
+    });
+  } else {
+    console.log(message);
+    console.log(extra);
+  }
+}
+
+function uploadFile(file, signed_url, progressBars) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: signed_url,
+      type: "PUT",
+      data: file,
+      contentType: file.type,
+      processData: false,
+      xhr: function () {
+        const xhr = new window.XMLHttpRequest();
+        progressBars.update(xhr, file);
+        return xhr;
+      }
+    }).done(function () {
+      resolve();
+    }).fail(function (jqXHR, textStatus, error) {
+      const message = 'Error uploading Photo ID file';
+      logError(message, {status: jqXHR.status, response: jqXHR.response});
+      reject(message);
+    });
+  });
+}
+
+class FieldErrors {
+  constructor(errors) {
+    this.errors = errors;
+  }
+}
+
+class IDVForm {
+  constructor(email, account_number, csrfmiddlewaretoken, files) {
+    this.email = email;
+    this.account_number = account_number;
+    this.csrfmiddlewaretoken = csrfmiddlewaretoken;
+    this.file_data = {};
+    this.md5_calculation = [];
+
+    const create_lambda_assign_file_md5 = (filename) => {
+      return (md5) => {this.file_data[filename]['content_md5'] = md5;}
+    };
+
+    for(const file of files) {
+      this.file_data[file.name] = {
+        'content_type': file.type,
+        'file': file
+      };
+      this.md5_calculation.push(
+        readFileAsArrayBuffer(file).then(function (arrayBuffer) {
+          const wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
+          return CryptoJS.MD5(wordArray).toString();
+        }).then(create_lambda_assign_file_md5(file.name)).catch((err) => console.log(err))
+      );
+    }
+
+    this.md5_calculation = Promise.all(this.md5_calculation);
+  }
+
+  _sign_s3_put_url() {
+    const formData = new FormData();
+    formData.append('email', this.email);
+    formData.append('account_number', this.account_number);
+    formData.append('csrfmiddlewaretoken', this.csrfmiddlewaretoken);
+    formData.append('files_info', JSON.stringify(this.file_data));
+    return fetch(Django.Data.get('sign_s3_request_url'), {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.json().then((files) => {
+          for (const filename in files) {
+            this.file_data[filename]['signed_url'] = files[filename];
+          }
+        });
+      }
+      if (response.status === 400) {
+        throw FieldErrors(response.json()['errors']);
+      }
+
+      const error_msg = 'Unexpected response when submitting id verification form: status ' + response.status;
+      logError(error_msg, {status: response.status, response: response.body});
+      throw error_msg;
+    })
+  }
+
+  _upload_files(progressBars) {
+    const uploads = [];
+    for (const filename in this.file_data) {
+      const data = this.file_data[filename];
+      uploads.push(uploadFile(data.file, data.signed_url, progressBars))
+    }
+    return Promise.all(uploads);
+  }
+
+  send(progressBars) {
+    return this.md5_calculation
+      .then(() => this._sign_s3_put_url())
+      .then(() => this._upload_files(progressBars));
+  }
+}
+
 IDV.FormUtils = (function() {
   var my = {};
   var errorClass = 'has-error';
@@ -46,70 +168,27 @@ IDV.FormUtils = (function() {
 })();
 
 /*
- * Responsible for keeping track of the files to be uploaded.
- */
-IDV.FileHolder = (function() {
-  var my = {};
-  /* filename -> file object */
-  var _files = {};
-
-  my.reset = function() {
-    _files = {};
-  };
-
-  my.addFiles = function(files) {
-    $.each(files, function(idx, file) {
-      _files[file.name] = file;
-    });
-  }
-
-  my.removeFile = function(file) {
-    delete _files[file.name];
-  };
-
-  my.isEmpty = function() {
-    return $.isEmptyObject(_files);
-  };
-
-  my.get = function(filename) {
-    return _files[filename];
-  };
-
-  my.stringifyForSigning = function() {
-    var filenameToFiletype = {};
-    $.each(_files, function(filename, file) {
-      filenameToFiletype[filename] = file.type;
-    });
-    var stringified = JSON.stringify(filenameToFiletype);
-    return encodeURIComponent(stringified);
-  };
-
-  return my;
-})();
-
-/*
  * Adds and updates upload progress bars.
  */
 IDV.ProgressBars = (function() {
-  var my = {};
-  var containerID = 'progress-bars';
-  var progressBarTemplateContainerID = 'progress-bar-template-container';
-  var $container = null;
+  const my = {};
+  const containerID = 'progress-bars';
+  const progressBarTemplateContainerID = 'progress-bar-template-container';
+  let $container = null;
 
   my.reset = function() {
     $container.html('');
   };
 
-  var add = function(file) {
-    var $templateContainer = $('#'+progressBarTemplateContainerID).clone();
+  function add(file) {
+    const $templateContainer = $('#'+progressBarTemplateContainerID).clone();
     $templateContainer.find('.filename').html(file.name);
     $templateContainer.find('.progress-bar').attr('data-filename', file.name)
-    var $bar = $templateContainer.children();
+    const $bar = $templateContainer.children();
     $container.append($bar);
   };
 
   my.addMany = function(files) {
-    var bar = null;
     $.each(files, function(idx, file) {
       add(file);
     });
@@ -118,14 +197,14 @@ IDV.ProgressBars = (function() {
   my.update = function(xhr, file) {
     xhr.upload.addEventListener("progress", function(evt) {
       if (evt.lengthComputable) {
-        var percentComplete = evt.loaded / evt.total;
-        percentComplete = parseInt(percentComplete * 100);
+        let percentComplete = evt.loaded / evt.total;
+        percentComplete = Math.floor(percentComplete * 100);
         $container.find('[data-filename="'+file.name+'"]')
           .css('width', percentComplete+'%')
           .attr('aria-valuenow', percentComplete);
-        if (percentComplete == 100) {
+        if (percentComplete === 100) {
           $('.progress-bar').addClass('progress-bar-success');
-        };
+        }
       }
     }, false);
   };
@@ -137,137 +216,62 @@ IDV.ProgressBars = (function() {
   return my;
 })();
 
-/*
- * Your entry module.
- */
 IDV.UploadForm = (function() {
-  var my = {};
-  var formID = 'id-docs';
-  var $form = null;
-  var fileHolder = null;
-  var progressBars = null;
+  const my = {};
+  const formID = 'id-docs';
+  let $form = null;
+  let progressBars = null;
 
-  var uploadFile = function(file, signed_url) {
-    $.ajax({
-      url: signed_url,
-      type: "PUT",
-      data: file,
-      contentType: file.type,
-      processData: false,
-      xhr: function() {
-        var xhr = new window.XMLHttpRequest();
-        progressBars.update(xhr, file);
-        return xhr;
-      }
-    })
-    .done(function() {
-      uploadFileDoneHandler(file);
-    })
-    .fail(function(jqXHR, textStatus, error) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage('Error uploading Photo ID file', {
-          extra: {status: jqXHR.status, response: jqXHR.response}
-        });
-      } else {
-        console.log(JSON.stringify({status: jqXHR.status, response: jqXHR.response}))
-      }
-      uploadFileFailHandler(file);
-    });
-  };
-
-  var showUploadSuccessMessage = function() {
-    var content = $('#successful-upload-template').html();
+  function showUploadSuccessMessage() {
+    const content = $('#successful-upload-template').html();
     $('#content-wrapper').html(content)
-  };
+  }
 
-  var uploadFileDoneHandler = function(file) {
-    fileHolder.removeFile(file);
-    if (fileHolder.isEmpty()) {
-      showUploadSuccessMessage();
-    };
-  };
-
-  var uploadFileFailHandler = function(file) {
-    var content = $('#failed-upload-template').html();
+  function uploadFileFailHandler() {
+    const content = $('#failed-upload-template').html();
     $('#js-modal .modal-content').html(content);
     $('#js-modal').modal('show');
-  };
+  }
 
-  var getSignedRequests = function(data, handlers) {
-    $.ajax({
-      url: Django.Data.get('sign_s3_request_url'),
-      method: 'GET',
-      data: data,
-      dataType: 'json'
-    })
-    .done(handlers.done)
-    .fail(handlers.fail);
-  };
-
-  var uploadFiles = function(response) {
-    $.each(response, function(filename, signed_url) {
-      var file = fileHolder.get(filename);
-      uploadFile(file, signed_url);
-    });
-  };
-
-  var failedSignHandler = function(jqXHR) {
-    if (jqXHR.status !== 400) {
-      var error_msg = 'Unexpected response when submitting id verification form: status ' + jqXHR.status;
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(error_msg, {
-          extra: {status: jqXHR.status, response: jqXHR.responseText}
-        });
-      } else {
-        console.log(error_msg);
-        console.log(JSON.stringify({status: jqXHR.status, response: jqXHR.responseText}));
+  function failedSignHandler(error) {
+    if (error instanceof FieldErrors) {
+      const errors = error.errors;
+      for (const fieldName in errors) {
+        const $field = $('input[name="' + fieldName + '"]');
+        const fieldErrors = errors[fieldName];
+        IDV.FormUtils.addFieldErrors($field, fieldErrors);
       }
-      uploadFileFailHandler();
+      IDV.FormUtils.focusOnFirstErrorInput();
       return;
     }
 
-    var errors = jqXHR.responseJSON.errors;
-    for (var fieldName in errors) {
-      var $field = $('input[name="' + fieldName + '"]');
-      var fieldErrors = errors[fieldName];
-      IDV.FormUtils.addFieldErrors($field, fieldErrors);
-    }
-    IDV.FormUtils.focusOnFirstErrorInput();
-  };
+    uploadFileFailHandler();
+  }
 
-  var getFormFiles = function() {
-    /* There is only one file input */
-    var $fileInput = $form.find('input[type="file"]')[0];
+  function getFormFiles() {
+    const $fileInput = $form.find('input[type="file"]')[0];
     return $fileInput.files;
-  };
+  }
 
-  var submitHandler = function(event) {
+  function submitHandler(event) {
     event.preventDefault();
-    IDV.FormUtils.clearErrors();
-    fileHolder.reset();
-    progressBars.reset();
 
-    var files = getFormFiles();
-    fileHolder.addFiles(files);
+    const files = getFormFiles();
+    progressBars.reset();
     progressBars.addMany(files);
 
-    var data = {
-      email: $('#lwi-email-address').val(),
-      account_number: $('#lwi-account-number').val(),
-      file_data: fileHolder.stringifyForSigning()
-    };
-    var handlers = {
-      done: uploadFiles,
-      fail: failedSignHandler,
-    };
-    getSignedRequests(data, handlers);
-  };
+    const email = $('#lwi-email-address').val();
+    const account_number = $('#lwi-account-number').val();
+    const csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    const idv_form = new IDVForm(email, account_number, csrf, files);
+    IDV.FormUtils.clearErrors();
+
+    idv_form.send(progressBars).then(showUploadSuccessMessage).catch(failedSignHandler);
+  }
 
   my.init = function() {
     progressBars = IDV.ProgressBars;
     progressBars.init();
-
-    fileHolder = IDV.FileHolder;
 
     $form = $('#'+formID);
     $form.submit(submitHandler)
@@ -275,13 +279,10 @@ IDV.UploadForm = (function() {
   return my;
 })();
 
-/*
- * Entry point.
- */
 $(function() {
   IDV.UploadForm.init();
 
-  var $requiredFields = $(':input[required=""],:input[required]');
+  const $requiredFields = $(':input[required=""],:input[required]');
   $requiredFields.keydown(function() {
     IDV.FormUtils.clearFieldErrors(this);
   });

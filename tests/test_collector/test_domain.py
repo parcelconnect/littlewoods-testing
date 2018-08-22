@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from idv.collector.domain import (
-    create_credential, generate_presigned_s3_url, get_or_create_account,
+    create_credential, generate_presigned_s3_put_url, get_or_create_account,
     has_whitelisted_extension)
 
 
@@ -45,13 +45,14 @@ class TestPreseignedS3UrlGeneration:
 
     @patch('idv.common.aws.generate_presigned_s3_url')
     def test_parameters(self, generation_func_mock, settings):
-        assert generate_presigned_s3_url('cooking', 'json') is not None
+        assert generate_presigned_s3_put_url('cat', 'json', 'X') is not None
         generation_func_mock.assert_called_once_with(
-            'put_object', 'BUCK', 'cooking', ContentType='json')
+            'put_object', 'BUCK', 'cat', ContentType='json',
+            ContentMD5='X')
 
     def test_no_settings_returns_none(self, settings):
         settings.S3_BUCKET = None
-        assert generate_presigned_s3_url('cooking', 'json') is None
+        assert generate_presigned_s3_put_url('cooking', 'json', 'X') is None
 
 
 @pytest.mark.django_db

@@ -76,12 +76,13 @@ def _generate_s3_key(account, filename, verification_type):
     return s3_key
 
 
-def generate_presigned_s3_url(s3_key, filetype):
+def generate_presigned_s3_put_url(s3_key, content_type, content_MD5):
     """
+    Generates a presigned s3 'put_object' url for given key
     Args:
         s3_key (str): The s3 key we want to generate the signed url for
-        filetype (str): The type of the file we want to generate the
-                        signed url for
+        content_type (str): The type of the file
+        content_MD5 (str): The MD5 of the file
     Returns:
         str: A presigned s3 url
     """
@@ -91,7 +92,9 @@ def generate_presigned_s3_url(s3_key, filetype):
         logger.exception('No AWS settings found!')
         return None
     return aws.generate_presigned_s3_url(
-        'put_object', settings.S3_BUCKET, s3_key, ContentType=filetype)
+        'put_object', settings.S3_BUCKET, s3_key, ContentType=content_type,
+        ContentMD5=content_MD5
+    )
 
 
 def has_whitelisted_extension(credential):
