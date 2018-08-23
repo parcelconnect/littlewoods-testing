@@ -3,13 +3,13 @@
 var IDV = window.IDV || {};
 var Django = window.Django || {};
 
-function readFileAsArrayBuffer(file) {
+function readFileAsBinaryString(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
     fr.onload = () => {
       resolve(fr.result);
     };
-    fr.readAsArrayBuffer(file);
+    fr.readAsBinaryString(file);
   });
 }
 
@@ -71,9 +71,10 @@ class IDVForm {
         'file': file
       };
       this.md5_calculation.push(
-        readFileAsArrayBuffer(file).then(function (arrayBuffer) {
-          const wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
-          return CryptoJS.MD5(wordArray).toString();
+        readFileAsBinaryString(file).then(function (binaryString) {
+          const md5 = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binaryString))
+            .toString(CryptoJS.enc.Hex);
+          return md5;
         }).then(create_lambda_assign_file_md5(file.name)).catch((err) => console.log(err))
       );
     }
