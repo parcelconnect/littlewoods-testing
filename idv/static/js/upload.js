@@ -24,13 +24,15 @@ function logError(message, extra) {
   }
 }
 
-function uploadFile(file, signed_url, progressBars) {
+function uploadFile(file, signed_url, content_md5, progressBars) {
   return new Promise((resolve, reject) => {
     $.ajax({
       url: signed_url,
       type: "PUT",
       data: file,
+      dataType: "text",
       contentType: file.type,
+      headers: {'Content-MD5': content_md5},
       processData: false,
       xhr: function () {
         const xhr = new window.XMLHttpRequest();
@@ -72,9 +74,9 @@ class IDVForm {
       };
       this.md5_calculation.push(
         readFileAsBinaryString(file).then(function (binaryString) {
-          const md5 = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binaryString))
-            .toString(CryptoJS.enc.Hex);
-          return md5;
+          const md5 = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binaryString));
+          const base64 = CryptoJS.enc.Base64.stringify(md5);
+          return base64;
         }).then(create_lambda_assign_file_md5(file.name)).catch((err) => console.log(err))
       );
     }
@@ -114,7 +116,7 @@ class IDVForm {
     const uploads = [];
     for (const filename in this.file_data) {
       const data = this.file_data[filename];
-      uploads.push(uploadFile(data.file, data.signed_url, progressBars))
+      uploads.push(uploadFile(data.file, data.signed_url, data.content_md5, progressBars))
     }
     return Promise.all(uploads);
   }

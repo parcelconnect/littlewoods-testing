@@ -24,7 +24,10 @@
     {% endblock %}
 
     {% block js %}
-      <script src="{% static "js/jquery.1.12.3.min.js" %}"></script>
+      <script
+			  src="https://code.jquery.com/jquery-2.2.4.min.js"
+			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			  crossorigin="anonymous"></script>
       <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
       <!-- The following section is copied from the bootstrap documentation -->
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -35,6 +38,7 @@
       <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js" integrity="sha256-wPN6ojtZcdUXfbQ+nxh6Zm7xh1pOWxEbuE9EIa1P7BY=" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js" integrity="sha256-l9xnQx29M2Dqg4/srWEaMPVA+DibvRW4mh4Uuo27VKo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.js" integrity="sha256-de4JRO8MoclUkmuLpn+hZrSwdtCjyp+1YZpIGYlH09M=" crossorigin="anonymous"></script>
       <script src="{% static "js/django.js" %}"></script>
       <script src="{% static "js/setup.js" %}"></script>
     {% endblock %}
