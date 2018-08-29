@@ -281,8 +281,8 @@ IDV.UploadForm = (function() {
 
     // TODO: Remove popup once we can allow multiple file uploads on old iPhone and Android browsers
     let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
-        We are currently upgrading our system, please bear with us  while we  carry out this \
-        work, apologies for any inconvenience caused. Please email your ID&V to \
+        We are currently upgrading our system, please bear with us while we carry out this work, \
+        apologies for any inconvenience caused. Please email us at \
         <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a></div><div>';
     $('#js-modal .modal-content').html(content);
     $('#js-modal').modal('show');
