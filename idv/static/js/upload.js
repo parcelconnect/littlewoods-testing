@@ -279,7 +279,7 @@ IDV.UploadForm = (function() {
     $form = $('#'+formID);
     $form.submit(submitHandler)
 
-    # TODO: Remove popup once we can allow multiple file uploads on old iPhone and Android browsers
+    // TODO: Remove popup once we can allow multiple file uploads on old iPhone and Android browsers
     let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
         We are currently upgrading our system, please bear with us  while we  carry out this \
         work, apologies for any inconvenience caused. Please email your ID&V to \
