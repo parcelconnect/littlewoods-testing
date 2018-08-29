@@ -224,6 +224,7 @@ IDV.UploadForm = (function() {
   const formID = 'id-docs';
   let $form = null;
   let progressBars = null;
+  let useMultiple = true;
 
   function showUploadSuccessMessage() {
     const content = $('#successful-upload-template').html();
@@ -252,8 +253,15 @@ IDV.UploadForm = (function() {
   }
 
   function getFormFiles() {
-    const $fileInput = $form.find('input[type="file"]')[0];
-    return $fileInput.files;
+    const $fileInput = $form.find('input[type="file"]');
+    if (useMultiple) {
+      return $fileInput[0].files;
+    }
+    let files = [];
+    $.each($fileInput, function(index, value){
+      files.push(value.files[0]);
+    })
+    return files;
   }
 
   function submitHandler(event) {
@@ -272,6 +280,49 @@ IDV.UploadForm = (function() {
     idv_form.send(progressBars).then(showUploadSuccessMessage).catch(failedSignHandler);
   }
 
+  function showUploadNotSupportedMessage() {
+    let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
+        We are currently upgrading our system, please bear with us while we carry out this work, \
+        apologies for any inconvenience caused. Please email us at \
+        <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a></div><div>';
+    $('#js-modal .modal-content').html(content);
+    $('#js-modal').modal('show');
+  }
+
+  function checkUploadSupport() {
+    if ($('#files').disabled) {
+      return false;
+    }
+    const input = document.createElement('input');
+    input.setAttribute('multiple', 'true');
+    if (input.multiple === true) {
+      return true;
+    }
+    return 'partial';
+  }
+
+  function setAlternativeUploadMethod() {
+    // Change multiple input behaviour
+    useMultiple = false;
+    $('.btn-file-upload').hide();
+    const input = $('#files');
+    input.removeAttr('multiple');
+    const button = document.createElement("input");
+    button.type = 'button';
+    button.value = 'Add more files';
+    button.onclick = function() {
+      const fileInput = document.createElement("input");
+      fileInput.type = 'file';
+      fileInput.name = 'files';
+      fileInput.id = 'files';
+      fileInput.setAttribute('required', 'required');
+      fileInput.setAttribute('style', 'display: inline-block');
+      $('#files:last').after(fileInput).after('<br/>');
+    }
+    input.after(button).after('<br/>');
+    input.show();
+  }
+
   my.init = function() {
     progressBars = IDV.ProgressBars;
     progressBars.init();
@@ -279,13 +330,12 @@ IDV.UploadForm = (function() {
     $form = $('#'+formID);
     $form.submit(submitHandler)
 
-    // TODO: Remove popup once we can allow multiple file uploads on old iPhone and Android browsers
-    let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
-        We are currently upgrading our system, please bear with us while we carry out this work, \
-        apologies for any inconvenience caused. Please email us at \
-        <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a></div><div>';
-    $('#js-modal .modal-content').html(content);
-    $('#js-modal').modal('show');
+    const uploadSupport = checkUploadSupport();
+    if (!uploadSupport) {
+      showUploadNotSupportedMessage();
+    } else if (uploadSupport === 'partial') {
+      setAlternativeUploadMethod();
+    }
   };
   return my;
 })();
