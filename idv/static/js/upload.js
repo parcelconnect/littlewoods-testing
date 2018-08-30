@@ -249,13 +249,13 @@ IDV.UploadForm = (function() {
     filesInput.on("change", function(event) {
       output.empty();
       let imgCount = 0;
+      let files = [];
 
       if (useMultiple) {
         drawThumbnails(event.target.files, output);
-        imgCount = event.target.files.length;
+        files = Array.from(event.target.files);
       } else {
         $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
-        let files = [];
         $.each(filesInput, function(index, value) {
           if (value.files.length) {
             if (!files.includes(value.files[0])) {
@@ -264,8 +264,8 @@ IDV.UploadForm = (function() {
           }
         });
         drawThumbnails(files, output);
-        imgCount = files.length;
       }
+      imgCount = files.filter(file => file.type.match("image")).length;
 
       const infoText = document.createElement("p");
       infoText.innerText = imgCount + (imgCount > 1 ? " images" : " image" ) + " selected"
@@ -319,23 +319,23 @@ IDV.UploadForm = (function() {
 
   function getFormFiles() {
     const $fileInput = $form.find('input[type="file"]');
+    let files = []
     if (useMultiple) {
-      return $fileInput[0].files;
+      files = Array.from($fileInput[0].files);
     }
-    let files = [];
     $.each($fileInput, function(index, value){
       if (typeof value.files[0] !== 'undefined') {
         files.push(value.files[0]);
       }
     })
-    return files;
+    return files.filter(file => file.type.match("image"));
   }
 
   function submitHandler(event) {
     event.preventDefault();
 
     const files = getFormFiles();
-    if (files.length == 0) {
+    if (files.length === 0) {
       showFilesRequiredMessage();
       return;
     }
