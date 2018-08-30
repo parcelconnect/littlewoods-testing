@@ -257,13 +257,13 @@ IDV.UploadForm = (function() {
         files = Array.from(event.target.files);
       } else {
         $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
-        Array.from(filesInput).forEach(function(value) {
-          if (value.files.length) {
-            if (!files.includes(value.files[0])) {
-              files.push(value.files[0]);
+        for (const fileHandler of filesInput) {
+          if (fileHandler.files.length) {
+            if (!files.includes(fileHandler.files[0])) {
+              files.push(fileHandler.files[0]);
             }
           }
-        });
+        };
         drawThumbnails(files, output);
       }
       imgCount = files.filter(file => file.type.match("image")).length;
@@ -296,14 +296,9 @@ IDV.UploadForm = (function() {
     $('#content-wrapper').html(content).append(imagePreview)
   }
 
-  function displayModal(content) {
-    $('#js-modal .modal-content').html(content);
+  function displayModal(divId) {
+    $('#js-modal .modal-content').html($('#' + divId).html());
     $('#js-modal').modal('show');
-  }
-
-  function uploadFileFailHandler() {
-    const content = $('#failed-upload-template').html();
-    displayModal(content);
   }
 
   function failedSignHandler(error) {
@@ -318,7 +313,7 @@ IDV.UploadForm = (function() {
       return;
     }
 
-    uploadFileFailHandler();
+    displayModal('failed-upload-template');
   }
 
   function getFormFiles() {
@@ -326,12 +321,13 @@ IDV.UploadForm = (function() {
     let files = []
     if (useMultiple) {
       files = Array.from($fileInput[0].files);
-    }
-    Array.from($fileInput).forEach(function(fileHandler){
-      if (typeof fileHandler.files[0] !== 'undefined') {
-        files.push(fileHandler.files[0]);
+    } else {
+      for (const fileHandler of $fileInput) {
+        if (typeof fileHandler.files[0] !== 'undefined') {
+          files.push(fileHandler.files[0]);
+        }
       }
-    })
+    }
     return files.filter(file => file.type.match("image"));
   }
 
@@ -340,7 +336,7 @@ IDV.UploadForm = (function() {
 
     const files = getFormFiles();
     if (files.length === 0) {
-      showFilesRequiredMessage();
+      displayModal('files-required-template');
       return;
     }
     progressBars.reset();
@@ -353,20 +349,6 @@ IDV.UploadForm = (function() {
     IDV.FormUtils.clearErrors();
 
     idv_form.send(progressBars).then(showUploadSuccessMessage).catch(failedSignHandler);
-  }
-
-  function showFilesRequiredMessage() {
-    let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
-        Select at least one image, please</div><div>';
-    displayModal(content);
-  }
-
-  function showUploadNotSupportedMessage() {
-    let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
-        We are currently upgrading our system, please bear with us while we carry out this work, \
-        apologies for any inconvenience caused. Please email us at \
-        <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a></div><div>';
-    displayModal(content);
   }
 
   function checkUploadSupport() {
@@ -383,6 +365,7 @@ IDV.UploadForm = (function() {
   }
 
   function checkMultipleUploadSupport() {
+    return 'partial';
     if (!checkUploadSupport()) {
       return false;
     }
@@ -429,7 +412,7 @@ IDV.UploadForm = (function() {
 
     const uploadSupport = checkMultipleUploadSupport();
     if (!uploadSupport) {
-      showUploadNotSupportedMessage();
+      displayModal('upload-unsupported-template');
     } else if (uploadSupport === 'partial') {
       setAlternativeUploadMethod();
     }
