@@ -4,7 +4,8 @@
 
 {% block js %}
   {{ block.super }}
-  <script src="{% static "js/upload.js" %}"></script>
+  <script src="{% static 'js/jquery.browser.mobile.min.js' %}"></script>
+  <script src="{% static 'js/upload.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -73,7 +74,7 @@
             <label for="files" class="btn btn-upload btn-file-upload">
                 <span>Take/Browse Photos</span>
             </label>
-            <input type="file" name="files" id="files" multiple="multiple" required>
+            <input type="file" name="files" id="files" multiple="multiple">
 
             <p class="file-input-checker">No files selected</p>
             <p class="help-block">Maximum file size 4mb</p>
