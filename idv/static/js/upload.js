@@ -135,7 +135,8 @@ IDV.FormUtils = (function() {
 
   var createErrorList = function(errors) {
     var $errorList = $('<ul class="' + errorListClass + '"></ul>');
-    $.each(errors, function(idx, error) {
+
+    errors.forEach(function(error) {
       $errorList.append('<li>' + error + '</li>');
     });
     return $errorList;
@@ -192,7 +193,7 @@ IDV.ProgressBars = (function() {
   };
 
   my.addMany = function(files) {
-    $.each(files, function(idx, file) {
+    files.forEach(function(file) {
       add(file);
     });
   };
@@ -256,7 +257,7 @@ IDV.UploadForm = (function() {
         files = Array.from(event.target.files);
       } else {
         $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
-        $.each(filesInput, function(index, value) {
+        Array.from(filesInput).forEach(function(value) {
           if (value.files.length) {
             if (!files.includes(value.files[0])) {
               files.push(value.files[0]);
@@ -275,8 +276,7 @@ IDV.UploadForm = (function() {
   }
 
   function drawThumbnails(files, output) {
-    for(let i = 0; i < files.length; i++) {
-      const file = files[i];
+    for(const file of files) {
       if(!file.type.match("image"))
           continue;
 
@@ -296,10 +296,14 @@ IDV.UploadForm = (function() {
     $('#content-wrapper').html(content).append(imagePreview)
   }
 
-  function uploadFileFailHandler() {
-    const content = $('#failed-upload-template').html();
+  function displayModal(content) {
     $('#js-modal .modal-content').html(content);
     $('#js-modal').modal('show');
+  }
+
+  function uploadFileFailHandler() {
+    const content = $('#failed-upload-template').html();
+    displayModal(content);
   }
 
   function failedSignHandler(error) {
@@ -323,9 +327,9 @@ IDV.UploadForm = (function() {
     if (useMultiple) {
       files = Array.from($fileInput[0].files);
     }
-    $.each($fileInput, function(index, value){
-      if (typeof value.files[0] !== 'undefined') {
-        files.push(value.files[0]);
+    Array.from($fileInput).forEach(function(fileHandler){
+      if (typeof fileHandler.files[0] !== 'undefined') {
+        files.push(fileHandler.files[0]);
       }
     })
     return files.filter(file => file.type.match("image"));
@@ -354,8 +358,7 @@ IDV.UploadForm = (function() {
   function showFilesRequiredMessage() {
     let content = '<div class="row" style="margin: 2vh auto 2vh auto"><div class="col-md-12">\
         Select at least one image, please</div><div>';
-    $('#js-modal .modal-content').html(content);
-    $('#js-modal').modal('show');
+    displayModal(content);
   }
 
   function showUploadNotSupportedMessage() {
@@ -363,15 +366,20 @@ IDV.UploadForm = (function() {
         We are currently upgrading our system, please bear with us while we carry out this work, \
         apologies for any inconvenience caused. Please email us at \
         <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a></div><div>';
-    $('#js-modal .modal-content').html(content);
-    $('#js-modal').modal('show');
+    displayModal(content);
   }
 
   function checkUploadSupport() {
-    if ($('#files').disabled || navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/)) {
-      return false;
+    return !($('#files').disabled || navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/));
+  }
+
+  function multipleAttributeWorks() {
+    const input = document.createElement('input');
+    input.setAttribute('multiple', 'true');
+    if (input.multiple === true) {
+      return true;
     }
-    return true;
+    return 'partial';
   }
 
   function checkMultipleUploadSupport() {
@@ -379,14 +387,11 @@ IDV.UploadForm = (function() {
       return false;
     }
     if (jQuery.browser.mobile) {
+      // It's hard to know if a mobile browser will support multiple selection
+      // and we prefer to make them use the alternative method to be safe
       return 'partial';
     }
-    const input = document.createElement('input');
-    input.setAttribute('multiple', 'true');
-    if (input.multiple === true) {
-      return true;
-    }
-    return 'partial';
+    return multipleAttributeWorks();
   }
 
   function setAlternativeUploadMethod() {
