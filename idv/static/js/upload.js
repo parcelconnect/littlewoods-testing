@@ -226,9 +226,53 @@ IDV.UploadForm = (function() {
   let progressBars = null;
   let useMultiple = true;
 
+  function createImageThumbnail(picFile, name) {
+    const div = document.createElement("div");
+    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "' " + "title='" + name + "'/>";
+    return div;
+  }
+
+  function initImageThumbnails() {
+    const filesInput = $("#files");
+    const output = $("#files-upload-result");
+
+    if(!window.File || !window.FileList || !window.FileReader) {
+      const warning = document.createElement("p");
+      warning.innerText = "Sorry, your browser does not support image thumbnails"
+      output.append(warning);
+      return;
+    }
+
+    filesInput.on("change", function(event) {
+      const files = event.target.files;
+      output.html("");
+
+      let imgCount = 0
+      for(let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if(!file.type.match("image"))
+            continue;
+
+        imgCount++;
+        const picReader = new FileReader();
+        $(picReader).on("load", function(event) {
+            const div = createImageThumbnail(event.target, file.name)
+            output.append(div);
+        });
+        picReader.readAsDataURL(file);
+      }
+
+      const infoText = document.createElement("p");
+      infoText.innerText = imgCount + (imgCount > 1 ? " images" : " image" ) + " selected"
+      output.prepend(infoText)
+    });
+  }
+
   function showUploadSuccessMessage() {
     const content = $('#successful-upload-template').html();
-    $('#content-wrapper').html(content)
+    const imagePreview = $("#files-upload-result").clone();
+    imagePreview.find('p').remove();
+    $('#content-wrapper').html(content).append(imagePreview)
   }
 
   function uploadFileFailHandler() {
@@ -329,6 +373,8 @@ IDV.UploadForm = (function() {
 
     $form = $('#'+formID);
     $form.submit(submitHandler)
+
+    initImageThumbnails();
 
     const uploadSupport = checkUploadSupport();
     if (!uploadSupport) {
