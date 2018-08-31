@@ -225,7 +225,6 @@ IDV.UploadForm = (function() {
   const formID = 'id-docs';
   let $form = null;
   let progressBars = null;
-  let useMultiple = true;
   let fileInputsCount = 1;
 
   function createImageThumbnail(picFile, name) {
@@ -241,21 +240,17 @@ IDV.UploadForm = (function() {
     output.empty();
     let imgCount = 0;
     let files = [];
+    const filename = typeof event.target.files[0] !== "undefined" ? event.target.files[0].name : 'Take/Browse Photo';
 
-    if (useMultiple) {
-      drawThumbnails(event.target.files, output);
-      files = Array.from(event.target.files);
-    } else {
-      $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
-      for (const fileHandler of filesInput) {
-        if (fileHandler.files.length) {
-          if (!files.includes(fileHandler.files[0])) {
-            files.push(fileHandler.files[0]);
-          }
+    $('label[for=' + event.target.id + ']').find('span').html(filename);
+    for (const fileHandler of filesInput) {
+      if (fileHandler.files.length) {
+        if (!files.includes(fileHandler.files[0])) {
+          files.push(fileHandler.files[0]);
         }
-      };
-      drawThumbnails(files, output);
-    }
+      }
+    };
+    drawThumbnails(files, output);
     imgCount = files.filter(file => file.type.match("image")).length;
 
     const infoText = document.createElement("p");
@@ -324,13 +319,9 @@ IDV.UploadForm = (function() {
   function getFormFiles() {
     const $fileInput = $form.find('input[type="file"]');
     let files = []
-    if (useMultiple) {
-      files = Array.from($fileInput[0].files);
-    } else {
-      for (const fileHandler of $fileInput) {
-        if (typeof fileHandler.files[0] !== 'undefined') {
-          files.push(fileHandler.files[0]);
-        }
+    for (const fileHandler of $fileInput) {
+      if (typeof fileHandler.files[0] !== 'undefined') {
+        files.push(fileHandler.files[0]);
       }
     }
     return files.filter(file => file.type.match("image"));
@@ -357,44 +348,13 @@ IDV.UploadForm = (function() {
   }
 
   function checkUploadSupport() {
-    return !($('#files').disabled || navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/));
+    return !($('#files-1').disabled || navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/));
   }
 
-  function multipleAttributeWorks() {
-    const input = document.createElement('input');
-    input.setAttribute('multiple', 'true');
-    if (input.multiple === true) {
-      return true;
-    }
-    return 'partial';
-  }
-
-  function checkMultipleUploadSupport() {
-    if (!checkUploadSupport()) {
-      return false;
-    }
-    if (jQuery.browser.mobile) {
-      // It's hard to know if a mobile browser will support multiple selection
-      // and we prefer to make them use the alternative method to be safe
-      return 'partial';
-    }
-    return multipleAttributeWorks();
-  }
-
-  function setAlternativeUploadMethod() {
-    // Change multiple input behaviour
-    useMultiple = false;
+  function initUploadMethod() {
     const label = $('.btn-file-upload');
     const newLabel = label.clone();
-    label.attr('for', 'files-1');
-    const input = $('#files');
-    input.removeAttr('multiple');
-    input.removeAttr('required');
-    input.attr('id', 'files-1');
-    const button = document.createElement("input");
-    button.type = 'button';
-    button.value = 'Add more files';
-    button.onclick = function() {
+    $('#add_more').on('click', function() {
       fileInputsCount++;
       newLabel.attr('for', 'files-' + fileInputsCount);
       const fileInput = document.createElement("input");
@@ -405,22 +365,20 @@ IDV.UploadForm = (function() {
         processSelectedFiles(event);
       };
       $('input[type=file]:last').after(fileInput).after(newLabel.clone()).after('<br/>');
-    }
-    input.after(button).after('<br/>');
+    });
   }
 
   my.init = function() {
     progressBars = IDV.ProgressBars;
     progressBars.init();
 
-    $form = $('#'+formID);
+    $form = $('#' + formID);
     $form.submit(submitHandler)
 
-    const uploadSupport = checkMultipleUploadSupport();
-    if (!uploadSupport) {
+    if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
-    } else if (uploadSupport === 'partial') {
-      setAlternativeUploadMethod();
+    } else  {
+      initUploadMethod();
     }
 
     initImageThumbnails();
