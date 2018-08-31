@@ -4,7 +4,8 @@
 
 {% block js %}
   {{ block.super }}
-  <script src="{% static "js/upload.js" %}"></script>
+  <script src="{% static 'js/jquery.browser.mobile.min.js' %}"></script>
+  <script src="{% static 'js/upload.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -73,7 +74,7 @@
             <label for="files" class="btn btn-upload btn-file-upload">
                 <span>Take/Browse Photos</span>
             </label>
-            <input type="file" name="files" id="files" multiple="multiple" required>
+            <input type="file" name="files" id="files" multiple="multiple">
 
             <p class="file-input-checker">No files selected</p>
             <p class="help-block">Maximum file size 4mb</p>
@@ -136,6 +137,27 @@
     <div class="modal-body">
       <h3>Something went wrong.</h3>
       <p>If the problem persists, please contact us at validation@shopdirect.com</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+  <div id="upload-unsupported-template" class="collapse">
+    <div class="modal-body">
+      <p>
+        We are currently upgrading our system, please bear with us while we carry out this work, apologies
+        for any inconvenience caused. Please email us at <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+  <div id="files-required-template" class="collapse">
+    <div class="modal-body">
+      <p>Select at least one image, please</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
