@@ -136,9 +136,9 @@ IDV.FormUtils = (function() {
   var createErrorList = function(errors) {
     var $errorList = $('<ul class="' + errorListClass + '"></ul>');
 
-    errors.forEach(function(error) {
+    for (const error of errors) {
       $errorList.append('<li>' + error + '</li>');
-    });
+    };
     return $errorList;
   }
 
@@ -193,9 +193,9 @@ IDV.ProgressBars = (function() {
   };
 
   my.addMany = function(files) {
-    files.forEach(function(file) {
+    for (const file of files) {
       add(file);
-    });
+    };
   };
 
   my.update = function(xhr, file) {
@@ -234,44 +234,49 @@ IDV.UploadForm = (function() {
     return div;
   }
 
-  function initImageThumbnails() {
-    const filesInput = $('input[type="file"]');
+  function processSelectedFiles(event) {
     const output = $("#files-upload-result");
+    const filesInput = $('input[type="file"]');
 
+    output.empty();
+    let imgCount = 0;
+    let files = [];
+
+    if (useMultiple) {
+      drawThumbnails(event.target.files, output);
+      files = Array.from(event.target.files);
+    } else {
+      $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
+      for (const fileHandler of filesInput) {
+        if (fileHandler.files.length) {
+          if (!files.includes(fileHandler.files[0])) {
+            files.push(fileHandler.files[0]);
+          }
+        }
+      };
+      drawThumbnails(files, output);
+    }
+    imgCount = files.filter(file => file.type.match("image")).length;
+
+    const infoText = document.createElement("p");
+    infoText.innerText = imgCount + (imgCount > 1 ? " images" : " image" ) + " selected"
+
+    output.prepend(infoText)
+  }
+
+  function initImageThumbnails() {
     if(!window.File || !window.FileList || !window.FileReader) {
+      const output = $("#files-upload-result");
       const warning = document.createElement("p");
       warning.innerText = "Sorry, your browser does not support image thumbnails"
       output.append(warning);
       return;
     }
 
-    filesInput.off('change');
+    const filesInput = $('input[type="file"]');
 
     filesInput.on("change", function(event) {
-      output.empty();
-      let imgCount = 0;
-      let files = [];
-
-      if (useMultiple) {
-        drawThumbnails(event.target.files, output);
-        files = Array.from(event.target.files);
-      } else {
-        $('label[for=' + $(this).attr('id') + ']').find('span').html(event.target.files[0].name);
-        for (const fileHandler of filesInput) {
-          if (fileHandler.files.length) {
-            if (!files.includes(fileHandler.files[0])) {
-              files.push(fileHandler.files[0]);
-            }
-          }
-        };
-        drawThumbnails(files, output);
-      }
-      imgCount = files.filter(file => file.type.match("image")).length;
-
-      const infoText = document.createElement("p");
-      infoText.innerText = imgCount + (imgCount > 1 ? " images" : " image" ) + " selected"
-
-      output.prepend(infoText)
+      processSelectedFiles(event);
     });
   }
 
@@ -365,7 +370,6 @@ IDV.UploadForm = (function() {
   }
 
   function checkMultipleUploadSupport() {
-    return 'partial';
     if (!checkUploadSupport()) {
       return false;
     }
@@ -397,8 +401,10 @@ IDV.UploadForm = (function() {
       fileInput.type = 'file';
       fileInput.name = 'files';
       fileInput.id = 'files-' + fileInputsCount;
+      fileInput.onchange = function(event) {
+        processSelectedFiles(event);
+      };
       $('input[type=file]:last').after(fileInput).after(newLabel.clone()).after('<br/>');
-      initImageThumbnails();
     }
     input.after(button).after('<br/>');
   }
