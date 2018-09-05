@@ -316,6 +316,10 @@ IDV.UploadForm = (function() {
     displayModal('failed-upload-template');
   }
 
+  function fileTypeSupported(type) {
+    return type.match("image.*|application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|text/plain")
+  }
+
   function getFormFiles() {
     const $fileInput = $form.find('input[type="file"]');
     let files = []
@@ -324,7 +328,7 @@ IDV.UploadForm = (function() {
         files.push(fileHandler.files[0]);
       }
     }
-    return files.filter(file => file.type.match("image"));
+    return files.filter(file => fileTypeSupported(file.type));
   }
 
   function submitHandler(event) {
