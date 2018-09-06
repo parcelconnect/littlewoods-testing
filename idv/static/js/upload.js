@@ -265,6 +265,12 @@ IDV.UploadForm = (function() {
       }
     }
 
+    if(files.length > 0) {
+      $(".file-input-checker").hide()
+    } else {
+      $(".file-input-checker").show()
+    }
+
     drawThumbnails(files.filter(file => isImageType(file.type)), output);
 
     const imgCount = files.filter(file => isImageType(file.type)).length;
@@ -364,16 +370,18 @@ IDV.UploadForm = (function() {
   }
 
   function initUploadMethod() {
-    const label = $('.btn-file-upload');
-    const newLabel = label.clone();
+    const firstLabel = $('.btn-file-upload');
+    const firstInput = $('input[type=file]');
+    const newLabel = firstLabel.clone();
+    const newInput = firstInput.clone();
+
     $('#add_more').on('click', function() {
       fileInputsCount++;
-      newLabel.attr('for', 'files-' + fileInputsCount);
-      const fileInput = document.createElement("input");
-      fileInput.type = 'file';
-      fileInput.name = 'files';
-      fileInput.id = 'files-' + fileInputsCount;
-      $('input[type=file]:last').after(fileInput).after(newLabel.clone()).after('<br/>');
+      const label = newLabel.clone();
+      label.attr('for', 'files-' + fileInputsCount);
+      const input = newInput.clone();
+      input.attr('id', 'files-' + fileInputsCount);
+      $('input[type=file]:last').after(input).after(label).after('<br/>');
     });
   }
 

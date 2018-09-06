@@ -245,14 +245,6 @@ label {
   color: #006ab8;
 }
 
-#files:valid ~ .file-input-checker {
-  display: none;
-}
-
-#files:invalid ~ .file-input-checker {
-  display: block;
-}
-
 #files-upload-result .thumbnail {
   height: 15vh;
   float: left;
