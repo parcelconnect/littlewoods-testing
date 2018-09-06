@@ -221,41 +221,56 @@ IDV.ProgressBars = (function() {
 })();
 
 IDV.UploadForm = (function() {
+  const imageMimeTypes = ["image/*"];
+  const docMimeTypes = [
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.oasis.opendocument.text",
+    "text/plain"
+  ];
+
   const my = {};
   const formID = 'id-docs';
   let $form = null;
   let progressBars = null;
   let fileInputsCount = 1;
 
+  function isImageType(mimeType) {
+    return mimeType.match(imageMimeTypes.join("|"))
+  }
+
+  function isDocumentType(mimeType) {
+    return mimeType.match(docMimeTypes.join("|"))
+  }
+
   function createImageThumbnail(picFile, name) {
-    const div = document.createElement("div");
-    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "' " + "title='" + name + "'/>";
-    return div;
+    return `<img class='thumbnail' src='${picFile.result}' title='${name}'/>`;
   }
 
   function processSelectedFiles(event) {
-    const output = $("#files-upload-result");
-    const filesInput = $('input[type="file"]');
-
-    output.empty();
-    let imgCount = 0;
-    let files = [];
-    const filename = typeof event.target.files[0] !== "undefined" ? event.target.files[0].name : 'Take/Browse Photo';
-
+    const filename = typeof event.target.files[0] !== "undefined" ? event.target.files[0].name : 'Select Photo/Doc';
     $('label[for=' + event.target.id + ']').find('span').html(filename);
+
+    const output = $("#files-upload-result");
+    output.empty();
+
+    const filesInput = $('input[type="file"]');
+    const files = [];
     for (const fileHandler of filesInput) {
       if (fileHandler.files.length) {
         if (!files.includes(fileHandler.files[0])) {
           files.push(fileHandler.files[0]);
         }
       }
-    };
-    drawThumbnails(files, output);
-    imgCount = files.filter(file => file.type.match("image")).length;
+    }
 
+    drawThumbnails(files.filter(file => isImageType(file.type)), output);
+
+    const imgCount = files.filter(file => isImageType(file.type)).length;
+    const docDount = files.filter(file => isDocumentType(file.type)).length;
     const infoText = document.createElement("p");
-    infoText.innerText = imgCount + (imgCount > 1 ? " images" : " image" ) + " selected"
-
+    infoText.innerText = `${imgCount} image(s) select, ${docDount} document(s) selected`;
     output.prepend(infoText)
   }
 
@@ -263,29 +278,26 @@ IDV.UploadForm = (function() {
     if(!window.File || !window.FileList || !window.FileReader) {
       const output = $("#files-upload-result");
       const warning = document.createElement("p");
-      warning.innerText = "Sorry, your browser does not support image thumbnails"
+      warning.innerText = "Sorry, your browser does not support image thumbnails";
       output.append(warning);
       return;
     }
 
-    const filesInput = $('input[type="file"]');
-
-    filesInput.on("change", function(event) {
+    $form.on('change', 'input[type="file"]', function(event) {
       processSelectedFiles(event);
     });
   }
 
-  function drawThumbnails(files, output) {
-    for(const file of files) {
-      if(!file.type.match("image"))
-          continue;
-
+  function drawThumbnails(images, output) {
+    for(const image of images) {
       const picReader = new FileReader();
+      const div = document.createElement("div");
+      output.append(div);
+
       $(picReader).on("load", function(event) {
-          const div = createImageThumbnail(event.target, file.name)
-          output.append(div);
+          div.innerHTML = createImageThumbnail(event.target, image.name);
       });
-      picReader.readAsDataURL(file);
+      picReader.readAsDataURL(image);
     }
   }
 
@@ -316,19 +328,15 @@ IDV.UploadForm = (function() {
     displayModal('failed-upload-template');
   }
 
-  function fileTypeSupported(type) {
-    return type.match("image.*|application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|text/plain")
-  }
-
   function getFormFiles() {
     const $fileInput = $form.find('input[type="file"]');
-    let files = []
+    let files = [];
     for (const fileHandler of $fileInput) {
       if (typeof fileHandler.files[0] !== 'undefined') {
         files.push(fileHandler.files[0]);
       }
     }
-    return files.filter(file => fileTypeSupported(file.type));
+    return files;
   }
 
   function submitHandler(event) {
@@ -365,9 +373,6 @@ IDV.UploadForm = (function() {
       fileInput.type = 'file';
       fileInput.name = 'files';
       fileInput.id = 'files-' + fileInputsCount;
-      fileInput.onchange = function(event) {
-        processSelectedFiles(event);
-      };
       $('input[type=file]:last').after(fileInput).after(newLabel.clone()).after('<br/>');
     });
   }
@@ -377,7 +382,10 @@ IDV.UploadForm = (function() {
     progressBars.init();
 
     $form = $('#' + formID);
-    $form.submit(submitHandler)
+    $form.submit(submitHandler);
+
+    $("input[type=file]").attr("accept",
+      imageMimeTypes.concat(docMimeTypes).join(", "));
 
     if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
