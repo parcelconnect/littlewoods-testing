@@ -398,6 +398,10 @@ IDV.UploadForm = (function() {
     $form = $('#' + formID);
     $form.submit(submitHandler);
 
+    const md = new MobileDetect(window.navigator.userAgent);
+    if (!md.mobile()) {
+      $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", "));
+    }
     if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
     } else  {
