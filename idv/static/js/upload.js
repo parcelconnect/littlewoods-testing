@@ -249,7 +249,13 @@ IDV.UploadForm = (function() {
   }
 
   function processSelectedFiles(event) {
-    const filename = typeof event.target.files[0] !== "undefined" ? event.target.files[0].name : 'Select Photo/Doc';
+    const file = typeof event.target.files[0] !== "undefined" ? event.target.files[0] : null
+    const filename = file ? event.target.files[0].name : 'Select Photo/Doc';
+    if (file && !isDocumentType(file.type) && !isImageType(file.type)) {
+      event.target.value = "";
+      displayModal('files-invalid-template');
+      return;
+    }
     $('label[for=' + event.target.id + ']').find('span').html(filename);
 
     const output = $("#files-upload-result");
@@ -392,9 +398,10 @@ IDV.UploadForm = (function() {
     $form = $('#' + formID);
     $form.submit(submitHandler);
 
-    $("input[type=file]").attr("accept",
-      imageMimeTypes.concat(docMimeTypes).join(", "));
-
+    const md = new MobileDetect(window.navigator.userAgent);
+    if (!md.mobile()) {
+      $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", "));
+    }
     if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
     } else  {

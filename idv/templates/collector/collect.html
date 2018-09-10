@@ -4,6 +4,7 @@
 
 {% block js %}
   {{ block.super }}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
   <script src="{% static 'js/upload.js' %}"></script>
 {% endblock %}
 
@@ -157,7 +158,16 @@
 
   <div id="files-required-template" class="collapse">
     <div class="modal-body">
-      <p>Select at least one image, please</p>
+      <p>Select at least one image or document, please</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+  <div id="files-invalid-template" class="collapse">
+    <div class="modal-body">
+      <p>The selected file is not supported, please select another</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
