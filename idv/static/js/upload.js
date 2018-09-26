@@ -24,6 +24,17 @@ function logError(message, extra) {
   }
 }
 
+function chainFuncs(funcs) {
+  return funcs.reduce((promiseChain, currentTask) =>
+      promiseChain.then(chainResults =>
+        currentTask().then(currentResult => {
+          chainResults.push(currentResult);
+          return chainResults;
+        })
+      )
+    , Promise.resolve([]));
+}
+
 function uploadFile(file, signed_url, content_md5, progressBars) {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -56,12 +67,14 @@ class FieldErrors {
 }
 
 class IDVForm {
-  constructor(email, account_number, csrfmiddlewaretoken, files) {
+  constructor(email, account_number, csrfmiddlewaretoken, files, successCb, failCb) {
     this.email = email;
     this.account_number = account_number;
     this.csrfmiddlewaretoken = csrfmiddlewaretoken;
     this.file_data = {};
     this.md5_calculation = [];
+    this.successCallback = successCb;
+    this.failCallback = failCb;
 
     const create_lambda_assign_file_md5 = (filename) => {
       return (md5) => {this.file_data[filename]['content_md5'] = md5;}
@@ -84,12 +97,13 @@ class IDVForm {
     this.md5_calculation = Promise.all(this.md5_calculation);
   }
 
-  _sign_s3_put_url() {
+  _sign_s3_put_url(filename) {
     const formData = new FormData();
     formData.append('email', this.email);
     formData.append('account_number', this.account_number);
     formData.append('csrfmiddlewaretoken', this.csrfmiddlewaretoken);
-    formData.append('files_info', JSON.stringify(this.file_data));
+    formData.append('files_info', JSON.stringify({
+      [filename]: this.file_data[filename]}));
     return fetch(Django.Data.get('sign_s3_request_url'), {
         method: "POST",
         credentials: "same-origin",
@@ -113,18 +127,28 @@ class IDVForm {
   }
 
   _upload_files(progressBars) {
-    const uploads = [];
+    let signed_urls = [];
     for (const filename in this.file_data) {
-      const data = this.file_data[filename];
-      uploads.push(uploadFile(data.file, data.signed_url, data.content_md5, progressBars))
+      signed_urls.push(() => this._sign_s3_put_url(filename)
+        .then(() => {
+          const data = this.file_data[filename];
+          return {upload: uploadFile(data.file, data.signed_url, data.content_md5, progressBars)}
+        }))
     }
-    return Promise.all(uploads);
+    return chainFuncs(signed_urls);
+  }
+
+  cancel() {
+    this.successCallback = () => {};
+    this.failCallback = (error) => {};
   }
 
   send(progressBars) {
     return this.md5_calculation
-      .then(() => this._sign_s3_put_url())
-      .then(() => this._upload_files(progressBars));
+      .then(() => this._upload_files(progressBars))
+      .then((upload_files) => Promise.all(upload_files.map((res => res.upload))))
+      .then(() => this.successCallback())
+      .catch((error) => this.failCallback(error));
   }
 }
 
@@ -235,6 +259,7 @@ IDV.UploadForm = (function() {
   let $form = null;
   let progressBars = null;
   let fileInputsCount = 1;
+  let currentIDVForm = null;
 
   function isImageType(mimeType) {
     return mimeType.match(imageMimeTypes.join("|"))
@@ -352,7 +377,12 @@ IDV.UploadForm = (function() {
   }
 
   function submitHandler(event) {
+    $form.find("[type=submit]").prop("disabled", true);
     event.preventDefault();
+
+    if (currentIDVForm !== null) {
+      currentIDVForm.cancel();
+    }
 
     const files = getFormFiles();
     if (files.length === 0) {
@@ -365,10 +395,13 @@ IDV.UploadForm = (function() {
     const email = $('#lwi-email-address').val();
     const account_number = $('#lwi-account-number').val();
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
-    const idv_form = new IDVForm(email, account_number, csrf, files);
+    currentIDVForm = new IDVForm(email, account_number, csrf, files,
+      showUploadSuccessMessage, failedSignHandler);
     IDV.FormUtils.clearErrors();
 
-    idv_form.send(progressBars).then(showUploadSuccessMessage).catch(failedSignHandler);
+    currentIDVForm.send(progressBars).then(() => {
+      $form.find("[type=submit]").prop("disabled", false);
+    })
   }
 
   function checkUploadSupport() {
