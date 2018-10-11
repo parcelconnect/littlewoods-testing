@@ -54,7 +54,12 @@ function uploadFile(file, signed_url, content_md5, progressBars) {
       resolve();
     }).fail(function (jqXHR, textStatus, error) {
       const message = 'Error uploading Photo ID file';
-      logError(message, {status: jqXHR.status, response: jqXHR.response});
+      logError(message, {
+        status: jqXHR.status,
+        response: jqXHR.response,
+        textStatus: textStatus,
+        error: error
+      });
       reject(message);
     });
   });
