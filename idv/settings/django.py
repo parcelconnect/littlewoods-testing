@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'idv.common',
     'idv.collector',
-    'idv.mover',
+    'idv.mover.apps.MoverConfig',
     'idv.sftp',
     'idv.tracker',
     'idv.giftwrap',
@@ -213,3 +213,5 @@ CELERY_TASK_IGNORE_RESULT = True
 CELERY_ALWAYS_EAGER = env_as_bool('CELERY_ALWAYS_EAGER', False)
 broker_pool_limit = env_as_int('BROKER_POOL_LIMIT', 0)
 redis_max_connections = env_as_int('CELERY_REDIS_MAX_CONNECTIONS', 40)
+
+SEND_REPORT_RETRY_TIME = 10 * 60

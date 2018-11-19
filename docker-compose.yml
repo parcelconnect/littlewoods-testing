@@ -20,6 +20,23 @@ services:
       - "9002:9002"
     depends_on:
       - db
+      - redis
     env_file:
       - .env.default
       - .env
+  worker:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    command: celery worker --app=idv
+    volumes:
+      - .:/code
+    links:
+      - db
+      - redis
+    env_file:
+      - .env.default
+      - .env
+    depends_on:
+      - db
+      - redis

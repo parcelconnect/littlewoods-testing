@@ -1,6 +1,9 @@
 import pytest
+from celery.contrib.testing.tasks import ping
+from celery.result import allow_join_result
 from freezegun import freeze_time
 
+import idv.celery
 from idv.collector import domain as collector_domain
 from idv.collector.const import CredentialStatus
 
@@ -104,3 +107,23 @@ def settings(settings):
     settings.AWS_SECRET_KEY = 'TEST-SECRET-KEY'
     settings.S3_BUCKET = 'BUCK'
     return settings
+
+
+def wait_for_ping(ping_task_timeout=10.0):
+    """
+    Wait for the celery worker to respond to a ping.
+    This should ensure that any other running tasks are done.
+    """
+    with allow_join_result():
+        assert ping.delay().get(timeout=ping_task_timeout) == 'pong'
+
+
+@pytest.fixture
+def celery_memory_settings(settings):
+    settings.BROKER_URL = 'memory://'
+    settings.CELERY_RESULT_BACKEND = 'cache+memory://'
+
+
+@pytest.fixture
+def celery_app(celery_memory_settings):
+    return idv.celery.app

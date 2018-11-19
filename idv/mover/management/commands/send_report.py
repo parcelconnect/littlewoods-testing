@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from idv.mover.commands import send_move_report
+from idv.mover.tasks import send_move_report
 
 logger = logging.getLogger(__name__)
 

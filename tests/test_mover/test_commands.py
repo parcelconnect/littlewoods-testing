@@ -1,17 +1,17 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-import celery.exceptions
 import pytest
 from django.core.management import call_command
 from django.utils import timezone
 from freezegun import freeze_time
 
-from idv.celery import app
 from idv.collector import domain as collector_domain
 from idv.collector.models import Credential
-from idv.mover.commands import move, send_move_report
+from idv.mover.commands import move
 from idv.mover.domain import get_last_move_checkpoint
+from idv.mover.tasks import send_move_report
+from tests.conftest import wait_for_ping
 
 
 @pytest.mark.django_db
@@ -74,18 +74,13 @@ class TestMove:
         assert need_moving[3] in args[0]
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 class TestSendMoreReport:
     @pytest.fixture(autouse=True)
-    def celery_always_eager(self, request):
-        def _finalizer():
-            app.conf.task_always_eager = old_value
+    def use_celery_worker(self, celery_worker):
+        pass
 
-        old_value = app.conf.task_always_eager
-        app.conf.task_always_eager = True
-        request.addfinalizer(_finalizer)
-
-    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
     @freeze_time('2016-01-05')
     def test_command_send_email_for_yesterday(self, move_mock, mail_mock):
@@ -94,9 +89,11 @@ class TestSendMoreReport:
         until = datetime(2016, 1, 5).date()
         call_command('send_report')
 
+        wait_for_ping()
+
         mail_mock.send_move_report.assert_called_once_with((since, until))
 
-    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
     @freeze_time('2016-01-05')
     def test_command_send_email_for_given_dates(self, move_mock, mail_mock):
@@ -105,41 +102,58 @@ class TestSendMoreReport:
         until = datetime(2016, 1, 3).date()
         call_command('send_report', since=since, until=until)
 
+        wait_for_ping()
+
         mail_mock.send_move_report.assert_called_once_with((since, until))
 
-    def test_value_error_if_no_move_checkpoint(self):
+    @patch('idv.mover.tasks.mover_mail')
+    @patch('idv.mover.commands.move_credential_files')
+    def test_value_error_if_no_move_checkpoint(self, move_mock, mail_mock):
         since = timezone.now().date()
         until = since + timedelta(days=1)
-        with pytest.raises(ValueError):
-            send_move_report(since, until)
 
+        call_command('send_report', since=since, until=until)
+        wait_for_ping()
+
+        assert not mail_mock.called
+
+    @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
-    def test_retries_if_checkpoint_older_than_report_end_date(self, m):
+    def test_retries_if_checkpoint_older_than_report_end_date(
+            self, move_mock, mail_mock):
         with freeze_time('2016-01-05'):
             move()
 
         since = datetime(2016, 1, 4).date()
         until = datetime(2016, 1, 6).date()
-        with pytest.raises(celery.exceptions.Retry):
-            send_move_report(since, until)
 
-    @patch('idv.mover.commands.mover_mail')
+        call_command('send_report', since=since, until=until)
+        wait_for_ping()
+
+        assert not mail_mock.called
+
+    @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
-    def test_retries_if_move_didnt_finish_on_time(self, move_mock, mail_mock):
+    def test_retries_if_move_didnt_finish_on_time(
+            self, move_mock, mail_mock, settings):
+        settings.SEND_REPORT_RETRY_TIME = 1
+
         with freeze_time('2016-01-05'):
             move()
 
         since = datetime(2016, 1, 4).date()
         until = datetime(2016, 1, 6).date()
-        with pytest.raises(celery.exceptions.Retry):
-            send_move_report(since, until)
+
+        call_command('send_report', since=since, until=until)
+        wait_for_ping()
 
         with freeze_time('2016-01-06'):
             move()
-        send_move_report(since, until)
+
+        wait_for_ping()
         mail_mock.send_move_report.assert_called_once_with((since, until))
 
-    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
     def test_report_sending(self, move_mock, mail_mock):
         with freeze_time('2016-01-05'):
@@ -147,5 +161,5 @@ class TestSendMoreReport:
 
         since = datetime(2016, 1, 4).date()
         until = datetime(2016, 1, 5).date()
-        send_move_report(since, until)
+        send_move_report("2016-01-04", "2016-01-05")
         mail_mock.send_move_report.assert_called_once_with((since, until))
