@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+import celery.exceptions
 import pytest
 from django.core.management import call_command
 from django.utils import timezone
 from freezegun import freeze_time
 
+from idv.celery import app
 from idv.collector import domain as collector_domain
 from idv.collector.models import Credential
 from idv.mover.commands import move, send_move_report
@@ -74,6 +76,14 @@ class TestMove:
 
 @pytest.mark.django_db
 class TestSendMoreReport:
+    @pytest.fixture(autouse=True)
+    def celery_always_eager(self, request):
+        def _finalizer():
+            app.conf.task_always_eager = old_value
+
+        old_value = app.conf.task_always_eager
+        app.conf.task_always_eager = True
+        request.addfinalizer(_finalizer)
 
     @patch('idv.mover.commands.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
@@ -104,14 +114,30 @@ class TestSendMoreReport:
             send_move_report(since, until)
 
     @patch('idv.mover.commands.move_credential_files')
-    def test_value_error_if_checkpoint_older_than_report_end_date(self, m):
+    def test_retries_if_checkpoint_older_than_report_end_date(self, m):
         with freeze_time('2016-01-05'):
             move()
 
         since = datetime(2016, 1, 4).date()
         until = datetime(2016, 1, 6).date()
-        with pytest.raises(ValueError):
+        with pytest.raises(celery.exceptions.Retry):
             send_move_report(since, until)
+
+    @patch('idv.mover.commands.mover_mail')
+    @patch('idv.mover.commands.move_credential_files')
+    def test_retries_if_move_didnt_finish_on_time(self, move_mock, mail_mock):
+        with freeze_time('2016-01-05'):
+            move()
+
+        since = datetime(2016, 1, 4).date()
+        until = datetime(2016, 1, 6).date()
+        with pytest.raises(celery.exceptions.Retry):
+            send_move_report(since, until)
+
+        with freeze_time('2016-01-06'):
+            move()
+        send_move_report(since, until)
+        mail_mock.send_move_report.assert_called_once_with((since, until))
 
     @patch('idv.mover.commands.mover_mail')
     @patch('idv.mover.commands.move_credential_files')

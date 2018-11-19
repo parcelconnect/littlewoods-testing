@@ -12,6 +12,7 @@ jobs:
           environment:
             - POSTGRES_USER=ubuntu
             - POSTGRES_DB=lw_test
+        - image: redis
       steps:
         - checkout
 

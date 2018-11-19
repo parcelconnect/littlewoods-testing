@@ -53,5 +53,5 @@ class Command(BaseCommand):
 
         logger.info('Sending report on files uploaded from {} to {}...'
                     .format(since, until))
-        send_move_report(since, until)
+        send_move_report.delay(since, until)
         logger.info('Success sending report.')

@@ -23,3 +23,8 @@ def env_as_list(var, default=[]):
 
 def env_as_str(var, default=''):
     return str(os.getenv(var, default))
+
+
+def env_as_int(var, default=''):
+    """Read the variable from the environment as an int."""
+    return int(os.getenv(var, default))

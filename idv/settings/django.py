@@ -2,7 +2,7 @@ import os
 
 import dj_database_url
 
-from .utils import env_as_bool, env_as_list
+from .utils import env_as_bool, env_as_int, env_as_list, env_as_str
 
 # -----------------------------------------------------------------------------
 # Base settings
@@ -199,3 +199,17 @@ SPECIAL_DATE_IMAGE = {
 }
 
 RUN_REPORT_FROM_DATE = '2017 05 02 00:00:00 {}'.format(TIME_ZONE)
+
+
+# Redis settings
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://@localhost:6379/0')
+
+# Celery
+BROKER_URL = env_as_str('BROKER_URL')
+CELERY_RESULT_BACKEND = BROKER_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_IGNORE_RESULT = True
+CELERY_ALWAYS_EAGER = env_as_bool('CELERY_ALWAYS_EAGER', False)
+broker_pool_limit = env_as_int('BROKER_POOL_LIMIT', 0)
+redis_max_connections = env_as_int('CELERY_REDIS_MAX_CONNECTIONS', 40)
