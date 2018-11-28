@@ -1,14 +1,20 @@
 import pytest
+import vcr
 from django.shortcuts import reverse
+
+DEFAULT_MATCH_ON = ['method', 'scheme', 'host', 'port', 'path', 'query']
+MATCH_ON = DEFAULT_MATCH_ON + ['body']
 
 
 class TestGetTrackingEvents:
 
     @pytest.fixture(autouse=True)
     def client_settings(self, settings):
-        settings.FASTWAY_API_KEY = 'e18f8d2808326d759ed6d43679b00d9e'
+        settings.FASTWAY_API_KEY = 'APIKEY'
         settings.FASTWAY_API_ENDPOINT = 'http://ie.preview.api.fastway.org'
 
+    @vcr.use_cassette('tests/test_tracker/cassettes/get_tracking_events.yml',
+                      match_on=MATCH_ON)
     def test_returns_expected_data_populated_in_the_template(self, client):
         label_id = '9009298467801'
         url = reverse('tracker:get-events') + '?label_id={}'.format(label_id)
@@ -209,6 +215,8 @@ class TestGetTrackingEvents:
         for key in expected_context.keys():
             assert expected_context[key] == response.context[key]
 
+    @vcr.use_cassette('tests/test_tracker/cassettes/get_tracking_events.yml',
+                      match_on=MATCH_ON)
     def test_returns_400_when_label_id_is_invalid(self, client):
         label_id = 'NON-EXISTING'
         url = reverse('tracker:get-events') + '?label_id={}'.format(label_id)
@@ -219,6 +227,8 @@ class TestGetTrackingEvents:
         assert response.json() == {
             'message': 'Invalid label ID', 'success': False}
 
+    @vcr.use_cassette('tests/test_tracker/cassettes/get_tracking_events.yml',
+                      match_on=MATCH_ON)
     def test_returns_400_when_label_id_has_no_tracking_details(
             self, client):
         label_id = '9009298467800'

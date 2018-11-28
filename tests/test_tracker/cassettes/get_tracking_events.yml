@@ -1,0 +1,100 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.2]
+    method: GET
+    uri: http://ie.preview.api.fastway.org/v2/tracktrace/detail/9009298467801?api_key=APIKEY
+  response:
+    body: {string: '{"result":{"LabelNumber":"9009298467801","Scans":[{"Type":"T","Courier":"SCU","Description":"Delivery Received in Hub","Date":"12/03/2018
+        07:17:19","RealDateTime":"2018-03-12 07:17:19","Name":"Hawkes Bay Couriers
+        (Hub)","Franchise":"HBC","Status":"R02","StatusDescription":"","CompanyInfo":{"contactName":"","company":"MISS
+        A DE-PREE","address1":"4 Dunsink Avenue","address2":"Finglas West","address3":"Dublin","address4":"Dublin
+        11","address5":"DB99 9AA","address6":"","address7":"","address8":"","comment":""},"UploadDate":"12/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"T","Courier":"NS4","Description":"Recvd in Depot:Inbound Freight","Date":"12/03/2018
+        10:25:12","RealDateTime":"2018-03-12 10:25:12","Name":"Dublin","Franchise":"DUB","Status":"R10","StatusDescription":"","CompanyInfo":{"contactName":"","company":"","address1":"","address2":"","address3":"","address4":"","address5":"","address6":"","address7":"","address8":"","comment":""},"UploadDate":"12/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"T","Courier":"DS1","Description":"Delivery on Future Date","Date":"13/03/2018
+        12:38:20","RealDateTime":"2018-03-13 12:38:20","Name":"Dublin","Franchise":"DUB","Status":"U38","StatusDescription":"","CompanyInfo":{"contactName":"","company":"","address1":"","address2":"","address3":"","address4":"","address5":"","address6":"","address7":"","address8":"","comment":""},"UploadDate":"14/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"T","Courier":"DS1","Description":"Delivery on Future Date","Date":"14/03/2018
+        11:57:12","RealDateTime":"2018-03-14 11:57:12","Name":"Dublin","Franchise":"DUB","Status":"U38","StatusDescription":"","CompanyInfo":{"contactName":"","company":"","address1":"","address2":"","address3":"","address4":"","address5":"","address6":"","address7":"","address8":"","comment":""},"UploadDate":"15/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"T","Courier":"DS1","Description":"Delivery on Future Date","Date":"15/03/2018
+        11:30:31","RealDateTime":"2018-03-15 11:30:31","Name":"Dublin","Franchise":"DUB","Status":"U38","StatusDescription":"","CompanyInfo":{"contactName":"","company":"","address1":"","address2":"","address3":"","address4":"","address5":"","address6":"","address7":"","address8":"","comment":""},"UploadDate":"16/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"T","Courier":"075","Description":"On Board with Courier","Date":"16/03/2018
+        07:12:23","RealDateTime":"2018-03-16 07:12:23","Name":"Dublin","Franchise":"DUB","Status":"ONB","StatusDescription":"","CompanyInfo":{"contactName":"MISS
+        A DE-PREE","company":"MISS A DE-PREE","address1":"4 Dunsink Avenue","address2":"Finglas
+        West","address3":"Dublin 11","address4":"IRELAND","address5":"DB99 9AA","address6":"","address7":"","address8":"","comment":""},"UploadDate":"16/03/2018","Signature":"","ParcelConnectAgent":null},{"Type":"D","Courier":"075","Description":"ATL Safe Delivery Location","Date":"16/03/2018
+        10:21:32","RealDateTime":"2018-03-16 10:21:32","Name":"Dublin","Franchise":"DUB","Status":"HDN","StatusDescription":"","CompanyInfo":{"contactName":"MISS
+        A DE-PREE","company":"MISS A DE-PREE","address1":"4 Dunsink Avenue","address2":"Finglas
+        West","address3":"Dublin 11","address4":"IRELAND","address5":"DB99 9AA","address6":"","address7":"","address8":"","comment":""},"UploadDate":"16/03/2018","Signature":"","ParcelConnectAgent":null}],"Signature":"","DistributedTo":"","Reference":"5Y0010855102","OriginalLabelNumber":"5Y0010855102","IsOnforward":"0","CallingCard":"","CallingCardLabelNumbers":[]},"generated_in":"234ms"}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, X-Requested-With, Content-Type, Accept']
+      Access-Control-Allow-Methods: ['GET, PUT, POST, DELETE, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Cache-Control: [private]
+      Content-Length: ['3435']
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 28 Nov 2018 17:11:50 GMT']
+      Server: [Microsoft-IIS/8.5]
+      X-API-ActualVersion: [v2]
+      X-API-ResponseType: [json]
+      X-API-Version: [v2]
+      X-AspNet-Version: [4.0.30319]
+      X-AspNetMvc-Version: ['5.2']
+      X-Powered-By: [ASP.NET]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.2]
+    method: GET
+    uri: http://ie.preview.api.fastway.org/v2/tracktrace/detail/NON-EXISTING?api_key=APIKEY
+  response:
+    body: {string: '{"error":"Invalid label number!","generated_in":"0ms","data":null}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, X-Requested-With, Content-Type, Accept']
+      Access-Control-Allow-Methods: ['GET, PUT, POST, DELETE, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Cache-Control: [private]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 28 Nov 2018 17:15:10 GMT']
+      Server: [Microsoft-IIS/8.5]
+      Transfer-Encoding: [chunked]
+      X-API-ActualVersion: [v2]
+      X-API-ResponseType: [json]
+      X-API-Version: [v2]
+      X-AspNet-Version: [4.0.30319]
+      X-AspNetMvc-Version: ['5.2']
+      X-Powered-By: [ASP.NET]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.9.2]
+    method: GET
+    uri: http://ie.preview.api.fastway.org/v2/tracktrace/detail/9009298467800?api_key=APIKEY
+  response:
+    body: {string: '{"error":"Label ''9009298467800'' does not have any scans.","generated_in":"0ms","data":null}'}
+    headers:
+      Access-Control-Allow-Headers: ['Origin, X-Requested-With, Content-Type, Accept']
+      Access-Control-Allow-Methods: ['GET, PUT, POST, DELETE, HEAD, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['86400']
+      Cache-Control: [private]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Wed, 28 Nov 2018 17:15:29 GMT']
+      Server: [Microsoft-IIS/8.5]
+      Transfer-Encoding: [chunked]
+      X-API-ActualVersion: [v2]
+      X-API-ResponseType: [json]
+      X-API-Version: [v2]
+      X-AspNet-Version: [4.0.30319]
+      X-AspNetMvc-Version: ['5.2']
+      X-Powered-By: [ASP.NET]
+    status: {code: 200, message: OK}
+version: 1
