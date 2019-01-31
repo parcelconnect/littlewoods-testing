@@ -125,6 +125,13 @@ class Client:
             response = self._get_json('tracktrace/detail/{}'.format(label_id))
         except FastwayAPIError as e:
             if 'Label' in str(e) and 'does not have any scans' in str(e):
+                if label_id.startswith('JJD'):
+                    # Drop extra J and retry
+                    try:
+                        return self.get_tracking_events(label_id[1:])
+                    except (FastwayAPIError, LabelNotFound):
+                        # Use previous information for the error
+                        pass
                 raise LabelNotFound(
                     'No tracking information found for {}.<br />This means '
                     'your order has not yet been processed and shipped.'
