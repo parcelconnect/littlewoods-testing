@@ -1,7 +1,9 @@
 import os
+import sys
 
 from .django import INSTALLED_APPS
 
+SHELL = 'shell' in sys.argv
 LOG_HANDLERS = ['console']
 
 LOGGING = {
@@ -15,7 +17,10 @@ LOGGING = {
     }
 }
 
-RAVEN_CONFIG = {'dsn': os.environ.get('RAVEN_DSN')}
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('RAVEN_DSN'),
+    'ignore_exceptions': ('*',) if SHELL else ()
+}
 
 if RAVEN_CONFIG['dsn']:
     INSTALLED_APPS += [
