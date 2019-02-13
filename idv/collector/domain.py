@@ -1,5 +1,6 @@
 import logging
 import os.path
+from datetime import date
 
 from django.conf import settings
 from django.db import transaction
@@ -29,7 +30,9 @@ def get_or_create_account(email, account_number):
     try:
         account = Account.objects.get(account_number=account_number)
     except Account.DoesNotExist:
-        account = Account(email=email, account_number=account_number)
+        account = Account(email=email, account_number=account_number,
+                          proof_of_address_date_1=date.min,
+                          proof_of_address_date_2=date.min)
         account.save()
         AccountCredentialIndex.objects.create(account=account)
     return account

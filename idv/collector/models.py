@@ -17,6 +17,8 @@ class Account(models.Model):
     email = models.EmailField()
     account_number = models.CharField(max_length=8)
     created_at = models.DateTimeField(auto_now_add=True)
+    proof_of_address_date_1 = models.DateField()
+    proof_of_address_date_2 = models.DateField()
 
     class Meta:
         unique_together = ('email', 'account_number')
