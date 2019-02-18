@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_idvn.html' %}
 
 {% load staticfiles %}
 
@@ -20,30 +20,33 @@
 
 
 <div class="page-wrapper">
-  <!-- Back to My Account button -->
-  <div class="row">
-    <div class="col-sm-12 col-md-3">
-      <a class="btn btn-default btn-back-text" href="
-        https://www.littlewoodsireland.ie/account/myaccount/accountSummary.page">
-        <i class="fa fa-arrow-left btn-back-arrow" aria-hidden="true"></i>
-        <span>Back to My Account</span>
-      </a>
-    </div>
-  </div>
-
   <div id="content-wrapper">
     <!-- Main image -->
     <div class="row">
       <div class="col-md-12 md-no-padding">
         <div class="img-verification-container">
-          <img src="{% static "img/lwi-aw2018.png" %}" class="img-responsive img-verification" alt="Responsive image">
+          <img src="{% static "img/lwi-aw2019.jpg" %}" class="img-responsive img-verification" alt="Responsive image">
           <div class="main-container">
             <div class="title-header">ID Verification</div>
-            <div class="title-description">
-              Welcome to Littlewoods Ireland, to submit your identification documents please follow the instructions below:
+            <div class="title-description hidden-xs">
+              Welcome to Littlewoods Ireland.<br />To submit your identification documents, please follow the instructions below:
+            </div>
+            <div class="visible-xs">
+              <br />Welcome to Littlewoods Ireland.<br />To submit your identification documents,<br />please follow the instructions below:
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Back to My Account button -->
+    <div class="row">
+      <div class="col-sm-12 col-md-3">
+        <a class="btn btn-default btn-back-text" href="
+          https://www.littlewoodsireland.ie/account/myaccount/accountSummary.page">
+          <i class="fa fa-arrow-left btn-back-arrow" aria-hidden="true"></i>
+          <span>Back to My Account</span>
+        </a>
       </div>
     </div>
 
