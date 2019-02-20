@@ -19,6 +19,38 @@ credits. Whoever, this project is not responsible for that functionality.
 - mover
 - sftp
 
+## Deployments
+
+`devel` is the default branch. To release to production a fast forward merge
+can be performed:
+
+    $ git checkout devel
+    $ git pull
+    $ git checkout master
+    $ git pull
+    $ git merge --ff-only devel
+    $ git push
+
+### Tests to be done when deploying
+
+Especially for more in-depth changes (upgrading Heroku stack, libraries versions,
+major logic changes etc.), before deploying to `production`, tests should be done
+both locally and on `staging` environment.
+
+- check if pages are accessible (`/IDV`, `/admin`, `/track`, `/gift-wrapping`)
+
+- for `/track` check output for submitted label number (example can be obtained
+  from db, you can also check Fastway documentation for Littlewoods IDV in
+  `Tracking` document)
+
+- for `/IDV` check form is submitting properly (you can use some example data such
+  as `test@test.com` and LWI Account Number as `12345678`, remember that maximum
+  file size is 4MB)
+
+After successfully performing tests, you are ready to deploy to `production` as described
+above. After deployment run same tests for `production` to be sure it works properly and
+monitor the logs for 30min to ensure we don't need to roll back the changes.
+
 ## Configuring AWS S3 bucket
 
 The S3 bucket identified by the `S3_BUCKET` env var needs to have CORS enabled.
