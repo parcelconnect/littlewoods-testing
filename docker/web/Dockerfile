@@ -1,4 +1,4 @@
-FROM heroku/heroku:16
+FROM heroku/heroku:18
 
 RUN apt-get update && apt-get install -y python3-pip
 RUN apt-get autoclean && rm -rf /var/lib/apt/lists/*
