@@ -20,22 +20,19 @@ jobs:
             key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}
 
         - run:
-            name: Install image dependencies
-            command: apt-get update && apt-get install -y python3-pip python3-venv
-
-        - run:
-            name: Install dockerize
-            command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-            environment:
-              DOCKERIZE_VERSION: v0.6.0
+            name: Install debian packages
+            command: |
+              apt-get update && apt-get install -y build-essential libssl-dev
+              bash bin/install-python3.sh
 
         - run:
             name: Install requirements
             command: |
-              python3 -m venv venv
+              apt-get install -y python3.6-venv
+              python -m venv ./venv
               . venv/bin/activate
-              pip3 install -q -U pip setuptools
-              pip3 install -q -r requirements/dev.txt
+              pip install -q -U pip setuptools
+              pip install -q -r requirements/dev.txt
 
         - save_cache:
             key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}-{{ epoch }}
@@ -55,6 +52,12 @@ jobs:
               mkdir -p test-reports/quality
               pylint --load-plugins pylint_django --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" agentk > test-reports/quality/pylint_report.txt || true
               diff-quality --violations=pylint test-reports/quality/pylint_report.txt --fail-under=95
+
+        - run:
+            name: Install dockerize
+            command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+            environment:
+              DOCKERIZE_VERSION: v0.6.0
 
         - run:
             name: Wait for db
