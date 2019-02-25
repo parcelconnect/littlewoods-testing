@@ -5,6 +5,7 @@ from unittest import mock
 
 import pytest
 from django.urls import reverse
+from waffle.testutils import override_switch
 
 from idv.collector.models import Account, Credential
 
@@ -16,6 +17,7 @@ def aws_credentials(settings):
     return settings
 
 
+@pytest.mark.django_db
 class TestCollect:
 
     def test_json_context_normal(self, client):
@@ -39,6 +41,17 @@ class TestCollect:
                       kwargs={'verification_type': 'XXX'})
         response = client.get(url)
         assert response.status_code == 404
+
+    def test_shows_proper_content_when_feature_switch_off(self, client):
+        response = client.get(reverse('collector:collect'))
+        assert 'Upload your photo(s)/doc(s)' in response.content.decode()
+        assert 'First Proof of address' not in response.content.decode()
+
+    @override_switch('lwi-new-design', active=True)
+    def test_shows_proper_content_when_feature_switch_on(self, client):
+        response = client.get(reverse('collector:collect'))
+        assert 'First Proof of address' in response.content.decode()
+        assert 'Upload your photo(s)/doc(s)' not in response.content.decode()
 
 
 @pytest.mark.django_db

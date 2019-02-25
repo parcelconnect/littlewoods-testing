@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
+{% load waffle_tags %}
 
 {% block js %}
   {{ block.super }}
@@ -69,6 +70,68 @@
 
           <!-- Proof of identity -->
           <div class="form-group">
+            {% switch "lwi-new-design" %}
+            <label for="files-photo-id" class="form-label col-xs-12">
+                <div class="label-header">Photo ID</div>
+                <p class="label-description">Upload one of the following forms of ID</p>
+                <div class="proof-types-container types-only">
+                  <div class="proof-type"><i class="fa fa-upload"></i>Passport</div>
+                  <div class="proof-type"><i class="fa fa-upload"></i>Driver's Licence</div>
+                  <div class="proof-type"><i class="fa fa-upload"></i>National Identity Card (EU Only)</div>
+              </div>
+            </label>
+            <input type="file" name="files" id="files-photo-id" />
+
+            <div class="address-proof-with-datepicker-container col-xs-12">
+              <label for="files-address-proof-1" class="form-label with-datepicker">
+                  <div class="label-header">First Proof of address</div>
+                  <p class="label-description">Upload one of the following proof of address</p>
+                  <div class="proof-types-container">
+                    <div class="proof-types-line">
+                      <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
+                      <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
+                    </div>
+                    <div class="proof-types-line">
+                      <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
+                      <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)</div>
+                    </div>
+                  </div>
+              </label>
+              <input type="file" name="files" id="files-address-proof-1" />
+
+              <div class="datepicker-container">
+                <label for="files-address-proof-1-issue-date">
+                    <div class="label-date-header">Date Issued</div>
+                </label>
+                <input class="date-input" type="date" name="date" id="files-address-proof-1-issue-date" />
+              </div>
+            </div>
+
+            <div class="address-proof-with-datepicker-container col-xs-12">
+              <label for="files-address-proof-2" class="form-label col-xs-12">
+                  <div class="label-header">Second Proof of address</div>
+                  <p class="label-description">Upload one of the following proof of address</p>
+                  <div class="proof-types-container">
+                    <div class="proof-types-line">
+                      <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
+                      <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
+                    </div>
+                    <div class="proof-types-line">
+                      <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
+                      <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)</div>
+                    </div>
+                </div>
+              </label>
+              <input type="file" name="files" id="files-address-proof-2" />
+
+              <div class="datepicker-container">
+                <label for="files-address-proof-2-issue-date">
+                    <div class="label-date-header">Date Issued</div>
+                </label>
+                <input class="date-input" type="date" name="date" id="files-address-proof-2-issue-date" />
+              </div>
+            </div>
+            {% else %}
             <label for="exampleInputFile">Proof of identity</label>
             <p>Upload your photo(s)/doc(s)</p>
             <label for="files-1" class="btn btn-upload btn-file-upload">
@@ -76,6 +139,7 @@
             </label>
             <input type="file" name="files" id="files-1" />
             <div><input type="button" id="add_more" value="Add more Photos/Docs" class="btn" /></div>
+            {% endswitch %}
 
             <p class="file-input-checker">No files selected</p>
             <p class="help-block">Maximum file size 4mb</p>
