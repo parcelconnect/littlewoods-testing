@@ -1,3 +1,5 @@
+import datetime
+
 from idv.collector.forms import AccountForm
 
 
@@ -27,9 +29,22 @@ class TestAccountForm:
         assert form.is_valid() is False
         assert 'account_number' in form.errors
 
+    def test_invalid_dates(self):
+        form = AccountForm({
+            'email': 'oops.I.did@it.again',
+            'account_number': '12ca1234',
+            'date_1': 'this is not a date',
+            'date_2': 'this is not a date',
+        })
+        assert form.is_valid() is False
+        assert 'date_1' in form.errors
+        assert 'date_2' in form.errors
+
     def test_validates_correct_data(self):
         form = AccountForm({
             'email': 'oops.I.did@it.again',
-            'account_number': '12ca1234'
+            'account_number': '12ca1234',
+            'date_1': datetime.date(2019, 1, 1),
+            'date_2': datetime.date(2019, 1, 2),
         })
         assert form.is_valid() is True

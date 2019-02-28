@@ -1,6 +1,8 @@
+import datetime
 from unittest.mock import patch
 
 import pytest
+from waffle.testutils import override_switch
 
 from idv.collector.domain import (
     create_credential, generate_presigned_s3_put_url, get_or_create_account,
@@ -15,10 +17,35 @@ class TestGetOrCreateAccount:
         assert account.pk is not None
         assert account.account_number == '12345678'
         assert account.email == 'i.am.not@that.innocent'
+        assert account.proof_of_address_date_1 == datetime.date(1, 1, 1)
+        assert account.proof_of_address_date_2 == datetime.date(1, 1, 1)
+
+    @override_switch('lwi-new-design', active=True)
+    def test_account_creation_with_proper_dates(self):
+        date_1 = datetime.date(2019, 1, 1)
+        date_2 = datetime.date(2019, 1, 2)
+        account = get_or_create_account(
+            'i.am.not@that.innocent', '12345678', date_1, date_2)
+        assert account.pk is not None
+        assert account.account_number == '12345678'
+        assert account.email == 'i.am.not@that.innocent'
+        assert account.proof_of_address_date_1 == date_1
+        assert account.proof_of_address_date_2 == date_2
 
     def test_account_retrieval(self, account):
         acc = get_or_create_account('account@littlewoods', '12345678')
         assert account.pk == acc.pk
+
+    @override_switch('lwi-new-design', active=True)
+    def test_account_retrieval_and_dates_update(self, account):
+        date_1 = datetime.date(2019, 1, 1)
+        date_2 = datetime.date(2019, 1, 2)
+        acc = get_or_create_account(
+            'account@littlewoods', '12345678', date_1, date_2)
+        account.refresh_from_db()
+        assert account.pk == acc.pk
+        assert account.proof_of_address_date_1 == date_1
+        assert account.proof_of_address_date_2 == date_2
 
 
 @pytest.mark.django_db

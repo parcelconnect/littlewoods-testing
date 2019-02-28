@@ -1,3 +1,4 @@
+import datetime
 import json
 import re
 from collections import OrderedDict
@@ -94,6 +95,22 @@ class TestSignS3Request:
         assert account.email == 'the@black.dog'
         assert account.account_number == 'aa345678'
 
+    @override_switch('lwi-new-design', active=True)
+    def test_creates_account_with_proper_dates_if_not_found(self, client):
+        url = reverse('collector:sign-s3-request')
+        client.post(url, data={
+            'email': 'the@black.dog',
+            'account_number': 'aa345678',
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
+        })
+        account = Account.objects.get()
+        assert account.email == 'the@black.dog'
+        assert account.account_number == 'aa345678'
+        assert account.proof_of_address_date_1 == datetime.date(2019, 1, 1)
+        assert account.proof_of_address_date_2 == datetime.date(2019, 1, 2)
+
     def test_retrieves_account_if_exists(self, client, account):
         url = reverse('collector:sign-s3-request')
         response = client.post(url, data={
@@ -103,6 +120,23 @@ class TestSignS3Request:
         })
         assert Account.objects.count() == 1
         assert response.status_code == 200
+
+    @override_switch('lwi-new-design', active=True)
+    def test_retrieves_account_and_updates_dates(self, client, account):
+        url = reverse('collector:sign-s3-request')
+        response = client.post(url, data={
+            'email': 'account@littlewoods.ie',
+            'account_number': '12345678',
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
+        })
+        assert response.status_code == 200
+
+        account = Account.objects.get()
+        assert account.account_number == '12345678'
+        assert account.proof_of_address_date_1 == datetime.date(2019, 1, 1)
+        assert account.proof_of_address_date_2 == datetime.date(2019, 1, 2)
 
     def test_creates_credentials(self, client, account_with_chars):
         url = reverse('collector:sign-s3-request')

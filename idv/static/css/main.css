@@ -88,6 +88,22 @@ label {
   margin: 10px 0;
 }
 
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.form-group .thumbnail {
+  height: 15vh;
+  width: 15vh;
+}
+
+.thumbnail-container {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
 .form-label {
   border: 1px solid #e0e0e0;
   border-radius: 2px;
