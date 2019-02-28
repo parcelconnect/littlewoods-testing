@@ -6,7 +6,11 @@
 {% block js %}
   {{ block.super }}
   <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
+  {% switch "lwi-new-design" %}
+  <script src="{% static 'js/upload_new_design.js' %}"></script>
+  {% else %}
   <script src="{% static 'js/upload.js' %}"></script>
+  {% endswitch %}
 {% endblock %}
 
 {% block content %}
@@ -81,6 +85,7 @@
               </div>
             </label>
             <input type="file" name="files" id="files-photo-id" />
+            <div id="files-photo-id-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
               <label for="files-address-proof-1" class="form-label with-datepicker">
@@ -106,6 +111,7 @@
                 <input class="date-input" type="date" name="date" id="files-address-proof-1-issue-date" />
               </div>
             </div>
+            <div id="files-address-proof-1-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
               <label for="files-address-proof-2" class="form-label col-xs-12">
@@ -131,6 +137,7 @@
                 <input class="date-input" type="date" name="date" id="files-address-proof-2-issue-date" />
               </div>
             </div>
+            <div id="files-address-proof-2-thumbnail"/></div>
             {% else %}
             <label for="exampleInputFile">Proof of identity</label>
             <p>Upload your photo(s)/doc(s)</p>
@@ -222,7 +229,11 @@
 
   <div id="files-required-template" class="collapse">
     <div class="modal-body">
+      {% switch "lwi-new-design" %}
+      <p>Select image or document for each section, please</p>
+      {% else %}
       <p>Select at least one image or document, please</p>
+      {% endswitch %}
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -232,6 +243,15 @@
   <div id="files-invalid-template" class="collapse">
     <div class="modal-body">
       <p>The selected file is not supported, please select another</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+
+  <div id="dates-required-template" class="collapse">
+    <div class="modal-body">
+      <p>Fill all date fields for uploaded files, please</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
