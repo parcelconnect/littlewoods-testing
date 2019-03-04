@@ -1,0 +1,58 @@
+{% load staticfiles %}
+{% load ravenscript %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="author" content="{% block author %}{% endblock %}">
+
+    <title>{% block title %}Littlewoods Ireland ID Verification{% endblock %}</title>
+
+    {% block css %}
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="{% static "css/main.css" %}">
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+      <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet">
+
+      <link rel="stylesheet" href="{% static "css/ie10-viewport-bug-workaround.css" %}">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    {% endblock %}
+
+    {% block js %}
+      <script
+			  src="https://code.jquery.com/jquery-2.2.4.min.js"
+			  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+			  crossorigin="anonymous"></script>
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+      <!-- The following section is copied from the bootstrap documentation -->
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js" integrity="sha256-wPN6ojtZcdUXfbQ+nxh6Zm7xh1pOWxEbuE9EIa1P7BY=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js" integrity="sha256-l9xnQx29M2Dqg4/srWEaMPVA+DibvRW4mh4Uuo27VKo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.js" integrity="sha256-de4JRO8MoclUkmuLpn+hZrSwdtCjyp+1YZpIGYlH09M=" crossorigin="anonymous"></script>
+      <script src="{% static "js/django.js" %}"></script>
+      <script src="{% static "js/setup.js" %}"></script>
+    {% endblock %}
+  </head>
+
+  <body>
+    <script id="js-context" type="application/json">{{ json_context|safe }}</script>
+
+    <div id="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    {% raveninit %}
+  </body>
+
+</html>
