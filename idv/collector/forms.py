@@ -2,6 +2,7 @@ import re
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 ACCOUNT_NUMBER_LENGTH = 8
 
@@ -13,6 +14,12 @@ def validate_digits_only(value):
         raise ValidationError(error_msg.format(ACCOUNT_NUMBER_LENGTH))
 
 
+def validate_date_not_in_future(date):
+    date_is_in_future = date > timezone.now().date()
+    if date_is_in_future:
+        raise ValidationError('The date is in the future.')
+
+
 class AccountForm(forms.Form):
 
     email = forms.EmailField(required=True)
@@ -21,5 +28,11 @@ class AccountForm(forms.Form):
         validators=[validate_digits_only]
     )
     # TODO: change dates to be required when removing lwi-new-design switch.
-    date_1 = forms.DateField(required=False)
-    date_2 = forms.DateField(required=False)
+    date_1 = forms.DateField(
+        required=False,
+        validators=[validate_date_not_in_future]
+    )
+    date_2 = forms.DateField(
+        required=False,
+        validators=[validate_date_not_in_future]
+    )
