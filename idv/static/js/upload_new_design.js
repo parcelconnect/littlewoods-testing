@@ -403,6 +403,12 @@ IDV.UploadForm = (function() {
       currentIDVForm.cancel();
     }
 
+    function dateIsInFuture(date) {
+      let provided_date = new Date(date);
+      let now = new Date();
+      return provided_date > now;
+    }
+
     const upload_sections_amount = $form.find("[type=file]").length
     const files = getFormFiles();
     if (files.length < upload_sections_amount) {
@@ -414,9 +420,17 @@ IDV.UploadForm = (function() {
 
     const date_1 = $('#files-address-proof-1-issue-date').val();
     const date_2 = $('#files-address-proof-2-issue-date').val();
+
     if (!date_1 | !date_2) {
       displayModal('dates-required-template');
       return;
+    }
+
+    for(const date of [date_1, date_2]) {
+      if (dateIsInFuture(date)) {
+        displayModal('dates-not-in-future-template');
+        return;
+      }
     }
 
     const email = $('#lwi-email-address').val();
