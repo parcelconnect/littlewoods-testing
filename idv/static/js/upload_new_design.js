@@ -313,7 +313,9 @@ IDV.UploadForm = (function() {
       return;
     }
 
-    drawThumbnailForSection(file, event.target.id)
+    if (!!file) {
+      drawThumbnailForSection(file, event.target.id);
+    }
 
     const output = $("#files-upload-result");
     output.empty();
