@@ -4,7 +4,7 @@ html {
 
 body {
   background-color: #F6F8F7;
-  background-image: url("../img/lwi-tracking-bg-2019.jpg");
+  background-image: url("../img/lwi-tracking-bg-desktop-2019.jpg");
   background-repeat: no-repeat;
   background-position: top 0px center;
   background-size: cover;
@@ -184,6 +184,16 @@ p.small-txt {
     display: none;
   }
 
+  .panel {
+    background-color: transparent !important;
+  }
+
+  .panel-heading {
+    background-color: #EEDED1 !important;
+    background: url("../img/lwi-tracking-bg-mobile-2019.jpg") no-repeat;
+    background-size: 100%;
+  }
+
   .panel-body .status {
     margin-left: 35px;
     padding-right: 15px;
@@ -209,6 +219,10 @@ p.small-txt {
     padding-top: 10px;
   }
 
+  .panel-body {
+    background-color: #FFF !important;
+  }
+
   .form-group.track-input {
     width: 100%;
   }
@@ -230,6 +244,24 @@ p.small-txt {
 
   body {
     background-image: none;
+    background-color: #EEDED1 !important;
+  }
+
+  .footer-spinner {
+    background-color: #EEDED1 !important;
+    background: url("../img/lwi-tracking-bg-mobile-2019.jpg") no-repeat;
+    background-size: 100%;
+    min-height: 300px;
+  }
+
+  .panel-heading {
+    background-color: #EEDED1 !important;
+    background: url("../img/lwi-tracking-bg-mobile-2019.jpg") no-repeat;
+    background-size: 100%;
+  }
+
+  .panel-body {
+    background-color: #FFF !important;
   }
 
   .panel.tracking-panel {
@@ -238,6 +270,15 @@ p.small-txt {
 
   .timeline {
     margin-left: 200px;
+  }
+
+  .recipient-info {
+    color: #000;
+    font-weight: bold;
+  }
+
+  .delivery-address {
+    margin-top: 60px;
   }
 
 }
