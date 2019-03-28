@@ -3,6 +3,7 @@ import json
 import pytest
 import requests
 import responses
+from django.test import TestCase, override_settings
 
 from idv.giftwrap import ifs
 
@@ -113,7 +114,7 @@ class TestIFSClientRequestGiftWrap:
         assert len(responses.calls) == 1
 
     @responses.activate
-    def test_it_raises_apierror_when_post_returns_non_200_statu(
+    def test_it_raises_apierror_when_post_returns_non_200_status(
             self, ifs_client):
         responses.add(responses.POST, self.url, status=500,
                       json={"status": "ok"})
@@ -132,3 +133,65 @@ class TestIFSClientRequestGiftWrap:
             ifs_client.request_gift_wrap('FoobarUPI')
 
         assert len(responses.calls) == 1
+
+    @responses.activate
+    def test_it_raises_apierror_when_post_returns_non_ok_status(
+            self, ifs_client):
+        responses.add(responses.POST, self.url, status=200,
+                      json={"status": "oh no!"})
+
+        with pytest.raises(ifs.IFSAPIError) as exc:
+            # responses will raise a connection error here
+            ifs_client.request_gift_wrap(self.url)
+
+        expected_error = '[IFS]: response status value not "ok": oh no!'
+
+        assert len(responses.calls) == 1
+        assert expected_error in str(exc)
+
+
+class TestGetClientFromSettings(TestCase):
+
+    @override_settings(IFS_API_ENDPOINT='something',
+                       IFS_API_USERNAME='something',
+                       IFS_API_PASSWORD='something')
+    def test_returns_client_when_settings_valid(self):
+        client = ifs.get_client_from_settings()
+
+        assert client is not None
+
+    @override_settings(IFS_API_ENDPOINT=None,
+                       IFS_API_USERNAME='something',
+                       IFS_API_PASSWORD='something')
+    def test_raises_value_error_when_endpoint_is_invalid(self):
+        with pytest.raises(ValueError) as exc:
+            ifs.get_client_from_settings()
+
+        expected_error = ('Cannot create IFS client from settings. '
+                          'IFS_API_ENDPOINT is not set')
+
+        assert expected_error in str(exc)
+
+    @override_settings(IFS_API_ENDPOINT='something',
+                       IFS_API_USERNAME=None,
+                       IFS_API_PASSWORD='something')
+    def test_raises_value_error_when_username_is_invalid(self):
+        with pytest.raises(ValueError) as exc:
+            ifs.get_client_from_settings()
+
+        expected_error = ('Cannot create IFS client from settings. '
+                          'IFS_API_USERNAME is not set')
+
+        assert expected_error in str(exc)
+
+    @override_settings(IFS_API_ENDPOINT='something',
+                       IFS_API_USERNAME='something',
+                       IFS_API_PASSWORD=None)
+    def test_raises_value_error_when_password_is_invalid(self):
+        with pytest.raises(ValueError) as exc:
+            ifs.get_client_from_settings()
+
+        expected_error = ('Cannot create IFS client from settings. '
+                          'IFS_API_PASSWORD is not set')
+
+        assert expected_error in str(exc)
