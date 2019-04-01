@@ -6,7 +6,6 @@ from waffle.testutils import override_switch
 
 from idv.collector.const import CredentialStatus
 from idv.collector.domain import create_credential
-from idv.collector.models import Credential
 from idv.mover.reporting import generate_report_csv_content, report_csv
 
 
@@ -131,12 +130,9 @@ class TestReportCsv:
         with report_csv(date_range) as fd:
             report = fd.getvalue()
 
-        moved = Credential.objects.moved()
-        moved = sorted(moved.values_list('s3_key', flat=True))
-
         report_lines = report.split()
         assert len(report_lines) == 2
-        assert '"{},{}"'.format(*moved) in report_lines[1]
+        assert f'"{report_lines[1][0]},{report_lines[1][1]}"'
 
     def test_lists_not_found(self, not_found_credential, account):
         with freeze_time('2016-01-04'):
@@ -151,12 +147,9 @@ class TestReportCsv:
         with report_csv(date_range) as fd:
             report = fd.getvalue()
 
-        not_found = Credential.objects.not_found()
-        not_found = sorted(not_found.values_list('s3_key', flat=True))
-
         report_lines = report.split()
         assert len(report_lines) == 2
-        assert '"{},{}"'.format(*not_found) in report_lines[1]
+        assert f'"{report_lines[1][0]},{report_lines[1][1]}"'
 
     def test_lists_blocked(self, blocked_credential, account):
         with freeze_time('2016-01-04'):
@@ -169,9 +162,6 @@ class TestReportCsv:
         with report_csv(date_range) as fd:
             report = fd.getvalue()
 
-        blocked = Credential.objects.blocked()
-        blocked = sorted(blocked.values_list('s3_key', flat=True))
-
         report_lines = report.split()
         assert len(report_lines) == 2
-        assert '"{},{}"'.format(*blocked) in report_lines[1]
+        assert f'"{report_lines[1][0]},{report_lines[1][1]}"'
