@@ -116,7 +116,11 @@ Make sure you use the appropriate "Resource" value.
 
 ## Local setup
 
-Create an empty `.env` file.
+Create an `.env` file by running:
+
+    $ touch .env
+
+Then run `docker-compose` commands:
 
     $ docker-compose build
     $ docker-compose up
@@ -129,6 +133,10 @@ Run the following commands:
  - docker-compose stop db
  - docker-compose rm -v db
  - docker-compose up
+
+Run migrations with the following:
+
+    $ docker-compose run web ./manage.py migrate
 
 ## EC2 proxy for copying files from Fastway S3 to LW SFTP
 
