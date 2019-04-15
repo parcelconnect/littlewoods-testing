@@ -96,3 +96,18 @@ class TestCredentials:
         found_credential.mark_as_blocked()
         found_credential.refresh_from_db()
         assert found_credential.is_blocked is True
+
+    def test_str_returns_expected_string(self, credentials):
+        for credential in credentials:
+            assert str(credential) == (f'Credential(pk: {credential.pk}, '
+                                       f's3_key: {credential.s3_key})')
+
+
+@pytest.mark.django_db
+class TestAccount:
+
+    def test_str_returns_expected_string(self, accounts):
+        for account in accounts:
+            expected_string = (f'Account(email: {account.email}, '
+                               f'account_number: {account.account_number})')
+            assert str(account) == expected_string

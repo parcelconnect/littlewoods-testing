@@ -1,5 +1,5 @@
 import boto3
-import botocore
+from botocore.exceptions import ClientError
 from django.conf import settings
 
 
@@ -46,6 +46,6 @@ def download_file(bucket, s3_key, local_path, client=None):
 
     try:
         return client.download_file(bucket, s3_key, local_path)
-    except botocore.exceptions.ClientError as exc:
+    except ClientError as exc:
         if get_exception_status_code(exc) == '404':
             raise S3KeyNotFoundError

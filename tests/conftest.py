@@ -102,6 +102,15 @@ def credentials(unchecked_credential, found_credential, not_found_credential,
 
 
 @pytest.fixture
+def accounts(account, account_with_chars, other_account):
+    return [
+        account,
+        account_with_chars,
+        other_account
+    ]
+
+
+@pytest.fixture
 def settings(settings):
     settings.AWS_ACCESS_KEY = 'TEST-KEY'
     settings.AWS_SECRET_KEY = 'TEST-SECRET-KEY'
