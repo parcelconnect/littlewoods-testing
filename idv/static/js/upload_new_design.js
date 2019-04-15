@@ -314,7 +314,7 @@ IDV.UploadForm = (function() {
       return;
     }
 
-    if (file.size > MaxFileSize) {
+    if (file && file.size > MaxFileSize) {
       event.target.value = "";
       displayModal('files-size-invalid-template');
       return;
