@@ -1,24 +1,20 @@
 import pytest
+from django.test import TestCase, override_settings
 
 from idv.common.fastway.utils import get_client_from_settings
 
 
-class TestGetClientFromSettings:
+class TestGetClientFromSettings(TestCase):
 
-    @pytest.fixture
-    def settings(self, settings):
-        settings.FASTWAY_API_KEY = 'Something'
-        settings.FASTWAY_API_ENDPOINT = 'Something'
-        return settings
-
-    def test_returns_valid_client_when_settings_set(self, settings):
+    @override_settings(FASTWAY_API_KEY='Something',
+                       FASTWAY_API_ENDPOINT='Something')
+    def test_returns_valid_client_when_settings_set(self):
         client = get_client_from_settings()
 
         assert client is not None
 
-    def test_raises_value_error_when_no_fastway_api_key(self, settings):
-        settings.FASTWAY_API_KEY = None
-
+    @override_settings(FASTWAY_API_KEY=None, FASTWAY_API_ENDPOINT='Something')
+    def test_raises_value_error_when_no_fastway_api_key(self):
         with pytest.raises(ValueError) as exc:
             get_client_from_settings()
 
@@ -27,9 +23,8 @@ class TestGetClientFromSettings:
 
         assert expected_error in str(exc)
 
-    def test_raises_value_error_when_no_fastway_api_endpoint(self, settings):
-        settings.FASTWAY_API_ENDPOINT = None
-
+    @override_settings(FASTWAY_API_KEY='Something', FASTWAY_API_ENDPOINT=None)
+    def test_raises_value_error_when_no_fastway_api_endpoint(self):
         with pytest.raises(ValueError) as exc:
             get_client_from_settings()
 

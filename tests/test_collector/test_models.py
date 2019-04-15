@@ -99,8 +99,8 @@ class TestCredentials:
 
     def test_str_returns_expected_string(self, credentials):
         for credential in credentials:
-            assert str(credential) == 'Credential(pk: {}, s3_key: {})'.format(
-                credential.pk, credential.s3_key)
+            assert str(credential) == (f'Credential(pk: {credential.pk}, '
+                                       f's3_key: {credential.s3_key})')
 
 
 @pytest.mark.django_db
@@ -108,6 +108,6 @@ class TestAccount:
 
     def test_str_returns_expected_string(self, accounts):
         for account in accounts:
-            expected_string = 'Account(email: {}, account_number: {})'.format(
-                account.email, account.account_number)
+            expected_string = (f'Account(email: {account.email}, '
+                               f'account_number: {account.account_number})')
             assert str(account) == expected_string

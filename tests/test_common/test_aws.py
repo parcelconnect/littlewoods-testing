@@ -1,17 +1,14 @@
 import os
 
 import pytest
+from django.test import TestCase, override_settings
 from moto import mock_s3
 
 from idv.common.aws import S3KeyNotFoundError, download_file, get_s3_client
 
 
-class TestAWS:
-
-    @pytest.fixture(autouse=True)
-    def settings(self, settings):
-        settings.AWS_ACCESS_KEY = 'foo'
-        settings.AWS_SECRET_KEY = 'bar'
+@override_settings(AWS_ACCESS_KEY='foo', AWS_SECRET_KEY='bar')
+class TestAWS(TestCase):
 
     @mock_s3
     def test_download_file_returns_expected_file(self):
