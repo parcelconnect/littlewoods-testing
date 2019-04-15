@@ -2,6 +2,7 @@
 
 var IDV = window.IDV || {};
 var Django = window.Django || {};
+const MaxFileSize = 4194304;  // 4 MBs
 
 function readFileAsBinaryString(file) {
   return new Promise((resolve, reject) => {
@@ -313,6 +314,12 @@ IDV.UploadForm = (function() {
       return;
     }
 
+    if (file.size > MaxFileSize) {
+      event.target.value = "";
+      displayModal('files-size-invalid-template');
+      return;
+    }
+
     if (!!file) {
       drawThumbnailForSection(file, event.target.id);
     }
@@ -458,10 +465,13 @@ IDV.UploadForm = (function() {
     $form = $('#' + formID);
     $form.submit(submitHandler);
 
-    const md = new MobileDetect(window.navigator.userAgent);
-    if (!md.mobile()) {
-      $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", "));
+    if (typeof MobileDetect !== 'undefined') {
+      const md = new MobileDetect(window.navigator.userAgent);
+      if (!md.mobile()) {
+        $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", "));
+      }
     }
+
     if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
     } else  {
