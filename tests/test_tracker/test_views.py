@@ -6,6 +6,21 @@ DEFAULT_MATCH_ON = ['method', 'scheme', 'host', 'port', 'path', 'query']
 MATCH_ON = DEFAULT_MATCH_ON + ['body']
 
 
+class TestTrack:
+
+    def test_returns_200_and_rendered_html(self, client):
+        url = reverse('tracker:track')
+
+        response = client.get(url)
+
+        content = response.content.decode()
+
+        expected_content = '<title>Littlewoods Ireland ID Track</title>'
+
+        assert response.status_code == 200
+        assert expected_content in content
+
+
 class TestGetTrackingEvents:
 
     @pytest.fixture(autouse=True)
@@ -417,6 +432,15 @@ class TestGetTrackingEvents:
         assert 'Delivery' in content
         for key in expected_context.keys():
             assert expected_context[key] == response.context[key]
+
+    def test_returns_400_when_no_label_id(self, client):
+        url = reverse('tracker:get-events')
+
+        response = client.get(url)
+
+        assert response.status_code == 400
+        assert response.json() == {
+            'message': 'A tracking number is required.', 'success': False}
 
     @vcr.use_cassette('tests/test_tracker/cassettes/get_tracking_events.yml',
                       match_on=MATCH_ON)
