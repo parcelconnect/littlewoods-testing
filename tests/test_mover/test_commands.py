@@ -1,3 +1,4 @@
+from argparse import ArgumentTypeError
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
@@ -10,6 +11,7 @@ from idv.collector import domain as collector_domain
 from idv.collector.models import Credential
 from idv.mover.commands import move
 from idv.mover.domain import get_last_move_checkpoint
+from idv.mover.management.commands.send_report import valid_date
 from idv.mover.tasks import send_move_report
 from tests.conftest import wait_for_ping
 
@@ -64,7 +66,8 @@ class TestMove:
                                                         'normal')
             found2.mark_as_found()
         need_moving = Credential.objects.need_moving()
-        move()
+
+        call_command('move')
 
         args, kwargs = move_creds_mock.call_args
         assert len(args[0]) == 4
@@ -75,10 +78,24 @@ class TestMove:
 
 
 @pytest.mark.django_db(transaction=True)
-class TestSendMoreReport:
+class TestSendReport:
+
     @pytest.fixture(autouse=True)
     def use_celery_worker(self, celery_worker):
         pass
+
+    @pytest.mark.parametrize('arg_date,expected_date',
+                             [('2018-01-31', datetime(2018, 1, 31).date()),
+                              ('2016-02-29', datetime(2016, 2, 29).date()),
+                              ('2019-04-01', datetime(2019, 4, 1).date())])
+    def test_valid_date_returns_expected_date(self, arg_date, expected_date):
+        assert valid_date(arg_date) == expected_date
+
+    @pytest.mark.parametrize('arg_date',
+                             ['Invalid', '2019-02-29', '01/01/2001'])
+    def test_raises_exception_when_invalid_date(self, arg_date):
+        with pytest.raises(ArgumentTypeError):
+            valid_date(arg_date)
 
     @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')

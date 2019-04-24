@@ -6,6 +6,7 @@ from freezegun import freeze_time
 import idv.celery
 from idv.collector import domain as collector_domain
 from idv.collector.const import CredentialStatus
+from idv.sftp.models import SftpAccount
 
 
 @pytest.fixture
@@ -136,3 +137,14 @@ def celery_memory_settings(settings):
 @pytest.fixture
 def celery_app(celery_memory_settings):
     return idv.celery.app
+
+
+@pytest.fixture
+def sftp_account():
+    return SftpAccount.objects.create(
+        host='127.0.0.1',
+        port='22',
+        username='maxpayne',
+        password='1234',
+        base_path='/some_path',
+    )

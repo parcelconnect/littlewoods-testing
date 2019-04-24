@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 def get_http_proxy_from_settings():
-    if settings.HTTP_PROXY['host'] is not None:
+    if settings.HTTP_PROXY['host']:
         return HttpProxy(**settings.HTTP_PROXY)
     return None
 
