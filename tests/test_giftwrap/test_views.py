@@ -347,3 +347,25 @@ class TestEpackSearchView:
         assert resp.status_code == 200
         invalid_upi_error = 'The UPI must be made of 13 characters or digits.'
         assert invalid_upi_error in resp.content.decode()
+
+
+@pytest.mark.django_db
+class TestLWILoginView:
+
+    url = reverse('giftwrap:lwi-login')
+
+    def test_it_renders_login_page_when_not_authenticated(self, client):
+        resp = client.post(
+            self.url, {'email': 'invalid', 'password': 'invalid'})
+
+        assert resp.status_code == 200
+        assert 'Gift Wrapping Staff Login' in resp.content.decode()
+
+    def test_it_redirects_to_next_page_when_not_authenticated(
+            self, client, user):
+        resp = client.post(
+            self.url + '?next=/requests/',
+            {'email': user.username, 'password': '123456'})
+
+        assert resp.status_code == 302
+        assert resp['Location'] == '/requests/'
