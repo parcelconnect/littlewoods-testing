@@ -24,8 +24,6 @@ class TestClient:
         expected_error = ("Error connecting to the Fastway API: "
                           "RequestException('Request Invalid')")
 
-        print(exc)
-
         assert expected_error in str(exc)
 
     @responses.activate
