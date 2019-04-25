@@ -9,7 +9,7 @@ RUN /tmp/bin/install-python3.sh
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get install -y python3.6-venv && python -m venv /mnt/venv
+RUN apt-get install -y python3.7-venv && python -m venv /mnt/venv
 ENV PATH /mnt/venv/bin/:${PATH}
 
 RUN mkdir /code
@@ -18,6 +18,6 @@ WORKDIR /code
 RUN pip install -q -U pip setuptools
 RUN mkdir /tmp/requirements
 COPY ./requirements /tmp/requirements
-RUN pip install --no-cache-dir -q -r /tmp/requirements/dev.txt
+RUN python -m pip install --no-cache-dir -q -r /tmp/requirements/dev.txt
 
 COPY . /code/

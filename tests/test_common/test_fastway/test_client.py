@@ -22,7 +22,7 @@ class TestClient:
             client._request('post', 'base_url')
 
         expected_error = ("Error connecting to the Fastway API: "
-                          "RequestException('Request Invalid',)")
+                          "RequestException('Request Invalid')")
 
         assert expected_error in str(exc)
 
@@ -37,6 +37,8 @@ class TestClient:
 
         with pytest.raises(FastwayAPIError) as exc:
             client._request('post', 'base_url')
+
+        print(exc)
 
         assert str(expected_response) in str(exc)
 
