@@ -468,7 +468,7 @@ IDV.UploadForm = (function() {
     if (typeof MobileDetect !== 'undefined') {
       const md = new MobileDetect(window.navigator.userAgent);
       if (!md.mobile()) {
-        $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", "));
+        $("input[type=file]").attr("accept", imageMimeTypes.concat(docMimeTypes).join(", ") + ';capture=camera');
       }
     }
 
