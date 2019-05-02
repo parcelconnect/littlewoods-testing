@@ -87,7 +87,7 @@
                   <div class="proof-type"><i class="fa fa-upload"></i>National Identity Card (EU Only)</div>
               </div>
             </label>
-            <input type="file" name="files" id="files-photo-id" capture="camera" />
+            <input type="file" name="files" id="files-photo-id" accept="image/*">
             <div id="files-photo-id-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
@@ -105,7 +105,7 @@
                     </div>
                   </div>
               </label>
-              <input type="file" name="files" id="files-address-proof-1" capture="camera" />
+              <input type="file" name="files" id="files-address-proof-1" accept="image/*" />
 
               <div class="datepicker-container">
                 <label for="files-address-proof-1-issue-date">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
               </label>
-              <input type="file" name="files" id="files-address-proof-2" capture="camera" />
+              <input type="file" name="files" id="files-address-proof-2" accept="image/*" />
 
               <div class="datepicker-container">
                 <label for="files-address-proof-2-issue-date">
@@ -147,7 +147,7 @@
             <label for="files-1" class="btn btn-upload btn-file-upload">
                 <span>Select Photo/Doc</span>
             </label>
-            <input type="file" name="files" id="files-1" capture="camera" />
+            <input type="file" name="files" id="files-1" accept="image/*" />
             <div><input type="button" id="add_more" value="Add more Photos/Docs" class="btn" /></div>
             {% endswitch %}
 
