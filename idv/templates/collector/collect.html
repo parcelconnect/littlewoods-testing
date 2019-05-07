@@ -6,7 +6,7 @@
   {{ block.super }}
   <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
   <script src="{% static 'js/upload.js' %}"></script>
-{% endblock %}
+  {% endblock %}
 
 {% block content %}
 
@@ -72,38 +72,41 @@
 
           <!-- Proof of identity -->
           <div class="form-group">
-            <label for="files-photo-id" class="form-label col-xs-12">
-                <div class="label-header">Photo ID</div>
-                <p class="label-description">Upload one of the following forms of ID</p>
-                <div class="proof-types-container types-only">
-                  <div class="proof-type"><i class="fa fa-upload"></i>Passport</div>
-                  <div class="proof-type"><i class="fa fa-upload"></i>Driver's Licence</div>
-                  <div class="proof-type"><i class="fa fa-upload"></i>National Identity Card (EU Only)</div>
+            <label class="form-label col-xs-12">
+              <div class="label-header">Photo ID</div>
+              <label for='files-photo-id' class='upload-file'>Upload ID here</label>
+              <p class="label-description">Upload one of the following forms of ID</p>
+              <div class="proof-types-container types-only">
+                <div class="proof-type"><i class="fa fa-upload"></i>Passport</div>
+                <div class="proof-type"><i class="fa fa-upload"></i>Driver's Licence</div>
+                <div class="proof-type"><i class="fa fa-upload"></i>National Identity Card (EU Only)</div>
               </div>
             </label>
             <input type="file" name="files" id="files-photo-id" accept="image/*">
             <div id="files-photo-id-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
-              <label for="files-address-proof-1" class="form-label with-datepicker">
-                  <div class="label-header">First Proof of address</div>
-                  <p class="label-description">Upload one of the following proof of address</p>
-                  <div class="proof-types-container">
-                    <div class="proof-types-line">
-                      <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
-                      <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
-                    </div>
-                    <div class="proof-types-line">
-                      <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
-                      <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)</div>
+              <label class="form-label with-datepicker">
+                <div class="label-header">First Proof of address</div>
+                <div><label for='files-address-proof-1' class='upload-file'>Upload ID here</label></div>
+                <p class="label-description">Upload one of the following proof of address</p>
+                <div class="proof-types-container">
+                  <div class="proof-types-line">
+                    <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
+                    <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
+                  </div>
+                  <div class="proof-types-line">
+                    <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
+                    <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)
                     </div>
                   </div>
+                </div>
               </label>
-              <input type="file" name="files" id="files-address-proof-1" accept="image/*" />
+              <input type="file" name="files" id="files-address-proof-1" accept="image/*">
 
               <div class="datepicker-container">
                 <label for="files-address-proof-1-issue-date">
-                    <div class="label-date-header">Date Issued</div>
+                  <div class="label-date-header">Date Issued</div>
                 </label>
                 <input class="date-input" type="date" name="date" id="files-address-proof-1-issue-date" />
               </div>
@@ -111,25 +114,27 @@
             <div id="files-address-proof-1-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
-              <label for="files-address-proof-2" class="form-label col-xs-12">
-                  <div class="label-header">Second Proof of address</div>
-                  <p class="label-description">Upload one of the following proof of address</p>
-                  <div class="proof-types-container">
-                    <div class="proof-types-line">
-                      <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
-                      <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
+              <label class="form-label col-xs-12">
+                <div class="label-header">Second Proof of address</div>
+                <label for='files-address-proof-2' class='upload-file'>Upload ID here</label>
+                <p class="label-description">Upload one of the following proof of address</p>
+                <div class="proof-types-container">
+                  <div class="proof-types-line">
+                    <div class="proof-type"><i class="fa fa-upload"></i>Utility / Phone Bill</div>
+                    <div class="proof-type"><i class="fa fa-upload"></i>Bank / Credit Union / An Post Statement</div>
+                  </div>
+                  <div class="proof-types-line">
+                    <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
+                    <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)
                     </div>
-                    <div class="proof-types-line">
-                      <div class="proof-type"><i class="fa fa-upload"></i>Motor Tax Certificate</div>
-                      <div class="proof-type"><i class="fa fa-upload"></i>Certificate of Insurance (Motor or Home only)</div>
-                    </div>
+                  </div>
                 </div>
               </label>
-              <input type="file" name="files" id="files-address-proof-2" accept="image/*" />
+              <input type="file" name="files" id="files-address-proof-2" accept="image/*">
 
               <div class="datepicker-container">
                 <label for="files-address-proof-2-issue-date">
-                    <div class="label-date-header">Date Issued</div>
+                  <div class="label-date-header">Date Issued</div>
                 </label>
                 <input class="date-input" type="date" name="date" id="files-address-proof-2-issue-date" />
               </div>
@@ -163,7 +168,8 @@
 
   <div class="row">
     <div class="col-md-12">
-      <p class="disclaimer">Shop Direct Ireland Limited trading as Littlewoods Ireland, is regulated by the Central Bank of Ireland</p>
+      <p class="disclaimer">Shop Direct Ireland Limited trading as Littlewoods Ireland, is regulated by the Central Bank
+        of Ireland</p>
     </div>
   </div>
 
@@ -182,7 +188,8 @@
       <div class="col-md-9 success-msg-container">
         <h4>Thanks for uploading your identification details!</h4>
         <p>
-          Your details will be stored and will only be used in relation to your Littlewoods Ireland flexible account. We will be in touch if we require clarification or further information.
+          Your details will be stored and will only be used in relation to your Littlewoods Ireland flexible account. We
+          will be in touch if we require clarification or further information.
         </p>
       </div>
     </div>
@@ -207,7 +214,8 @@
     <div class="modal-body">
       <p>
         We are currently upgrading our system, please bear with us while we carry out this work, apologies
-        for any inconvenience caused. Please email us at <a href="mailto:validation@shopdirect.com">validation@shopdirect.com</a>
+        for any inconvenience caused. Please email us at <a
+          href="mailto:validation@shopdirect.com">validation@shopdirect.com</a>
       </p>
     </div>
     <div class="modal-footer">
