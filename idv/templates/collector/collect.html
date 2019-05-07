@@ -3,16 +3,15 @@
 {% load staticfiles %}
 
 {% block js %}
-{{ block.super }}
-<script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
-<script src="{% static 'js/upload.js' %}"></script>
-{% endblock %}
+  {{ block.super }}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
+  <script src="{% static 'js/upload.js' %}"></script>
+  {% endblock %}
 
 {% block content %}
 
 <!-- Large modal -->
-<div id="js-modal" class="collapse modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
-  aria-labelledby="myLargeModalLabel">
+<div id="js-modal" class="collapse modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     </div>
@@ -30,12 +29,10 @@
           <div class="main-container">
             <div class="title-header">ID Verification</div>
             <div class="title-description hidden-xs">
-              Welcome to Littlewoods Ireland.<br />To submit your identification documents, please follow the
-              instructions below:
+              Welcome to Littlewoods Ireland.<br />To submit your identification documents, please follow the instructions below:
             </div>
             <div class="visible-xs">
-              <br />Welcome to Littlewoods Ireland.<br />To submit your identification documents,<br />please follow the
-              instructions below:
+              <br />Welcome to Littlewoods Ireland.<br />To submit your identification documents,<br />please follow the instructions below:
             </div>
           </div>
         </div>
@@ -63,17 +60,14 @@
           <div class="form-group">
             <label for="lwi-email-address">Email Address</label>
             <p>Please use the email address that you use on your Littlewoods Ireland account.</p>
-            <input type="email" class="form-control" name="email" id="lwi-email-address" placeholder="Email address"
-              required>
+            <input type="email" class="form-control" name="email" id="lwi-email-address" placeholder="Email address" required>
           </div>
 
           <!-- LWI Account number -->
           <div class="form-group">
             <label for="lwi-account-number">LWI Account Number</label>
-            <p>Details of your account number can be found in the My Account section on your Littlewoods Ireland
-              account.</p>
-            <input type="text" class="form-control" maxlength="9" name="account_number" id="lwi-account-number"
-              placeholder="Account number" required>
+            <p>Details of your account number can be found in the My Account section on your Littlewoods Ireland account.</p>
+            <input type="text" class="form-control" maxlength="9" name="account_number" id="lwi-account-number" placeholder="Account number" required>
           </div>
 
           <!-- Proof of identity -->
