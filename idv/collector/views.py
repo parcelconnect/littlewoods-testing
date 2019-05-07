@@ -1,7 +1,6 @@
 import json
 from collections import OrderedDict
 
-import waffle
 from django.db import transaction
 from django.http import Http404, JsonResponse
 from django.shortcuts import render
@@ -38,18 +37,12 @@ def sign_s3_request(request, verification_type='normal'):
     if not account_form.is_valid():
         return JsonResponse({'errors': account_form.errors}, status=400)
 
-    if waffle.switch_is_active('lwi-new-design'):
-        account = domain.get_or_create_account(
-            account_form.cleaned_data['email'],
-            account_form.cleaned_data['account_number'],
-            account_form.cleaned_data['date_1'],
-            account_form.cleaned_data['date_2']
-        )
-    else:
-        account = domain.get_or_create_account(
-            account_form.cleaned_data['email'],
-            account_form.cleaned_data['account_number']
-        )
+    account = domain.get_or_create_account(
+        account_form.cleaned_data['email'],
+        account_form.cleaned_data['account_number'],
+        account_form.cleaned_data['date_1'],
+        account_form.cleaned_data['date_2']
+    )
 
     data = OrderedDict()
     for name, file in files_info.items():

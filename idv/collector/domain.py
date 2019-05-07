@@ -2,7 +2,6 @@ import logging
 import os.path
 from datetime import date
 
-import waffle
 from django.conf import settings
 from django.db import transaction
 
@@ -15,41 +14,26 @@ logger = logging.getLogger(__name__)
 
 @transaction.atomic
 def get_or_create_account(email, account_number, date_1=date.min, date_2=date.min):  # noqa
-    if waffle.switch_is_active('lwi-new-design'):
-        """
-        Get or create a new `idv.collector.models.Account` object.
-        If object already exists, we override dates values with given ones.
-        When a new one is created, it also creates an `idv.collector.models.
-        AccountCredentialIndex` object responsible for generating unique
-        credential indices for each account.
+    """
+    Get or create a new `idv.collector.models.Account` object.
+    If object already exists, we override dates values with given ones.
+    When a new one is created, it also creates an `idv.collector.models.
+    AccountCredentialIndex` object responsible for generating unique
+    credential indices for each account.
 
-        Args:
-            email (str): User email used in Littlewoods
-            account_number (str): Account number in Littlewoods
-            date_1 (date): Issued date for proof of address 1 file
-            date_2 (date): Issued date for proof of address 2 file
-        Returns:
-            idv.collector.models.Account obj
-        """
-    else:
-        """
-        Get or create a new `idv.collector.models.Account` object.
-        When a new one is created, it also creates an `idv.collector.models.
-        AccountCredentialIndex` object responsible for generating unique
-        credential indices for each account.
-
-        Args:
-            email (str): User email used in Littlewoods
-            account_number (str): Account number in Littlewoods
-        Returns:
-            idv.collector.models.Account obj
-        """
+    Args:
+        email (str): User email used in Littlewoods
+        account_number (str): Account number in Littlewoods
+        date_1 (date): Issued date for proof of address 1 file
+        date_2 (date): Issued date for proof of address 2 file
+    Returns:
+        idv.collector.models.Account obj
+    """
     try:
         account = Account.objects.get(account_number=account_number)
-        if waffle.switch_is_active('lwi-new-design'):
-            account.proof_of_address_date_1 = date_1
-            account.proof_of_address_date_2 = date_2
-            account.save()
+        account.proof_of_address_date_1 = date_1
+        account.proof_of_address_date_2 = date_2
+        account.save()
     except Account.DoesNotExist:
         account = Account(email=email, account_number=account_number,
                           proof_of_address_date_1=date_1,

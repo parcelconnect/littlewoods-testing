@@ -68,10 +68,3 @@ class TestAccountForm:
             'date_2': date_2,
         })
         assert form.is_valid() is True
-
-    def test_validates_correct_data_without_dates(self):
-        form = AccountForm({
-            'email': 'oops.I.did@it.again',
-            'account_number': '12ca1234',
-        })
-        assert form.is_valid() is True
