@@ -3,7 +3,6 @@ import csv
 import io
 from datetime import date
 
-import waffle
 from django.contrib.postgres.aggregates import ArrayAgg
 
 from idv.collector.models import Account, Credential
@@ -48,41 +47,29 @@ def get_report_data(date_range):
 def generate_report_csv_content(date_range):
     data = get_report_data(date_range)
 
-    csv_headers = [
-        'account_number', 'email',
-        'files_moved', 'files_not_found', 'files_blocked'
-    ]
-    if waffle.switch_is_active('lwi-new-design'):
-        csv_headers.extend(
-            ['proof_of_address_date_1', 'proof_of_address_date_2'])
+    csv_headers = (
+        'account_number', 'email', 'files_moved', 'files_not_found',
+        'files_blocked', 'proof_of_address_date_1', 'proof_of_address_date_2'
+    )
     csv_rows = [csv_headers]
 
     for account_data in data:
         files_moved = sorted(account_data['files_moved'])
         files_not_found = sorted(account_data['files_not_found'])
         files_blocked = sorted(account_data['files_blocked'])
-        if waffle.switch_is_active('lwi-new-design'):
-            csv_rows.append([
-                account_data['account_number'],
-                account_data['email'],
-                ','.join(files_moved),
-                ','.join(files_not_found),
-                ','.join(files_blocked),
-                account_data['proof_of_address_date_1'].strftime('%d/%m/%Y')
-                if account_data[
-                    'proof_of_address_date_1'] != date.min else '-',
-                account_data['proof_of_address_date_2'].strftime('%d/%m/%Y')
-                if account_data[
-                    'proof_of_address_date_2'] != date.min else '-',
-            ])
-        else:
-            csv_rows.append([
-                account_data['account_number'],
-                account_data['email'],
-                ','.join(files_moved),
-                ','.join(files_not_found),
-                ','.join(files_blocked),
-            ])
+        csv_rows.append((
+            account_data['account_number'],
+            account_data['email'],
+            ','.join(files_moved),
+            ','.join(files_not_found),
+            ','.join(files_blocked),
+            account_data['proof_of_address_date_1'].strftime('%d/%m/%Y')
+            if account_data[
+                'proof_of_address_date_1'] != date.min else '-',
+            account_data['proof_of_address_date_2'].strftime('%d/%m/%Y')
+            if account_data[
+                'proof_of_address_date_2'] != date.min else '-',
+        ))
     return csv_rows
 
 

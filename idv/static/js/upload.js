@@ -54,7 +54,7 @@ function uploadFile(file, signed_url, content_md5, progressBars) {
     }).done(function () {
       resolve();
     }).fail(function (jqXHR, textStatus, error) {
-      const message = 'Error uploading Photo ID file';
+      const message = 'Error uploading file';
       logError(message, {
         status: jqXHR.status,
         response: jqXHR.response,
@@ -73,7 +73,7 @@ class FieldErrors {
 }
 
 class IDVForm {
-  constructor(email, account_number, csrfmiddlewaretoken, files, successCb, failCb) {
+  constructor(email, account_number, csrfmiddlewaretoken, files, successCb, failCb, date_1, date_2) {
     this.email = email;
     this.account_number = account_number;
     this.csrfmiddlewaretoken = csrfmiddlewaretoken;
@@ -81,6 +81,8 @@ class IDVForm {
     this.md5_calculation = [];
     this.successCallback = successCb;
     this.failCallback = failCb;
+    this.date_1 = date_1;
+    this.date_2 = date_2;
 
     const create_lambda_assign_file_md5 = (filename) => {
       return (md5) => {this.file_data[filename]['content_md5'] = md5;}
@@ -110,6 +112,8 @@ class IDVForm {
     formData.append('csrfmiddlewaretoken', this.csrfmiddlewaretoken);
     formData.append('files_info', JSON.stringify({
       [filename]: this.file_data[filename]}));
+    formData.append('date_1', this.date_1);
+    formData.append('date_2', this.date_2);
     return fetch(Django.Data.get('sign_s3_request_url'), {
         method: "POST",
         credentials: "same-origin",
@@ -279,21 +283,46 @@ IDV.UploadForm = (function() {
     return `<img class='thumbnail' src='${picFile.result}' title='${name}'/>`;
   }
 
+  function createDocUploadInfo() {
+    return `<div class='thumbnail-container'>Document uploaded</div>`;
+  }
+
+  function drawThumbnailForSection(file, input_id) {
+    const thumbnail_placeholder = $("#" + input_id + "-thumbnail");
+    thumbnail_placeholder.empty();
+    if (isImageType(file.type)) {
+      const picReader = new FileReader();
+      const div = document.createElement("div");
+      thumbnail_placeholder.append(div);
+      $(picReader).on("load", function(event) {
+          div.innerHTML = createImageThumbnail(event.target, file.name);
+      });
+      picReader.readAsDataURL(file);
+    }
+    else {
+      const div = createDocUploadInfo();
+      thumbnail_placeholder.append(div);
+    }
+  }
+
   function processSelectedFiles(event) {
     const file = typeof event.target.files[0] !== "undefined" ? event.target.files[0] : null
-    const filename = file ? event.target.files[0].name : 'Select Photo/Doc';
+    const filename = file ? event.target.files[0].name : null;
     if (file && !isDocumentType(file.type) && !isImageType(file.type)) {
       event.target.value = "";
       displayModal('files-invalid-template');
       return;
     }
+
     if (file && file.size > MaxFileSize) {
       event.target.value = "";
       displayModal('files-size-invalid-template');
       return;
     }
 
-    $('label[for=' + event.target.id + ']').find('span').html(filename);
+    if (!!file) {
+      drawThumbnailForSection(file, event.target.id);
+    }
 
     const output = $("#files-upload-result");
     output.empty();
@@ -314,8 +343,6 @@ IDV.UploadForm = (function() {
       $(".file-input-checker").show()
     }
 
-    drawThumbnails(files.filter(file => isImageType(file.type)), output);
-
     const imgCount = files.filter(file => isImageType(file.type)).length;
     const docCount = files.filter(file => isDocumentType(file.type)).length;
     const infoText = document.createElement("p");
@@ -323,7 +350,7 @@ IDV.UploadForm = (function() {
     output.prepend(infoText)
   }
 
-  function initImageThumbnails() {
+  function warnIfNotSupportingThumbnails() {
     if(!window.File || !window.FileList || !window.FileReader) {
       const output = $("#files-upload-result");
       const warning = document.createElement("p");
@@ -337,19 +364,6 @@ IDV.UploadForm = (function() {
     });
   }
 
-  function drawThumbnails(images, output) {
-    for(const image of images) {
-      const picReader = new FileReader();
-      const div = document.createElement("div");
-      output.append(div);
-
-      $(picReader).on("load", function(event) {
-          div.innerHTML = createImageThumbnail(event.target, image.name);
-      });
-      picReader.readAsDataURL(image);
-    }
-  }
-
   function showUploadSuccessMessage() {
     const content = $('#successful-upload-template').html();
     const imagePreview = $("#files-upload-result").clone();
@@ -360,6 +374,8 @@ IDV.UploadForm = (function() {
   function displayModal(divId) {
     $('#js-modal .modal-content').html($('#' + divId).html());
     $('#js-modal').modal('show');
+    // To be able to continue filling form without the need to refresh page.
+    $form.find("[type=submit]").prop("disabled", false);
   }
 
   function failedSignHandler(error) {
@@ -396,19 +412,41 @@ IDV.UploadForm = (function() {
       currentIDVForm.cancel();
     }
 
+    function dateIsInFuture(date) {
+      let provided_date = new Date(date);
+      let now = new Date();
+      return provided_date > now;
+    }
+
+    const upload_sections_amount = $form.find("[type=file]").length
     const files = getFormFiles();
-    if (files.length === 0) {
+    if (files.length < upload_sections_amount) {
       displayModal('files-required-template');
       return;
     }
     progressBars.reset();
     progressBars.addMany(files);
 
+    const date_1 = $('#files-address-proof-1-issue-date').val();
+    const date_2 = $('#files-address-proof-2-issue-date').val();
+
+    if (!date_1 | !date_2) {
+      displayModal('dates-required-template');
+      return;
+    }
+
+    for(const date of [date_1, date_2]) {
+      if (dateIsInFuture(date)) {
+        displayModal('dates-not-in-future-template');
+        return;
+      }
+    }
+
     const email = $('#lwi-email-address').val();
     const account_number = $('#lwi-account-number').val();
     const csrf = $('input[name="csrfmiddlewaretoken"]').val();
     currentIDVForm = new IDVForm(email, account_number, csrf, files,
-      showUploadSuccessMessage, failedSignHandler);
+      showUploadSuccessMessage, failedSignHandler, date_1, date_2);
     IDV.FormUtils.clearErrors();
 
     currentIDVForm.send(progressBars).then(() => {
@@ -418,22 +456,6 @@ IDV.UploadForm = (function() {
 
   function checkUploadSupport() {
     return !($('#files-1').disabled || navigator.userAgent.match(/(Android (1.0|1.1|1.5|1.6|2.0|2.1))|(Windows Phone (OS 7|8.0))|(XBLWP)|(ZuneWP)|(w(eb)?OSBrowser)|(webOS)|(Kindle\/(1.0|2.0|2.5|3.0))/));
-  }
-
-  function initUploadMethod() {
-    const firstLabel = $('.btn-file-upload');
-    const firstInput = $('input[type=file]');
-    const newLabel = firstLabel.clone();
-    const newInput = firstInput.clone();
-
-    $('#add_more').on('click', function() {
-      fileInputsCount++;
-      const label = newLabel.clone();
-      label.attr('for', 'files-' + fileInputsCount);
-      const input = newInput.clone();
-      input.attr('id', 'files-' + fileInputsCount);
-      $('input[type=file]:last').after(input).after(label).after('<br/>');
-    });
   }
 
   my.init = function() {
@@ -453,10 +475,10 @@ IDV.UploadForm = (function() {
     if (!checkUploadSupport()) {
       displayModal('upload-unsupported-template');
     } else  {
-      initUploadMethod();
+      //pass
     }
 
-    initImageThumbnails();
+    warnIfNotSupportingThumbnails();
   };
   return my;
 })();

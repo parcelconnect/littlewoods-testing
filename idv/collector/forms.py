@@ -27,12 +27,11 @@ class AccountForm(forms.Form):
         required=True,
         validators=[validate_digits_only]
     )
-    # TODO: change dates to be required when removing lwi-new-design switch.
     date_1 = forms.DateField(
-        required=False,
+        required=True,
         validators=[validate_date_not_in_future]
     )
     date_2 = forms.DateField(
-        required=False,
+        required=True,
         validators=[validate_date_not_in_future]
     )

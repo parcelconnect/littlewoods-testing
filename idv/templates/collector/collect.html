@@ -1,16 +1,11 @@
 {% extends 'base_idvn.html' %}
 
 {% load staticfiles %}
-{% load waffle_tags %}
 
 {% block js %}
   {{ block.super }}
   <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
-  {% switch "lwi-new-design" %}
-  <script src="{% static 'js/upload_new_design.js' %}"></script>
-  {% else %}
   <script src="{% static 'js/upload.js' %}"></script>
-  {% endswitch %}
 {% endblock %}
 
 {% block content %}
@@ -77,7 +72,6 @@
 
           <!-- Proof of identity -->
           <div class="form-group">
-            {% switch "lwi-new-design" %}
             <label for="files-photo-id" class="form-label col-xs-12">
                 <div class="label-header">Photo ID</div>
                 <p class="label-description">Upload one of the following forms of ID</p>
@@ -140,16 +134,7 @@
                 <input class="date-input" type="date" name="date" id="files-address-proof-2-issue-date" />
               </div>
             </div>
-            <div id="files-address-proof-2-thumbnail"/></div>
-            {% else %}
-            <label for="exampleInputFile">Proof of identity</label>
-            <p>Upload your photo(s)/doc(s)</p>
-            <label for="files-1" class="btn btn-upload btn-file-upload">
-                <span>Select Photo/Doc</span>
-            </label>
-            <input type="file" name="files" id="files-1" accept="image/*" />
-            <div><input type="button" id="add_more" value="Add more Photos/Docs" class="btn" /></div>
-            {% endswitch %}
+            <div id="files-address-proof-2-thumbnail"></div>
 
             <p class="file-input-checker">No files selected</p>
             <p class="help-block">Maximum file size 4mb</p>
@@ -232,11 +217,7 @@
 
   <div id="files-required-template" class="collapse">
     <div class="modal-body">
-      {% switch "lwi-new-design" %}
       <p>Select image or document for each section, please</p>
-      {% else %}
-      <p>Select at least one image or document, please</p>
-      {% endswitch %}
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

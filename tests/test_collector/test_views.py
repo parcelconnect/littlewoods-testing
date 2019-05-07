@@ -6,7 +6,6 @@ from unittest import mock
 
 import pytest
 from django.urls import reverse
-from waffle.testutils import override_switch
 
 from idv.collector.models import Account, Credential
 
@@ -43,13 +42,7 @@ class TestCollect:
         response = client.get(url)
         assert response.status_code == 404
 
-    def test_shows_proper_content_when_feature_switch_off(self, client):
-        response = client.get(reverse('collector:collect'))
-        assert 'Upload your photo(s)/doc(s)' in response.content.decode()
-        assert 'First Proof of address' not in response.content.decode()
-
-    @override_switch('lwi-new-design', active=True)
-    def test_shows_proper_content_when_feature_switch_on(self, client):
+    def test_shows_proper_content(self, client):
         response = client.get(reverse('collector:collect'))
         assert 'First Proof of address' in response.content.decode()
         assert 'Upload your photo(s)/doc(s)' not in response.content.decode()
@@ -89,13 +82,14 @@ class TestSignS3Request:
         client.post(url, data={
             'email': 'the@black.dog',
             'account_number': 'aa345678',
-            'files_info': self.FILE_INFO
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
         })
         account = Account.objects.get()
         assert account.email == 'the@black.dog'
         assert account.account_number == 'aa345678'
 
-    @override_switch('lwi-new-design', active=True)
     def test_creates_account_with_proper_dates_if_not_found(self, client):
         url = reverse('collector:sign-s3-request')
         client.post(url, data={
@@ -116,12 +110,13 @@ class TestSignS3Request:
         response = client.post(url, data={
             'email': 'account@littlewoods.ie',
             'account_number': '12345678',
-            'files_info': self.FILE_INFO
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
         })
         assert Account.objects.count() == 1
         assert response.status_code == 200
 
-    @override_switch('lwi-new-design', active=True)
     def test_retrieves_account_and_updates_dates(self, client, account):
         url = reverse('collector:sign-s3-request')
         response = client.post(url, data={
@@ -143,7 +138,9 @@ class TestSignS3Request:
         client.post(url, data={
             'email': 'account@littlewoods.ie',
             'account_number': '12ab5678',
-            'files_info': self.FILE_INFO
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
         })
         creds = Credential.objects.filter(account=account_with_chars)
         assert creds.count() == 2
@@ -165,7 +162,9 @@ class TestSignS3Request:
         response = client.post(url, data={
             'email': 'account@littlewoods.ie',
             'account_number': '12345678',
-            'files_info': self.FILE_INFO
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
         })
         cred1_s3_key = r'normal_12345678_\d+\.jpg'
         cred2_s3_key = r'normal_12345678_\d+\.png'
@@ -193,7 +192,9 @@ class TestSignS3Request:
         response = client.post(url, data={
             'email': 'account@littlewoods.ie',
             'account_number': '12345678',
-            'files_info': self.FILE_INFO
+            'files_info': self.FILE_INFO,
+            'date_1': '2019-01-01',
+            'date_2': '2019-01-02',
         })
         cred1_s3_key = r'priority_12345678_\d+\.jpg'
         cred2_s3_key = r'priority_12345678_\d+\.png'
