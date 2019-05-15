@@ -84,12 +84,13 @@ class IDVForm {
     this.date_1 = date_1;
     this.date_2 = date_2;
 
-    const create_lambda_assign_file_md5 = (filename) => {
-      return (md5) => {this.file_data[filename]['content_md5'] = md5;}
+    const create_lambda_assign_file_md5 = (_key) => {
+      return (md5) => {this.file_data[_key]['content_md5'] = md5;}
     };
-
+    let i = 1;
     for(const file of files) {
-      this.file_data[file.name] = {
+      const _key = i + "-" + file.name
+      this.file_data[_key] = {
         'content_type': file.type,
         'file': file
       };
@@ -98,20 +99,20 @@ class IDVForm {
           const md5 = CryptoJS.MD5(CryptoJS.enc.Latin1.parse(binaryString));
           const base64 = CryptoJS.enc.Base64.stringify(md5);
           return base64;
-        }).then(create_lambda_assign_file_md5(file.name)).catch((err) => console.log(err))
+        }).then(create_lambda_assign_file_md5(_key)).catch((err) => console.log(err))
       );
+      i += 1;
     }
 
     this.md5_calculation = Promise.all(this.md5_calculation);
   }
-
-  _sign_s3_put_url(filename) {
+  _sign_s3_put_url(_key) {
     const formData = new FormData();
     formData.append('email', this.email);
     formData.append('account_number', this.account_number);
     formData.append('csrfmiddlewaretoken', this.csrfmiddlewaretoken);
     formData.append('files_info', JSON.stringify({
-      [filename]: this.file_data[filename]}));
+      [_key]: this.file_data[_key]}));
     formData.append('date_1', this.date_1);
     formData.append('date_2', this.date_2);
     return fetch(Django.Data.get('sign_s3_request_url'), {
@@ -138,10 +139,10 @@ class IDVForm {
 
   _upload_files(progressBars) {
     let signed_urls = [];
-    for (const filename in this.file_data) {
-      signed_urls.push(() => this._sign_s3_put_url(filename)
+    for (const _key in this.file_data) {
+      signed_urls.push(() => this._sign_s3_put_url(_key)
         .then(() => {
-          const data = this.file_data[filename];
+          const data = this.file_data[_key];
           return {upload: uploadFile(data.file, data.signed_url, data.content_md5, progressBars)}
         }))
     }
