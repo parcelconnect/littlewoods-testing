@@ -18,7 +18,7 @@ def send_move_report(self, since, until):
     move_checkpoint = get_last_move_checkpoint()
     if not move_checkpoint:
         raise ValueError(
-            "Cannot generate report for ({since}-{until}). "
+            f"Cannot generate report for ({since}-{until}). "
             "The move command seems to have never run successfully."
         )
     if until > move_checkpoint.date():
