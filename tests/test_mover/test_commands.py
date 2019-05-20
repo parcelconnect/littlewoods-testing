@@ -12,8 +12,9 @@ from idv.collector.models import Credential
 from idv.mover.commands import move
 from idv.mover.domain import get_last_move_checkpoint
 from idv.mover.management.commands.send_report import valid_date
-from idv.mover.tasks import send_move_report
+from idv.mover.tasks import logger, send_move_report
 from tests.conftest import wait_for_ping
+from tests.logs import capture_logs
 
 
 @pytest.mark.django_db
@@ -104,11 +105,13 @@ class TestSendReport:
         move()
         since = datetime(2016, 1, 4).date()
         until = datetime(2016, 1, 5).date()
-        call_command('send_report')
+        with capture_logs(logger) as stream:
+            call_command('send_report')
 
-        wait_for_ping()
+            wait_for_ping()
 
         mail_mock.send_move_report.assert_called_once_with((since, until))
+        assert 'INFO - Success sending report for' in stream[0]
 
     @patch('idv.mover.tasks.mover_mail')
     @patch('idv.mover.commands.move_credential_files')
