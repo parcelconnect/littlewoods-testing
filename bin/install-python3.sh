@@ -7,7 +7,13 @@ echo "Installing python3"
 apt-get update && apt-get install -y build-essential checkinstall software-properties-common
 apt-get update && apt-get install -y libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
 
-add-apt-repository -y ppa:deadsnakes/ppa
+add-apt-repository -y ppa:deadsnakes/ppa \
+|| add-apt-repository -k pool.sks-keyservers.net -y ppa:deadsnakes/ppa \
+|| add-apt-repository -k subkeys.pgp.net -y ppa:deadsnakes/ppa \
+|| add-apt-repository -k pgp.mit.edu -y ppa:deadsnakes/ppa \
+|| add-apt-repository -k keys.nayr.net -y ppa:deadsnakes/ppa \
+|| add-apt-repository -k keys.gnupg.net -y ppa:deadsnakes/ppa
+
 apt-get update && apt-get install -y python3.7
 
 apt-get update && apt-get install -y python3-pip
