@@ -1,0 +1,278 @@
+.page-wrapper {
+  padding: 0 15px;
+  text-align: left;
+  max-width: 990px;
+  margin: 0 auto;
+  font-family: Lato;
+}
+
+.btn-back-text {
+  color: #333333;
+}
+
+.img-verification-container {
+  height: 137px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.img-verification {
+  width: 100%;
+  max-width: 960px;
+}
+
+.main-container {
+    position: absolute;
+    top: 13px;
+    left: 16px;
+}
+
+.title-header {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+  color: #ffffff;
+}
+
+.title-description {
+  font-size: 16px!important;
+  line-height: 1.25;
+  text-align: left;
+  margin-top: 20px;
+  max-width: 324px;
+  color: #ffffff;
+}
+
+.form-group .thumbnail {
+  height: 15vh;
+  width: 15vh;
+}
+
+.thumbnail-container {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+#files-upload-result .thumbnail {
+  height: 15vh;
+  float: left;
+}
+
+.form-label {
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  margin: 10px 0;
+}
+
+.upload-file {
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  float: right;
+  margin-right: 15px;
+}
+
+.upload-file:hover {
+  border: 1px solid #e0e0e0;
+  background: #e0e0e0;
+  border-radius: 2px;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  float: right;
+  margin-right: 15px;
+}
+
+#files-photo-id, #files-address-proof-1, #files-address-proof-2 {
+  display: none;
+}
+
+.address-proof-with-datepicker-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.datepicker-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  padding: 5px;
+  max-width: 150px;
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.label-date-header {
+  position: relative;
+  top: -10px;
+}
+
+.label-description {
+  font-weight: normal;
+}
+
+.proof-types-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.proof-types-line {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.proof-type {
+  font-weight: normal;
+  font-size: 14px;
+  color: grey;
+  padding-right: 2%;
+  margin-right: 25px;
+  white-space: nowrap;
+}
+
+.help-block {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #333333;
+}
+
+.btn-submit {
+  padding: 14px 0;
+  background-color: #00c853;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  margin-top: 0;
+}
+
+.btn-submit:hover {
+  background-color: #00864c;
+}
+
+.btn-submit span, .btn-submit i {
+  color: #ffffff;
+}
+
+.md-no-padding {
+  padding: 0;
+}
+
+.modal-content {
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+.disclaimer {
+  display: block;
+  text-align: center;
+  margin-bottom: 47px;
+}
+
+.error-list {
+  margin-top: 10px;
+  color: #A94442;
+}
+
+.success-msg-container {
+  border-radius: 1px;
+  background-color: #f3ffee;
+  margin: 0 15px;
+  padding: 14px 16px 12px 16px;
+}
+
+.success-msg-container h4 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: left;
+  color: #00864c;
+}
+
+.success-msg-container p {
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: #00864c;
+}
+
+.lwi-link-container {
+  margin: 20px 0 40px 0;
+}
+
+.lwi-link {
+  float:right;
+  font-size: 14px;
+  text-align: left;
+  color: #006ab8;
+}
+
+@media screen and (min-width: 768px) {
+  .title-header  {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .title-description {
+    font-size: 20px;
+    line-height: 1;
+    max-width: 785px;
+  }
+
+  .btn-submit {
+    float: right;
+    max-width: 304px;
+    margin-bottom: 68px;
+  }
+
+  .md-no-padding {
+    padding: 0 15px;
+  }
+
+  .page-wrapper .row {
+    padding: auto 0;
+  }
+
+  .lwi-link-container {
+    margin: 40px 0 40px 0;
+  }
+
+  .disclaimer {
+    margin-bottom: 67px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .address-proof-with-datepicker-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .datepicker-container {
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .types-only, .proof-types-line {
+    flex-direction: column;
+  }
+}
