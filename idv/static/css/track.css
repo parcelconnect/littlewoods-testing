@@ -168,6 +168,14 @@ p.small-txt {
   padding-left: 0px;
 }
 
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  color: #00A7D4;
+}
+
 /* Media queries */
 
 @media (max-width: 540px) {
