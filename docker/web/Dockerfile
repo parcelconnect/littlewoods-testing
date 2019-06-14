@@ -1,6 +1,9 @@
 FROM heroku/heroku:18
 
 SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN mkdir /tmp/bin
 COPY ./bin /tmp/bin
 
