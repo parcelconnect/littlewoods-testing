@@ -1,7 +1,7 @@
 version: 2.0
 jobs:
     build:
-      working_directory: /tmp/littlewoods-idv
+      working_directory: /tmp/littlewoods-testing
       docker:
         - image: heroku/heroku:18
           environment:
@@ -24,6 +24,7 @@ jobs:
             command: |
               apt-get update && apt-get install -y build-essential libssl-dev
               bash bin/install-python3.sh
+			no_output_timeout: 30m
 
         - run:
             name: Install requirements
