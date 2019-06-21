@@ -23,7 +23,8 @@ jobs:
       - 
         run: 
           command: |
-              apt-get install -y build-essential libssl-dev
+              apt-get update -yqq && apt-get install -yqq
+              apt-get update && apt-get install -y build-essential libssl-dev
               bash bin/install-python3.sh |
           name: "Install debian packages"
           no_output_timeout: 30m
