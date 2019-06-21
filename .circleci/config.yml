@@ -1,79 +1,87 @@
-version: 2.0
-jobs:
-    build:
-      working_directory: /tmp/littlewoods-testing
-      docker:
-        - image: heroku/heroku:18
-          environment:
-            - DJANGO_SETTINGS_MODULE=idv.settings.dev
-            - DATABASE_URL=postgres://ubuntu:@127.0.0.1:5432/lw_test
-            - IDV_ENVIRONMENT=dev
-        - image: postgres:9.5.5-alpine
-          environment:
-            - POSTGRES_USER=ubuntu
-            - POSTGRES_DB=lw_test
-        - image: redis
-      steps:
-        - checkout
-
-        - restore_cache:
-            key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}
-
-        - run:
-            name: Install debian packages
-            command: |
+--- 
+jobs: 
+  build: 
+    docker: 
+      - 
+        environment: 
+          - DJANGO_SETTINGS_MODULE=idv.settings.dev
+          - "DATABASE_URL=postgres://ubuntu:@127.0.0.1:5432/lw_test"
+          - IDV_ENVIRONMENT=dev
+        image: "heroku/heroku:18"
+      - 
+        environment: 
+          - POSTGRES_USER=ubuntu
+          - POSTGRES_DB=lw_test
+        image: "postgres:9.5.5-alpine"
+      - 
+        image: redis
+    steps: 
+      - checkout
+      - 
+        restore_cache: 
+          key: "v2-{{ checksum \"requirements/dev.txt\" }}-{{ checksum \"requirements/base.txt\" }}-{{ .Branch }}"
+      - 
+        run: 
+          command: |
               apt-get update && apt-get install -y build-essential libssl-dev
-              bash bin/install-python3.sh
-			no_output_timeout: 30m
-
-        - run:
-            name: Install requirements
-            command: |
+              bash bin/install-python3.sh |
+          name: "Install debian packages"
+      - 
+        run: 
+          command: |
               apt-get update && apt-get install -y python3.7-venv
               python -m venv ./venv
               . venv/bin/activate
               pip install -q -U pip setuptools
               pip install -q -r requirements/dev.txt
-
-        - save_cache:
-            key: v2-{{ checksum "requirements/dev.txt" }}-{{ checksum "requirements/base.txt" }}-{{ .Branch }}-{{ epoch }}
-            paths:
-              - "venv"
-
-        - run:
-            name: Code style checks
-            command: |
+          name: "Install requirements"
+          no_output_timeout: 30m
+      - 
+        save_cache: 
+          key: "v2-{{ checksum \"requirements/dev.txt\" }}-{{ checksum \"requirements/base.txt\" }}-{{ .Branch }}-{{ epoch }}"
+          paths: 
+            - venv
+      - 
+        run: 
+          command: |
               . venv/bin/activate
               flake8 idv tests
-
-        - run:
-            name: Pylint checks
-            command: |
+          name: "Code style checks"
+          no_output_timeout: 30m
+      - 
+        run: 
+          command: |
               . venv/bin/activate
               mkdir -p test-reports/quality
               pylint --load-plugins pylint_django --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" agentk > test-reports/quality/pylint_report.txt || true
               diff-quality --violations=pylint test-reports/quality/pylint_report.txt --fail-under=95
-
-        - run:
-            name: Install dockerize
-            command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-            environment:
-              DOCKERIZE_VERSION: v0.6.0
-
-        - run:
-            name: Wait for db
-            command: dockerize -wait tcp://localhost:5432 -timeout 15s
-
-        - run:
-            name: Test suite run
-            command: |
+          name: "Pylint checks"
+          no_output_timeout: 30m
+      - 
+        run: 
+          command: "wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz"
+          environment: 
+            DOCKERIZE_VERSION: v0.6.0
+          name: "Install dockerize"
+          no_output_timeout: 30m
+      - 
+        run: 
+          command: "dockerize -wait tcp://localhost:5432 -timeout 15s"
+          name: "Wait for db"
+      - 
+        run: 
+          command: |
               . venv/bin/activate
               mkdir -p test-reports/django/
               pytest --cov --cov-report xml:test-reports/coverage/coverage.xml --cov-report html:test-reports/coverage/html tests --junit-xml=test-reports/django/metadata.xml
               if [ $CIRCLE_BRANCH != 'devel' ] && [ $CIRCLE_BRANCH != 'master' ]; then diff-cover test-reports/coverage/coverage.xml --html-report test-reports/coverage/diff-coverage-report.html --fail-under=95 --compare-branch=origin/devel; fi
-
-        - store_test_results:
-            path: test-reports
-
-        - store_artifacts:
-            path: test-reports
+          name: "Test suite run"
+          no_output_timeout: 30m
+      - 
+        store_test_results: 
+          path: test-reports
+      - 
+        store_artifacts: 
+          path: test-reports
+    working_directory: /tmp/littlewoods-testing
+version: 2.0
