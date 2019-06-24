@@ -7,7 +7,7 @@ jobs:
           - DJANGO_SETTINGS_MODULE=idv.settings.dev
           - "DATABASE_URL=postgres://ubuntu:@127.0.0.1:5432/lw_test"
           - IDV_ENVIRONMENT=dev
-          - "export DEBIAN_FRONTEND=noninteractive"
+          - DEBIAN_FRONTEND=noninteractive
         image: "heroku/heroku:18"
       - 
         environment: 
