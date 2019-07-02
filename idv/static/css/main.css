@@ -504,6 +504,17 @@ div.label-date-header {
       margin: 0 auto;
   }
 
+
+  input[type="date"]:before {
+    content: "DD-MM-YYYY" !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
+
 }
 
 @media screen and (max-width: 560px) {
@@ -518,6 +529,17 @@ div.label-date-header {
   .address-proof-with-datepicker-container .datepicker-container{
       width: 100%;
       margin: 0 auto;
+  }
+
+
+  input[type="date"]:before {
+    content: "DD-MM-YYYY" !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
   }
 
 }
