@@ -497,10 +497,11 @@ $(function() {
     return new Date().toJSON().split('T')[0];
   });
 
-  $('.datefields').on('blur', function(e){
+  $('.datefields').on('blur, change', function(e){
     console.log(this.value);
     if(this.value != '') {
       $(this).css("content", "'' !important");
+      $(this).removeAttr('placeholder');
     }
   });
 
