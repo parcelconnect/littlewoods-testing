@@ -459,7 +459,7 @@ div.label-date-header {
 
 }
 
-@media screen and (max-width: 910px) {
+/*@media screen and (max-width: 910px) {
 
 .address-proof-with-datepicker-container .datepicker-container{
       max-height: 135px;
@@ -504,17 +504,6 @@ div.label-date-header {
       margin: 0 auto;
   }
 
-
-  input[type="date"]:before {
-    content: "DD-MM-YYYY" !important;
-    color: #aaa;
-    margin-right: 0.5em;
-  }
-  input[type="date"]:focus:before,
-  input[type="date"]:valid:before {
-    content: "";
-  }
-
 }
 
 @media screen and (max-width: 560px) {
@@ -531,17 +520,6 @@ div.label-date-header {
       margin: 0 auto;
   }
 
-
-  input[type="date"]:before {
-    content: "DD-MM-YYYY" !important;
-    color: #aaa;
-    margin-right: 0.5em;
-  }
-  input[type="date"]:focus:before,
-  input[type="date"]:valid:before {
-    content: "";
-  }
-
 }
 
 @media screen and (max-width: 410px) {
@@ -554,8 +532,74 @@ div.label-date-header {
       width: 100%;
       margin: 0 auto;
   }
+}*/
+
+
+/*
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+  //CSS
+
 }
 
+/*
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  label.form-label.with-datepicker {
+        width: 100%;
+  }
+
+  .address-proof-with-datepicker-container .datepicker-container{
+      width: 100%;
+      margin: 0 auto;
+  }
+
+  input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
+}
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+
+ label.form-label.with-datepicker {
+        width: 100%;
+  }
+
+  .address-proof-with-datepicker-container .datepicker-container{
+      width: 100%;
+      margin: 0 auto;
+  }
+
+
+  input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
+
+}
 
 /*Iphone media queries */
 @media only screen
@@ -573,7 +617,6 @@ and (max-device-width : 667px) {
       width: 100%;
       margin: 0 auto;
   }
-
 
   .form-group .address-proof-with-datepicker-container .datepicker-container input {
     width: 300px;
