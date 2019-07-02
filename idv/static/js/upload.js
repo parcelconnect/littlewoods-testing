@@ -484,6 +484,7 @@ IDV.UploadForm = (function() {
   return my;
 })();
 
+
 $(function() {
   IDV.UploadForm.init();
 
@@ -496,9 +497,18 @@ $(function() {
     return new Date().toJSON().split('T')[0];
   });
 
-  $('.datefields').on('click, focus', function(){
-    this.type='date';
-    this.focus();
+  $('.datefields').on('blur', function(e){
+    console.log(this.value);
+    if(this.value != '') {
+      $(this).css("content", "'' !important");
+    }
+  });
+
+  /*$('.datefields').on('click, focus', function(){
+    this.type = 'date';
+    $(this).click();
+    //$(this).focus();
+
     $('[type="date"]').prop('max', function(){
       return new Date().toJSON().split('T')[0];
     });
@@ -508,6 +518,6 @@ $(function() {
     if(this.value == '') {
       this.type='text';
     }
-  });
+  });*/
 
 });
