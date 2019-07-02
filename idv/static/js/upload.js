@@ -491,4 +491,8 @@ $(function() {
   $requiredFields.keydown(function() {
     IDV.FormUtils.clearFieldErrors(this);
   });
+
+  $('[type="date"]').prop('max', function(){
+    return new Date().toJSON().split('T')[0];
+  });
 });

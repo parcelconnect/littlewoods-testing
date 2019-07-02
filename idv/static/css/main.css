@@ -143,7 +143,7 @@ label {
   padding-right: 0;
 }
 
-.datepicker-container {
+/*.datepicker-container {
   display: flex;
   flex-direction: column;
   border: 1px solid #e0e0e0;
@@ -153,6 +153,35 @@ label {
   margin-left: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
+}*/
+
+.datepicker-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    padding: 0px;
+    max-width: none;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.datepicker-container label{
+    background-color: #f5f5f5;
+    margin: 0;
+    top: 0;
+}
+
+.datepicker-container label div.label-date-header{
+    top: 0;
+    padding: 8px 5px;
+}
+
+.form-group .datepicker-container input {
+    font-size: 15px;
+    border: none;
+    text-transform: uppercase;
 }
 
 .label-date-header {
@@ -220,7 +249,7 @@ label {
   display: none;
 }
 
-.form-group input:valid {
+/*.form-group input:valid {
   border-color: #9f9f9f;
   border-width: 2px;
 }
@@ -238,7 +267,7 @@ label {
 .form-group input:invalid:not(:placeholder-shown) {
   border-color: #ff9cad;
   border-width: 2px;
-}
+}*/
 
 .btn-file-upload {
   display: inline-block;
