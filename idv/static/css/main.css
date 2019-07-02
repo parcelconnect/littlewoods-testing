@@ -540,9 +540,22 @@ div.label-date-header {
   ##Screen = B/w 768px to 1024px
 */
 
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+@media (min-width: 768px) and (max-width: 1024px) {
 
-  //CSS
+  .address-proof-with-datepicker-container {
+    display: inline-block;
+  }
+
+  label.form-label.with-datepicker {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .address-proof-with-datepicker-container .datepicker-container{
+    width: 60%;
+    margin: 0 auto;
+    display: inherit;
+  }
 
 }
 
@@ -552,13 +565,20 @@ div.label-date-header {
 */
 
 @media (min-width: 481px) and (max-width: 767px) {
+
+  .address-proof-with-datepicker-container {
+    display: inline-block;
+  }
+
   label.form-label.with-datepicker {
-        width: 100%;
+    width: 100%;
+    margin: 10px auto;
   }
 
   .address-proof-with-datepicker-container .datepicker-container{
-      width: 100%;
-      margin: 0 auto;
+    width: 60%;
+    margin: 0 auto;
+    display: inherit;
   }
 
   input[type="date"]:before {
@@ -579,8 +599,12 @@ div.label-date-header {
 
 @media (min-width: 320px) and (max-width: 480px) {
 
- label.form-label.with-datepicker {
-        width: 100%;
+  .address-proof-with-datepicker-container {
+    display: inline-block;
+  }
+
+  label.form-label.with-datepicker {
+    width: 100%;
   }
 
   .address-proof-with-datepicker-container .datepicker-container{
@@ -599,6 +623,32 @@ div.label-date-header {
     content: "";
   }
 
+}
+
+@media (max-width: 319px) {
+  .address-proof-with-datepicker-container {
+    display: inline-block;
+  }
+
+  label.form-label.with-datepicker {
+    width: 100%;
+  }
+
+  .address-proof-with-datepicker-container .datepicker-container{
+      width: 100%;
+      margin: 0 auto;
+  }
+
+
+  input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }
 }
 
 /*Iphone media queries */
