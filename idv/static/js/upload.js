@@ -497,28 +497,23 @@ $(function() {
     return new Date().toJSON().split('T')[0];
   });
 
-  $('.datefields').on('blur, change', function(e){
-    console.log(this.value);
+  $('.datefield').on('blur, change', function(e){
     if(this.value != '') {
       $(this).css("content", "'' !important");
       $(this).removeAttr('placeholder');
+    } else {
+      $(this).attr('placeholder', 'DD-MM-YYYY');
     }
   });
 
-  /*$('.datefields').on('click, focus', function(){
+  /* $('.datefield').on('click, focus', function(){
     this.type = 'date';
-    $(this).click();
-    //$(this).focus();
-
     $('[type="date"]').prop('max', function(){
       return new Date().toJSON().split('T')[0];
     });
   });
 
-  $('.datefields').on('blur', function(){
-    if(this.value == '') {
-      this.type='text';
-    }
-  });*/
-
+  $('.datefield').on('blur', function(){
+    this.type = 'text';
+  }); */
 });

@@ -105,16 +105,17 @@
               <input type="file" name="files" id="files-address-proof-1" accept="image/*">
 
               <div class="datepicker-container">
-                <label for="files-address-proof-1-issue-date">
-                  <div class="label-date-header">Issue date</div>
-                </label>
-                <input class="date-input datefields" placeholder="DD-MM-YYYY" type="date" name="date"  id="files-address-proof-1-issue-date" />
+                  <div class="label-date-header"><label for="files-address-proof-1-issue-date">
+                    Issue date
+                  </label> </div>
+                  <!--<input class="date-input" type="date" name="date" placeholder="DD-MM-YYYY" id="files-address-proof-1-issue-date" />-->
+                  <input placeholder="DD-MM-YYYY" class="date-input datefield" name="date" type="date" id="files-address-proof-1-issue-date">
               </div>
             </div>
             <div id="files-address-proof-1-thumbnail"></div>
 
             <div class="address-proof-with-datepicker-container col-xs-12">
-              <label class="form-label col-xs-12">
+              <label class="form-label with-datepicker">
                 <div class="label-header">Second Proof of address</div>
                 <label for='files-address-proof-2' class='upload-file'>Upload ID here</label>
                 <p class="label-description">Upload one of the following proof of address</p>
@@ -133,10 +134,11 @@
               <input type="file" name="files" id="files-address-proof-2" accept="image/*">
 
               <div class="datepicker-container">
-                <label for="files-address-proof-2-issue-date">
-                  <div class="label-date-header">Issue date</div>
-                </label>
-                <input class="date-input datefields" placeholder="DD-MM-YYYY" type="date" name="date" id="files-address-proof-2-issue-date" />
+                <div class="label-date-header"><label for="files-address-proof-2-issue-date">
+                  Issue date
+                </label></div>
+                <!--<input class="date-input" type="date" name="date" id="files-address-proof-2-issue-date" />-->
+                <input placeholder="DD-MM-YYYY" class="date-input datefield" name="date" type="date" id="files-address-proof-2-issue-date">
               </div>
             </div>
             <div id="files-address-proof-2-thumbnail"></div>
@@ -186,7 +188,7 @@
   <div id="successful-upload-template" class="collapse">
     <div class="row">
       <div class="col-md-9 success-msg-container">
-        <h4>Thanks for uploading your identification details! test details</h4>
+        <h4>Thanks for uploading your identification details!</h4>
         <p>
           Your details will be stored and will only be used in relation to your Littlewoods Ireland flexible account. We
           will be in touch if we require clarification or further information.
