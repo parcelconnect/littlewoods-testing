@@ -495,4 +495,19 @@ $(function() {
   $('[type="date"]').prop('max', function(){
     return new Date().toJSON().split('T')[0];
   });
+
+  $('.datefields').on('click, focus', function(){
+    this.type='date';
+    this.focus();
+    $('[type="date"]').prop('max', function(){
+      return new Date().toJSON().split('T')[0];
+    });
+  });
+
+  $('.datefields').on('blur', function(){
+    if(this.value == '') {
+      this.type='text';
+    }
+  });
+
 });

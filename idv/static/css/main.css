@@ -443,10 +443,42 @@ label {
     margin-top: 0;
     margin-bottom: 15px;
   }
+/*
+    input[type="date"]:before {
+      content: attr(placeholder) !important;
+      color: #aaa;
+      margin-right: 0.5em;
+    }
+
+    input[type="date"]:focus:before,
+    input[type="date"]:valid:before {
+      content: "";
+    }*/
 }
 
 @media screen and (max-width: 540px) {
   .types-only, .proof-types-line {
     flex-direction: column;
   }
+/*    input[type="date"]:before {
+    content: attr(placeholder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+  }
+  input[type="date"]:focus:before,
+  input[type="date"]:valid:before {
+    content: "";
+  }*/
+}
+
+input::-webkit-input-placeholder {
+    color: #9B9B9B;
+}
+
+input:-ms-input-placeholder {
+    color: #9B9B9B;
+}
+
+input::-moz-placeholder {
+    color: #9B9B9B;
 }
