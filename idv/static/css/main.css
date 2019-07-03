@@ -390,7 +390,6 @@ div.label-date-header {
     border-width: 1px;
     padding: 0;
     height: auto;
-    min-height: 100%;
     max-height: 115px;
     max-width: none;
 }
