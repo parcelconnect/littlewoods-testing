@@ -14,65 +14,12 @@
   <script src="{% static 'js/upload.js' %}"></script>
 
   <script>
-    webshims.setOptions('forms-ext', {types: 'date'});
-    webshims.polyfill('forms forms-ext');
-    $.webshims.formcfg = {
-    en: {
-        dFormat: '-',
-        dateSigns: '-',
-        patterns: {
-            d: "dd-mm-yy"
-        }
-    }
-    };
-    $.webshims.activeLang('en');
+
+    $.webshims.activeLang("en");
+    $.webshims.setOptions('forms-ext', { datepicker: { dateFormat: 'dd/mm/yy' } });
+    $.webshims.polyfill('forms forms-ext');
+
   </script>
-
-  <script>
-			webshim.setOptions('forms', {
-				lazyCustomMessages: true,
-				replaceValidationUI: true,
-				addValidators: true
-			});
-
-			(function(){
-				var stateMatches = {
-					'true': true,
-					'false': false,
-					'auto': 'auto'
-				};
-				var enhanceState = (location.search.match(/enhancelist\=([true|auto|false|nopolyfill]+)/) || ['', 'auto'])[1];
-
-				webshim.ready('jquery', function(){
-					$(function () {
-						$('.polyfill-type select')
-								.val(enhanceState)
-								.on('change', function () {
-									location.search = 'enhancelist=' + $(this).val();
-								})
-						;
-					});
-				});
-				webshim.setOptions('forms', {
-					customDatalist: stateMatches[enhanceState]
-				});
-				webshim.setOptions('forms-ext', {
-					replaceUI: stateMatches[enhanceState]
-				});
-			})();
-
-
-			// load the forms polyfill
-			webshim.polyfill('forms forms-ext');
-
-		</script>
-
-    <script>
-			webshim.ready('jquery', function(){
-				webshim.loader.loadScript("../../static/js/demo.js", false, false, true);
-				webshim.loader.loadScript("../../static/js/cfg.js", false, false, true);
-			});
-		</script>
 
   {% endblock %}
 
