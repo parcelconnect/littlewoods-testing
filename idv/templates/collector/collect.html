@@ -5,12 +5,14 @@
 {% block js %}
   {{ block.super }}
   <script src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.2/mobile-detect.min.js"></script>
-  <script src="{% static 'js/upload.js' %}"></script>
 
   <!-- cdn for modernizr, if you haven't included it already -->
   <script src="http://cdn.jsdelivr.net/webshim/1.12.4/extras/modernizr-custom.js"></script>
   <!-- polyfiller file to detect and load polyfills -->
   <script src="http://cdn.jsdelivr.net/webshim/1.12.4/polyfiller.js"></script>
+
+  <script src="{% static 'js/upload.js' %}"></script>
+
   <script>
     webshims.setOptions('forms-ext', {types: 'date'});
     webshims.polyfill('forms forms-ext');
