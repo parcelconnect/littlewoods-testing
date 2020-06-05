@@ -16,7 +16,7 @@ redis==3.2.1
 requests==2.21.0
 
 # Django
-django==2.1.7
+django==2.2.13
 dj-database-url==0.5.0
 django-widget-tweaks==1.4.3
 django-waffle==0.14.0
